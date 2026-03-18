@@ -2,5 +2,12 @@
 build
 .gradle
 
+
+.env
+backups/
+*.class
+.idea/
+
+
 secrets.txt
 
