@@ -3,6 +3,7 @@ services:
     image: postgres:alpine
     environment:
       POSTGRES_PASSWORD: fennpfuhl
+      POSTGRES_DB: kleinanzeigen
     ports:
       - "5432:5432"
     volumes:
