@@ -40,6 +40,8 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("org.assertj:assertj-core:3.27.7")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation("org.jsoup:jsoup:1.22.1")
+    implementation("com.squareup.okhttp3:okhttp:5.3.2")
 }
 
 flyway {

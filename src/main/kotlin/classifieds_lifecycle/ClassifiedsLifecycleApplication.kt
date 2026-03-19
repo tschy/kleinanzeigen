@@ -1,4 +1,4 @@
-package io.github.mateyjack.classifieds_lifecycle
+package classifieds_lifecycle
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

@@ -1,0 +1,7 @@
+ALTER TABLE listings ADD COLUMN title TEXT;
+ALTER TABLE listings ADD COLUMN url TEXT;
+ALTER TABLE listings ADD COLUMN location TEXT;
+ALTER TABLE listings ADD COLUMN price_raw TEXT;
+ALTER TABLE listings ADD COLUMN price_amount INTEGER;
+ALTER TABLE listings ADD COLUMN first_seen TIMESTAMP;
+ALTER TABLE listings ADD COLUMN last_seen TIMESTAMP;

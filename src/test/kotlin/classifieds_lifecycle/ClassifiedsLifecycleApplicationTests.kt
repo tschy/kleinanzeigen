@@ -1,4 +1,4 @@
-package io.github.mateyjack.classifieds_lifecycle
+package classifieds_lifecycle
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
