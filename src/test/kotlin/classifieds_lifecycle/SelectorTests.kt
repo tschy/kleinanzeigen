@@ -1,30 +1,33 @@
 package classifieds_lifecycle
 
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.springframework.boot.autoconfigure.ssl.SslProperties
 import java.io.File
+import java.time.LocalDate
+import java.time.Month
 
 
 class SelectorTests {
 
-    // print sto
-    val fetcherTestObject = FetcherService()
+    val today = LocalDate.of(2026, Month.MARCH, 19)
+    val yesterday = today.minusDays(1)
+    val undertest = ItemExtractor(today)
 
     @Test
     fun testSelector() {
 
         val text = File("src/test/resources/rennraeder20260319.htm")
-             .readText()
+            .readText()
         //   ?: error("File not found!")
         // println(text)
 
 
-
-        val results = fetcherTestObject.extract(text)
+        val results = undertest.extract(text)
         assertThat(results).hasSize(27)
-       //assertEquals("", "/s-anzeige/giant-escape-1-trekkingrad-cityrad/3190643254-217-3354")
-
-    }
+        assertThat(results[2].created).isEqualTo(today)
+        val yesterdaysItem = results.first { it.id == "3356665275" }
+        assertThat(yesterdaysItem.created).isEqualTo(yesterday)
+        val oldItem = results.first { it.id == "3356785624" }
+        assertThat(oldItem.created).isEqualTo(LocalDate.of(2026, Month.MARCH, 17))
+}
 }
