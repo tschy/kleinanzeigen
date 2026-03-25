@@ -27,7 +27,7 @@ class ItemExtractor(
 
             try {
                 return LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("dd.MM.yyyy"))
-                // change from return LocalDate.parse(dateStr)
+                // add DateTimeFormatter.ofPattern("dd.MM.yyyy")
             } catch (ex: Exception) {
                 return null
             }
