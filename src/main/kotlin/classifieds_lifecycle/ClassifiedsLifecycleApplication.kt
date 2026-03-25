@@ -1,11 +1,12 @@
 package classifieds_lifecycle
 
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.runApplication
-
-@SpringBootApplication
-class ClassifiedsLifecycleApplication
 
 fun main(args: Array<String>) {
-	runApplication<ClassifiedsLifecycleApplication>(*args)
+	val itemExtractor = ItemExtractor()
+	val fetcherService = FetcherService()
+
+	val url = "https://www.kleinanzeigen.de/s-fahrraeder/herren/12309/seite:2/rennrad/k0c217l3411r10+fahrraeder.art_s:herren"
+	val items = itemExtractor.extract(fetcherService.fetch(url))
+
+	items.forEach {println(it)}
 }

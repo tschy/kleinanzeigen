@@ -13,6 +13,7 @@ class SelectorTests {
     val yesterday = today.minusDays(1)
     val undertest = ItemExtractor(today)
 
+
     @Test
     fun testSelector() {
 
@@ -21,7 +22,6 @@ class SelectorTests {
         //   ?: error("File not found!")
         // println(text)
 
-
         val results = undertest.extract(text)
         assertThat(results).hasSize(27)
         assertThat(results[2].created).isEqualTo(today)
@@ -29,5 +29,7 @@ class SelectorTests {
         assertThat(yesterdaysItem.created).isEqualTo(yesterday)
         val oldItem = results.first { it.id == "3356785624" }
         assertThat(oldItem.created).isEqualTo(LocalDate.of(2026, Month.MARCH, 17))
-}
+        val oldItem2 = results.first { it.id == "3356211495" }
+        assertThat(oldItem2.created).isEqualTo(LocalDate.of(2025, Month.DECEMBER, 7))
+    }
 }
