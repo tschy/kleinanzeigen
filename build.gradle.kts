@@ -14,6 +14,7 @@ plugins {
     // id("org.springframework.boot") version "4.0.3"
     // id("io.spring.dependency-management") version "1.1.7"
     id("org.flywaydb.flyway") version "12.1.0"
+    id("application")
 }
 
 group = "io.github.mateyjack"
@@ -60,3 +61,8 @@ kotlin {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+
+  application {
+      mainClass.set("classifieds_lifecycle.classifiedsLifecycleApplication")
+  }
