@@ -18,8 +18,4 @@ class FetcherService(
     }
 }
 
-// fun fetchAndStore(url: String) {
-//    val items = fetch(url)
-// TODO: write to database
-//}
 

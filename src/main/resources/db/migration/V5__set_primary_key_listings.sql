@@ -1,0 +1,2 @@
+ALTER TABLE Listings
+ADD PRIMARY KEY (ID);

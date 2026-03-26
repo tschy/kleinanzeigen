@@ -41,24 +41,14 @@ class ItemExtractor(
         val articles = soup.select("article.aditem")
         println("Found ${articles.size} articles")
 
-        return articles.map { article: Element ->
+        return articles.mapNotNull { article: Element ->
             val id = article.attr("data-adid")
             val title = article.select("h2").text()
             val priceString = article.select(".aditem-main--middle--price-shipping").text()
-            val price = numberRegex.find(priceString)?.value?.toDouble() ?: Double.NaN
+            val price = numberRegex.find(priceString)?.value?.toDouble() ?: return@mapNotNull null  // change so mapNotNull can be drop items without price
             val negotiable = priceString.contains("VB")
             val created = article.select(".aditem-main--top--right").text()
             Item(id, title, price, negotiable, parseDate(created))
         }
     }
-
-
-
-
 }
-
-// fun fetchAndStore(url: String) {
-//    val items = fetch(url)
-// TODO: write to database
-//}
-
