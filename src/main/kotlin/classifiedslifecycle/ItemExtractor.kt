@@ -1,12 +1,13 @@
-package classifieds_lifecycle
+package classifiedslifecycle
 
-import classifieds_lifecycle.model.Item
+import classifiedslifecycle.model.ScrapeItem
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import kotlin.io.println
 import kotlin.text.contains
+import java.time.Instant
 
 // change: today was passed into the ItemExtractor but not used
 class ItemExtractor(
@@ -19,10 +20,9 @@ class ItemExtractor(
     fun parseDate(s: String): LocalDate? {
 
         if (s.contains("Heute")) return today // change from return LocalDate.now
-        else if (s.contains("Gestern")){
+        else if (s.contains("Gestern")) {
             return today.minusDays(1) // change from return LocalDate.now.minusDays
-        }
-        else {
+        } else {
             val dateStr = dateRegex.find(s)?.value ?: return null
 
             try {
@@ -36,19 +36,21 @@ class ItemExtractor(
 
     val numberRegex = Regex("[\\d.,]+")
 
-    fun extract(body: String): List<Item> {
+    fun extract(body: String): List<ScrapeItem> {
         val soup = Jsoup.parse(body)
         val articles = soup.select("article.aditem")
         println("Found ${articles.size} articles")
 
-        return articles.mapNotNull { article: Element ->
+        return articles.map { article: Element ->
             val id = article.attr("data-adid")
+            val scrapeTime = Instant.now()
             val title = article.select("h2").text()
             val priceString = article.select(".aditem-main--middle--price-shipping").text()
-            val price = numberRegex.find(priceString)?.value?.toDouble() ?: return@mapNotNull null  // change so mapNotNull can be drop items without price
+            val price = numberRegex.find(priceString)?.value?.toDouble()  // TODO
             val negotiable = priceString.contains("VB")
             val created = article.select(".aditem-main--top--right").text()
-            Item(id, title, price, negotiable, parseDate(created))
+
+            ScrapeItem(id, scrapeTime, title, price, negotiable, parseDate(created))
         }
     }
 }

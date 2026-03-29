@@ -1,4 +1,4 @@
-package classifieds_lifecycle.model
+package classifiedslifecycle.model
 
 data class SearchConfig(
     val category: String,

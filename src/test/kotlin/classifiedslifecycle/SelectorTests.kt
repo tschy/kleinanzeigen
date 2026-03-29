@@ -1,4 +1,4 @@
-package classifieds_lifecycle
+package classifiedslifecycle
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

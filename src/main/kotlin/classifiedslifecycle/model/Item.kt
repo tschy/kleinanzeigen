@@ -1,6 +1,6 @@
-package classifieds_lifecycle.model
+package classifiedslifecycle.model
 
-import classifieds_lifecycle.ListingId
+import classifiedslifecycle.ListingId
 import jakarta.persistence.EmbeddedId
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
@@ -13,12 +13,12 @@ data class Item(
 
     @EmbeddedId
     val id: ListingId,
+    val lastScrape: Instant, // make sure they are always UTC? still relevant?
+    val scrapeCount: Int,
 
     val title: String,
-    val price: Double,
+    val price: Double?,
     val negotiable: Boolean,
     val created: LocalDate?,
-    val lastScrape: Instant, // make sure they are always UTC
-    val scrapeCount: Int
 )
 

@@ -1,4 +1,4 @@
-package classifieds_lifecycle
+package classifiedslifecycle
 
 import okhttp3.OkHttpClient
 import okhttp3.Request

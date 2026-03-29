@@ -1,16 +1,16 @@
-package classifieds_lifecycle
+package classifiedslifecycle
 
-import classifieds_lifecycle.model.Item
-import classifieds_lifecycle.model.SearchConfig
+import classifiedslifecycle.model.ScrapeItem
+import classifiedslifecycle.model.SearchConfig
 import org.jsoup.Jsoup
 
     class Paginator(val fetcherService: FetcherService,
                     val itemExtractor: ItemExtractor) {
 
-        fun run(config: SearchConfig): MutableList<Item> {
+        fun run(config: SearchConfig): MutableList<ScrapeItem> {
 
         var n = 1
-        val allItems = mutableListOf<Item>()
+        val allItems = mutableListOf<ScrapeItem>()
 
         do
         {
