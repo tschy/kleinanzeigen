@@ -4,6 +4,7 @@ import classifiedslifecycle.model.ScrapeItem
 import classifiedslifecycle.model.SearchConfig
 import org.jsoup.Jsoup
 
+
     class Paginator(val fetcherService: FetcherService,
                     val itemExtractor: ItemExtractor) {
 

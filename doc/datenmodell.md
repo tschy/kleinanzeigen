@@ -11,3 +11,13 @@
 | XxxService       | connects both |
 
 // service klasse macht das mapping zw scrapeitem und item
+
+
+
+
+ItemExtractor → creates ScrapeItem
+Service → creates Item from ScrapeItem
+Service → asks Repository: does this (id, firstScrape) already exist?
+Repository → checks DB
+Service → decides: insert new or update existing
+Repository → writes to DB

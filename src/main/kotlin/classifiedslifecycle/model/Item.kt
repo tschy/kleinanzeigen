@@ -20,5 +20,21 @@ data class Item(
     val price: Double?,
     val negotiable: Boolean,
     val created: LocalDate?,
-)
+) {
+    companion object {
+        fun fromScrapeItem(scrapeItem: ScrapeItem): Item {
+            val instant = Instant.now()
+            return Item(
+                ListingId(scrapeItem.id, instant),
+                instant,
+                1,
+                scrapeItem.title,
+                scrapeItem.price,
+                scrapeItem.negotiable,
+                scrapeItem.created
+            )
+        }
+    }
+}
+
 

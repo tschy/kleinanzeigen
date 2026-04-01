@@ -3,6 +3,7 @@ package classifiedslifecycle
 import classifiedslifecycle.model.ScrapeItem
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
+import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import kotlin.io.println
@@ -34,9 +35,16 @@ class ItemExtractor(
         }
     }
 
-    val numberRegex = Regex("[\\d.,]+")
+    val priceRegex = Regex("[\\d.,]+")
+
+    fun parsePrice(priceString: String): Double? {
+
+        println(priceRegex.find(priceString)?.value ?: "not found")
+        return priceRegex.find(priceString)?.value?.toDouble()  // TODO
+    }
 
     fun extract(body: String): List<ScrapeItem> {
+
         val soup = Jsoup.parse(body)
         val articles = soup.select("article.aditem")
         println("Found ${articles.size} articles")
@@ -46,7 +54,8 @@ class ItemExtractor(
             val scrapeTime = Instant.now()
             val title = article.select("h2").text()
             val priceString = article.select(".aditem-main--middle--price-shipping").text()
-            val price = numberRegex.find(priceString)?.value?.toDouble()  // TODO
+//            val price = priceRegex.find(priceString)?.value?.toDouble()  // TODO
+            val price = parsePrice(priceString)
             val negotiable = priceString.contains("VB")
             val created = article.select(".aditem-main--top--right").text()
 

@@ -6,13 +6,12 @@ import org.springframework.boot.ApplicationRunner
 import org.springframework.stereotype.Component
 
 @Component
-class AppStartupRunner : ApplicationRunner {
+class AppStartupRunner(
+    private val itemService: ItemService
+) : ApplicationRunner {
 
     @Override
     override fun run(args: ApplicationArguments) {
-        val fetcherService = FetcherService()
-        val itemExtractor = ItemExtractor()
-        val paginator = Paginator(fetcherService, itemExtractor)
 
         // set search parameters
         val config = SearchConfig(
@@ -22,6 +21,10 @@ class AppStartupRunner : ApplicationRunner {
             searchTerm = "rennrad",
             radius = 10
         )
+
+        val scrapeItems = Paginator(FetcherService(), ItemExtractor()).run(config)
+        itemService.process(scrapeItems)
+
     }
 
 }
