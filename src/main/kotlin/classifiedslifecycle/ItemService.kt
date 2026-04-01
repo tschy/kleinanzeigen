@@ -20,7 +20,7 @@ class ItemService(
         scrapeItems.forEach { scrapeItem ->
             println(" ------ ${scrapeItem}")
 
-            val listForItem = listingRepository.findById_Id(scrapeItem.id)
+            val listForItem = listingRepository.findByIdId(scrapeItem.id)
             if (listForItem.isNotEmpty() && listForItem.size == 1) {
                 val item = listForItem.first()
                 listingRepository.updateScrapeCount((item.scrapeCount + 1), item.id.id, item.id.firstScrape)

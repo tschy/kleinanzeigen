@@ -3,9 +3,11 @@ package classifiedslifecycle
 import classifiedslifecycle.model.SearchConfig
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
+import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
 
 @Component
+@Profile("!test")
 class AppStartupRunner(
     private val itemService: ItemService
 ) : ApplicationRunner {

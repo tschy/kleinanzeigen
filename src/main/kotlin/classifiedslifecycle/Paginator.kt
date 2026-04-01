@@ -16,7 +16,7 @@ import org.jsoup.Jsoup
         do
         {
             val url = "https://www.kleinanzeigen.de/s-${config.category}/${config.art}/${config.plz}/seite:${n}/${config.searchTerm}/k0c217l3411r${config.radius}+${config.category}.art_s:${config.art}"
-            println(url)
+            println("paginator ${url}")
 
             // get HTML content for this page
             val body = fetcherService.fetch(url)
