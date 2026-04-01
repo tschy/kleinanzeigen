@@ -10,7 +10,6 @@ import java.time.Month
 class PriceTest {
 
     val today = LocalDate.of(2026, Month.MARCH, 19)
-    val yesterday = today.minusDays(1)
     val undertest = ItemExtractor(today)
 
 
@@ -27,7 +26,7 @@ class PriceTest {
         assertThat(yesterdaysItem.price).isEqualTo(580.0)
         val oldItem = results.first { it.id == "3356685496" }
         assertThat(oldItem.price).isEqualTo(2650.0)
-        val oldItem2 = results.first { it.id == "356785624" }
+        val oldItem2 = results.first { it.id == "3356785624" }
         assertThat(oldItem2.price).isEqualTo(10.01)
     }
 }

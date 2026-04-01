@@ -37,12 +37,6 @@ class ItemExtractor(
 
     val priceRegex = Regex("[\\d.,]+")
 
-    fun parsePrice(priceString: String): Double? {
-
-        println(priceRegex.find(priceString)?.value ?: "not found")
-        return priceRegex.find(priceString)?.value?.toDouble()  // TODO
-    }
-
     fun extract(body: String): List<ScrapeItem> {
 
         val soup = Jsoup.parse(body)
@@ -54,8 +48,8 @@ class ItemExtractor(
             val scrapeTime = Instant.now()
             val title = article.select("h2").text()
             val priceString = article.select(".aditem-main--middle--price-shipping").text()
-//            val price = priceRegex.find(priceString)?.value?.toDouble()  // TODO
-            val price = parsePrice(priceString)
+//          val price = priceRegex.find(priceString)?.value?.toDouble()  // TODO
+            val price = priceRegex.find(priceString)?.value?.replace(".", "")?.replace(",", ".")?.toDouble()
             val negotiable = priceString.contains("VB")
             val created = article.select(".aditem-main--top--right").text()
 
