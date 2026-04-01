@@ -16,5 +16,4 @@ interface ListingRepository : JpaRepository<Item, ListingId> {
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("update Item i set i.scrapeCount = ?1 where i.id.id = ?2 and i.id.firstScrape = ?3")
     fun updateScrapeCount(scrapeCount: Int, id: String, firstScrape: Instant)
-//    fun findById(id: String): Optional<Item>
 }
