@@ -10,16 +10,23 @@ TODO:
 - [x] db write test
 
 - [ ] mergen implementieren: datensatz lesen und entscheiden ob ein neuer erstellt werden soll oder nur das scrapte datum updaten. in einer service klasse, die sich gut testen laesst. (+ code an db aenderungen anpassen)
-  - [ ] fix list.size == 1 in ItemService class
+    - [ ] fix list.size == 1 in ItemService class
 - [ ] solve scrape_counter issues:
-    - [ ] Filter "TOP" ads, as they appear twice in the list, drop them instead of writing them to the db
+    - [ ] Filter "TOP" ads, as they appear twice in the list, drop duplicates instead of writing them to the db
     - [ ] the items that get scraped twice into one go appear on two pages, find differences or find out why that happens
     - [ ] investigate why the test with static htm files generates variable scrape counts > 1 / > other entries
     - [ ] why do the test results in 3/1 scrape counts? aren't the database changes ephemeral?
-- [ ] konfiguration als yaml datei, und so, dass man mehrere Auftraege aufeinmal eintragen kann.
-- [ ] git rebase exercise, merge in robert/patch-1 into 8bbd7651
 
-WONT DO:
-- refactoring ListingRepository nicht abschliessen => das generiert uns spring-data!
+- [ ] Testen scrape mit db write, 
+- [ ] echter Test: mit verschwindenen Items/ ausfuehren, bis was verschwunden ist - oefter scrapen
+- [ ] funktion die alle anzeigt, die verschwunden sind (als zweites main programm) - (laesst Spring Boot das zu? - ausrobieren, herausfinden)
+- [ ] zweites datenbankschema, fuer echte und fuers Testen: public und test (recherchieren - wie man das macht, flyway konfigurieren fuer zweite db, oder zweiten Docker container) 
+
+- Di morgens um 9, 7.4.26
+- Fr 11 bis 15 Uhr mit Mittagspause (12 Uhr mittags)
+ 
+
+- [ ] konfiguration als yaml datei, und so, dass man mehrere Auftraege aufeinmal eintragen kann.
+
 
 
