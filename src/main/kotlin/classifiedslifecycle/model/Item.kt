@@ -35,6 +35,11 @@ data class Item(
             )
         }
     }
+    fun matches(scrapeItem: ScrapeItem): Boolean =
+        title == scrapeItem.title &&
+                price == scrapeItem.price &&
+                negotiable == scrapeItem.negotiable &&
+                created == scrapeItem.created
 }
 
 

@@ -12,7 +12,7 @@ import java.io.File
 @SpringBootTest
 @ActiveProfiles("test")
 @Transactional
-class DbWriteTest {
+class ItemServiceTestSpringBoot {
 
     @Autowired
     lateinit var listingRepository: ListingRepository

@@ -7,7 +7,7 @@ import java.time.LocalDate
 import java.time.Month
 
 
-class SelectorTests {
+class ItemExtractorTestCssSelection {
 
     val today = LocalDate.of(2026, Month.MARCH, 19)
     val yesterday = today.minusDays(1)

@@ -7,7 +7,7 @@ import java.time.LocalDate
 import java.time.Month
 
 
-class PriceTest {
+class ItemExtractorTestPrice {
 
     val today = LocalDate.of(2026, Month.MARCH, 19)
     val undertest = ItemExtractor(today)

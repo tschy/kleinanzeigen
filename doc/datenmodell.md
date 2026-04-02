@@ -17,7 +17,7 @@
 
 ItemExtractor → creates ScrapeItem
 Service → creates Item from ScrapeItem
-Service → asks Repository: does this (id, firstScrape) already exist?
+Service → asks Repository: does this (id, firstScrape) already exist? --> are all ad columns the same (non ad columns: firstScrape, lastScrape, scrapeCount)
 Repository → checks DB
 Service → decides: insert new or update existing
 Repository → writes to DB

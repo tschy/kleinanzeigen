@@ -14,27 +14,23 @@ class ItemService(
         scrapeItems.forEach { scrapeItem ->
             println(" ------ ${scrapeItem}")
 
-            // sorting order is descending
+            // get the most recent listing of the ad
+            val itemSaved = listingRepository
+                .findByIdId(scrapeItem.id).maxByOrNull { it.id.firstScrape }
 
+            if (itemSaved != null && itemSaved.matches(scrapeItem)) {
 
-            // neustes finden und entscheiden ob merge oder neues machen
-            val listForItem = listingRepository
-                .findByIdId(scrapeItem.id)
-                .sortedBy { it.id.firstScrape }
-
-            if (listForItem.isNotEmpty() && listForItem.size == 1) {
-                val item = listForItem.first()
                 listingRepository
                     .updateScrapeCount(
-                        (item.scrapeCount + 1),
-                        item.id.id,
-                        item.id.firstScrape
+                        (itemSaved.scrapeCount + 1),
+                        itemSaved.id.id,
+                        itemSaved.id.firstScrape
                     )
-            } else listingRepository.save(Item.fromScrapeItem(scrapeItem))
+            }
+            else { listingRepository.save(Item.fromScrapeItem(scrapeItem)) }
         }
     }
 }
-
 
 
 
