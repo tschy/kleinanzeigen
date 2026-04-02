@@ -18,7 +18,7 @@ class ItemServiceTestSpringBoot {
     @Autowired
     lateinit var listingRepository: ListingRepository
 
-    val results = mutableListOf<ScrapeItem>()
+    val results = mutableSetOf<ScrapeItem>()
 
 
     // delete stale entries in the db from previous test runs

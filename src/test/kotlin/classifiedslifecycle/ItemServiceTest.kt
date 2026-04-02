@@ -62,7 +62,7 @@ class ItemServiceTest {
 
         val itemService = ItemService(mockRepository)
 
-        itemService.process(listOf(newItem))
+        itemService.process(setOf(newItem))
 
         verify(exactly = 1) { mockRepository.save(any()) }
         confirmVerified(mockRepository)

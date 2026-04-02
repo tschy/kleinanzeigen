@@ -10,9 +10,15 @@ class ItemService(
     val listingRepository: ListingRepository
 ) {
     @Transactional
-    fun process(scrapeItems: List<ScrapeItem>) {
-        scrapeItems.forEach { scrapeItem ->
-            println(" ------ ${scrapeItem}")
+    fun process(scrapeItems: Set<ScrapeItem>) {
+
+
+        val sortedItems = scrapeItems
+            .sortedByDescending { it.created } // null ends up at the end of the list
+            .distinctBy { it.id }
+
+        sortedItems.forEach { scrapeItem ->
+            println(" ------ $scrapeItem")
 
             // get the most recent listing of the ad
             val itemSaved = listingRepository
@@ -23,11 +29,13 @@ class ItemService(
                 listingRepository
                     .updateScrapeCount(
                         (itemSaved.scrapeCount + 1),
+                        lastScrape = scrapeItem.scrapeTime,
                         itemSaved.id.id,
                         itemSaved.id.firstScrape
                     )
+            } else {
+                listingRepository.save(Item.fromScrapeItem(scrapeItem))
             }
-            else { listingRepository.save(Item.fromScrapeItem(scrapeItem)) }
         }
     }
 }
