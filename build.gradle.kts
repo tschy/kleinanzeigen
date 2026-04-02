@@ -46,6 +46,7 @@ dependencies {
     implementation("org.jsoup:jsoup:1.22.1")
     implementation("com.squareup.okhttp3:okhttp:5.3.2")
     implementation(platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES))
+    testImplementation("io.mockk:mockk:1.14.9")
 }
 
 flyway {

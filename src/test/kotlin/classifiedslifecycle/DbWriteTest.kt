@@ -1,6 +1,5 @@
 package classifiedslifecycle
 
-import classifiedslifecycle.model.Item
 import classifiedslifecycle.model.ScrapeItem
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

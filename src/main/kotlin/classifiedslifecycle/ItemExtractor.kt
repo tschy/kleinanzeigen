@@ -48,7 +48,6 @@ class ItemExtractor(
             val scrapeTime = Instant.now()
             val title = article.select("h2").text()
             val priceString = article.select(".aditem-main--middle--price-shipping").text()
-//          val price = priceRegex.find(priceString)?.value?.toDouble()  // TODO
             val price = priceRegex.find(priceString)?.value?.replace(".", "")?.replace(",", ".")?.toDouble()
             val negotiable = priceString.contains("VB")
             val created = article.select(".aditem-main--top--right").text()
