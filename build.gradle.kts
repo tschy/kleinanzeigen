@@ -55,10 +55,10 @@ dependencies {
 }
 
 flyway {
-    url      = "jdbc:postgresql://localhost:5432/kleinanzeigen"
-    user     = "postgres"
+    url = "jdbc:postgresql://localhost:5432/kleinanzeigen"
+    user = "postgres"
     password = "fennpfuhl"
-    schemas  = arrayOf("public")
+    schemas = arrayOf("public")
 }
 
 kotlin {
