@@ -25,3 +25,7 @@ TODO:
 
 
 - [ ] konfiguration als yaml datei, und so, dass man mehrere Auftraege aufeinmal eintragen kann.
+
+
+1. aus den Daten, die wir scrapen können, soviel Weisheit wie möglich zu extrahieren 
+2. dabei links und rechts Beispiele anschauen, um ein intuitives Bild dafür zu bekommen, wie zuverlässig unsere Datenweisheit die echte Welt abbildet.

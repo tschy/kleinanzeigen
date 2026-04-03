@@ -18,6 +18,7 @@ import org.assertj.core.api.Assertions.assertThat
 class ItemServiceTest {
 
     val mockRepository = mockk<ListingRepository>()
+
     @OptIn(ExperimentalTime::class)
     val exampleInstant = parse("2020-01-01T00:00:00.00Z").toJavaInstant()
     val itemId = "123"
@@ -59,24 +60,26 @@ class ItemServiceTest {
     @Test
     fun updateItem() {
         every { mockRepository.findByIdId(any()) } returns listOf(oldItemDb1, oldItemDb2)
+        every { mockRepository.save(any()) } answers { firstArg() }
 
         val itemService = ItemService(mockRepository)
 
         itemService.process(setOf(newItem))
 
         verify(exactly = 1) { mockRepository.save(any()) }
+        verify(exactly = 1) { mockRepository.findByIdId(any()) }
         confirmVerified(mockRepository)
     }
 
     @Test
     fun sortedListTest() {
-        val list = listOf(1, 3, 2).sortedBy {it}
+        val list = listOf(1, 3, 2).sortedBy { it }
         assertThat(list.last()).isEqualTo(3)
 
         val list2 = listOf(
             exampleInstant,
             exampleInstant.minus(3, ChronoUnit.DAYS)
-        ).sortedBy {it}
+        ).sortedBy { it }
 
         assertThat(list2.last()).isEqualTo(exampleInstant)
     }
