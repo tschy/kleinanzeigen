@@ -19,6 +19,7 @@ TODO:
 - [x] zweites datenbankschema, fuer echte und fuers Testen: public und test (recherchieren - wie man das macht, flyway konfigurieren fuer zweite db, oder zweiten Docker container)
 - [x] ItemExtractor test, test for number of scraped items and scrape count == 1~~~~
 
+- [ ] FetcherService, Paginator, integrate into Spring Boot Framework as beans
 - [ ] Testen echten scrape mit db write, 
 - [ ] add scraping of original price for items that have been reduced
 - [ ] echter Test: mit verschwindenen Items/ ausfuehren, bis was verschwunden ist - oefter scrapen

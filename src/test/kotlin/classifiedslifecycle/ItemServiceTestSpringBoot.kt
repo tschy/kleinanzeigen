@@ -11,11 +11,10 @@ import org.springframework.test.context.ActiveProfiles
 import java.io.File
 
 // Integration test (@SpringBootTest) using a separate test database specified in application-test.properties.
-// Each test method runs in a transaction that is rolled back after the test,
-// ensuring a clean database state between tests.
+
 @SpringBootTest
 @ActiveProfiles("test")
-//@Transactional
+//@Transactional  // rollback changes
 class ItemServiceTestSpringBoot {
 
     @Autowired
@@ -45,6 +44,16 @@ class ItemServiceTestSpringBoot {
             results.addAll(ItemExtractor().extract(text))
         }
 
+
+        val savedItemListBeforeScrape = listingRepository.findAll()
+
+        val map = HashMap<String, Int>()
+
+        for (savedItemBeforeScrape in savedItemListBeforeScrape) {
+            map[savedItemBeforeScrape.id.id] = savedItemBeforeScrape.scrapeCount
+        }
+
+
         // act
         itemService.process(results)
 
@@ -56,8 +65,10 @@ class ItemServiceTestSpringBoot {
 
             val savedItemList = listingRepository.findByIdId(scrapeItem.id)
             for (savedItem in savedItemList) {
+                val scrapeCount = savedItem.scrapeCount
                 println("${scrapeItem.id} -- ${savedItem.id} -- ${savedItem.scrapeCount}  -- ${savedItem.title}")
                 assertThat(scrapeItem.id).isEqualTo(savedItem.id.id)
+                assertThat(savedItem.scrapeCount).isEqualTo(map.getOrDefault(scrapeItem.id, 0)+1)
             }
         }
     }

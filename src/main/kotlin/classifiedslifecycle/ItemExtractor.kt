@@ -3,7 +3,6 @@ package classifiedslifecycle
 import classifiedslifecycle.model.ScrapeItem
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
-import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import kotlin.io.println
@@ -47,12 +46,26 @@ class ItemExtractor(
             val id = article.attr("data-adid")
             val scrapeTime = Instant.now()
             val title = article.select("h2").text()
-            val priceString = article.select(".aditem-main--middle--price-shipping").text()
-            val price = priceRegex.find(priceString)?.value?.replace(".", "")?.replace(",", ".")?.toDouble()
+            val priceString = article.select(
+                ".aditem-main--middle--price-shipping").text()
+            val price = priceRegex.find(priceString)
+                ?.value
+                ?.replace(".", "")
+                ?.replace(",", ".")
+                ?.toDouble()
+            val oldPriceString = article.select(
+                ".aditem-main--middle--price-shipping--old-price").text()
+            val oldPrice = priceRegex.find(oldPriceString)
+                ?.value
+                ?.replace(".", "")
+                ?.replace(",", ".")
+                ?.toDouble()
             val negotiable = priceString.contains("VB")
-            val created = article.select(".aditem-main--top--right").text()
+            val created = parseDate(article.select(
+                ".aditem-main--top--right")
+                .text())
 
-            ScrapeItem(id, scrapeTime, title, price, negotiable, parseDate(created))
+            ScrapeItem(id, scrapeTime, title, price, oldPrice, negotiable, created)
         }
     }
 }

@@ -9,6 +9,7 @@ data class ScrapeItem(
 
     val title: String,
     val price: Double?,
+    val oldPrice: Double?,
     val negotiable: Boolean,
     val created: LocalDate?,
     )

@@ -36,6 +36,14 @@ class ListingRepositoryTest {
         Assertions.assertThat(db.isRunning)
     }
 
+    // db item exists
+    // find by id
+    // scrape count is bigger than it was before
+
+
+    // save items from html file into db
+    // assert that they exist, all non nullable fields are filled )
+
 //    @Test
 //    fun `id is generated when a genre is persisted`() {
 //        val genre = Genre(name = "Poem")

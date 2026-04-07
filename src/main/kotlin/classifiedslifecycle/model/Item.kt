@@ -21,6 +21,10 @@ data class Item(
 
     @Column(columnDefinition = "numeric(10,2)")
     val price: Double?,
+
+    @Column(columnDefinition = "numeric(10,2)")
+    val oldPrice: Double?,
+
     val negotiable: Boolean,
     val created: LocalDate?,
 ) {
@@ -33,6 +37,7 @@ data class Item(
                 1,
                 scrapeItem.title,
                 scrapeItem.price,
+                scrapeItem.oldPrice,
                 scrapeItem.negotiable,
                 scrapeItem.created
             )

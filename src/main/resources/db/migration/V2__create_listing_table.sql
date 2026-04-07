@@ -5,6 +5,7 @@ CREATE TABLE listing (
       scrape_count      INTEGER  NOT NULL,
       title             TEXT     NOT NULL,
       price             NUMERIC(10, 2),
+      old_price         NUMERIC(10, 2),
       negotiable        BOOLEAN  NOT NULL,
       created           DATE,
 

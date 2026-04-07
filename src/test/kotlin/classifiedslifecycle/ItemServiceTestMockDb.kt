@@ -31,6 +31,7 @@ class ItemServiceTestMockDb {
         1,
         "schickes Rennrad",
         2.6,
+        null,
         false,
         LocalDate.of(2026, Month.MARCH, 19),
     )
@@ -42,6 +43,7 @@ class ItemServiceTestMockDb {
         1,
         "schickes Rennrad, fast wie neu",
         2.6,
+        null,
         false,
         LocalDate.of(2026, Month.MARCH, 19),
     )
@@ -52,6 +54,7 @@ class ItemServiceTestMockDb {
         exampleInstant,
         "super schickes Rennrad",
         2.6,
+        null,
         false,
         LocalDate.of(2026, Month.MARCH, 19),
         )// ein neues
@@ -61,6 +64,7 @@ class ItemServiceTestMockDb {
         exampleInstant,
         "schickes Rennrad, fast wie neu",
         2.6,
+        null,
         false,
         LocalDate.of(2026, Month.MARCH, 19),
     )
