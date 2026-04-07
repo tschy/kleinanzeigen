@@ -13,9 +13,10 @@ class ItemService(
     fun process(scrapeItems: Set<ScrapeItem>) {
 
 
+        // sort list so the most recent listing is the first entry
         val sortedItems = scrapeItems
             .sortedByDescending { it.created } // null ends up at the end of the list
-            .distinctBy { it.id } // removes duplicates based on the id property.
+            .distinctBy { it.id } // removes duplicates based on the id property, relevant for TOP ads
 
         sortedItems.forEach { scrapeItem ->
             println(" ------ $scrapeItem")

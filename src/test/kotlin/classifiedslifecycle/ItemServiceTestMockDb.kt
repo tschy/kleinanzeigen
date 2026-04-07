@@ -2,8 +2,10 @@ package classifiedslifecycle
 
 import classifiedslifecycle.model.Item
 import classifiedslifecycle.model.ScrapeItem
+import io.mockk.Runs
 import io.mockk.confirmVerified
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
@@ -15,7 +17,7 @@ import kotlin.time.Instant.Companion.parse
 import kotlin.time.toJavaInstant
 import org.assertj.core.api.Assertions.assertThat
 
-class ItemServiceTest {
+class ItemServiceTestMockDb {
 
     val mockRepository = mockk<ListingRepository>()
 
@@ -45,29 +47,68 @@ class ItemServiceTest {
     )
 
     // ein neues
-    val newItem = ScrapeItem(
+    val newItem1 = ScrapeItem(
         itemId,
         exampleInstant,
         "super schickes Rennrad",
         2.6,
         false,
         LocalDate.of(2026, Month.MARCH, 19),
-    )
+        )// ein neues
 
-    // TODO auch bei neuem Titel neuen Eintrag - erst Test, dann Feature implementieren bis der Test erfolgreich ist
-    // TODO sorted testen, unklar welches Ergebnis zurueckgegeben wird
+    val newItem2 = ScrapeItem(
+        itemId,
+        exampleInstant,
+        "schickes Rennrad, fast wie neu",
+        2.6,
+        false,
+        LocalDate.of(2026, Month.MARCH, 19),
+    )
 
     @Test
     fun updateItem() {
+        every { mockRepository.findByIdId(any()) } returns listOf(oldItemDb1, oldItemDb2)
+//        every { mockRepository.save(any()) } answers { firstArg() }
+        every { mockRepository.updateScrapeCount(any(), any(), any(), any()) } just Runs
+
+        val itemService = ItemService(mockRepository)
+
+        itemService.process(setOf(newItem2))
+
+//        verify(exactly = 1) { mockRepository.save(any()) }
+        verify(exactly = 1) { mockRepository.findByIdId(any()) }
+
+        verify(exactly = 1) { mockRepository.updateScrapeCount(
+            oldItemDb2.scrapeCount + 1,
+            newItem2.scrapeTime,
+            oldItemDb2.id.id,
+            oldItemDb2.id.firstScrape
+        ) }
+        confirmVerified(mockRepository)
+    }
+
+    @Test
+    fun saveNewItem() {
         every { mockRepository.findByIdId(any()) } returns listOf(oldItemDb1, oldItemDb2)
         every { mockRepository.save(any()) } answers { firstArg() }
 
         val itemService = ItemService(mockRepository)
 
-        itemService.process(setOf(newItem))
+        itemService.process(setOf(newItem1))
 
         verify(exactly = 1) { mockRepository.save(any()) }
         verify(exactly = 1) { mockRepository.findByIdId(any()) }
+
+        verify(exactly = 1) {
+            mockRepository.save(match {
+                it.id.id == newItem1.id &&
+                        it.title == newItem1.title &&
+                        it.price == newItem1.price &&
+                        it.negotiable == newItem1.negotiable &&
+                        it.created == newItem1.created &&
+                        it.scrapeCount == 1
+            })
+        }
         confirmVerified(mockRepository)
     }
 
