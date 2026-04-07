@@ -17,7 +17,7 @@ class ItemExtractorTestCssSelection {
     @Test
     fun testSelector() {
 
-        val text = File("src/test/resources/rennraeder20260319.htm")
+        val text = File("src/test/resources/data/rennraeder20260319.htm")
             .readText()
         //   ?: error("File not found!")
         // println(text)

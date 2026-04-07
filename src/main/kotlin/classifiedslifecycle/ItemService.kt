@@ -15,7 +15,7 @@ class ItemService(
 
         val sortedItems = scrapeItems
             .sortedByDescending { it.created } // null ends up at the end of the list
-            .distinctBy { it.id }
+            .distinctBy { it.id } // removes duplicates based on the id property.
 
         sortedItems.forEach { scrapeItem ->
             println(" ------ $scrapeItem")

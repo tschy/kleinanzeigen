@@ -1,6 +1,7 @@
 package classifiedslifecycle.model
 
 import classifiedslifecycle.ListingId
+import jakarta.persistence.Column
 import jakarta.persistence.EmbeddedId
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
@@ -17,6 +18,8 @@ data class Item(
     val scrapeCount: Int,
 
     val title: String,
+
+    @Column(columnDefinition = "numeric(10,2)")
     val price: Double?,
     val negotiable: Boolean,
     val created: LocalDate?,

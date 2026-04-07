@@ -26,7 +26,7 @@ class Paginator(val fetcherService: FetcherService,
             val body = fetcherService.fetch(url)
             val soup = Jsoup.parse(body)
 
-            File("src/test/resources/${url.replace("/","_")}_${Instant.now()}.htm").writeText(body)
+            File("src/test/resources/data/${url.replace("/","_")}_${Instant.now()}.htm").writeText(body)
 
             // test if pagination-next marker is present
             if (soup.select(".pagination-next").isNotEmpty()) {

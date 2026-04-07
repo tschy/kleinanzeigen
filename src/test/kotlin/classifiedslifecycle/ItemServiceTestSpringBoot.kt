@@ -10,22 +10,28 @@ import org.junit.jupiter.api.BeforeEach
 import org.springframework.test.context.ActiveProfiles
 import java.io.File
 
+// Integration test (@SpringBootTest) using a separate test database specified in application-test.properties.
+// Each test method runs in a transaction that is rolled back after the test,
+// ensuring a clean database state between tests.
 @SpringBootTest
 @ActiveProfiles("test")
-@Transactional
+//@Transactional
 class ItemServiceTestSpringBoot {
 
     @Autowired
     lateinit var listingRepository: ListingRepository
 
+    @Autowired
+    lateinit var itemService: ItemService
+
     val results = mutableSetOf<ScrapeItem>()
 
 
-    // delete stale entries in the db from previous test runs
-    @BeforeEach
-    fun setup() {
-        listingRepository.deleteAll()
-    }
+//    // delete stale entries in the db from previous test runs
+//    @BeforeEach
+//    fun setup() {
+//        listingRepository.deleteAll()
+//    }
 
 
     @Test
@@ -33,14 +39,13 @@ class ItemServiceTestSpringBoot {
 
         // arrange
         for (i in 0..27) {
-            val text = File("src/test/resources/db_test_$i.htm")
+            val text = File("src/test/resources/data/db_test_$i.htm")
                 .readText()
 
             results.addAll(ItemExtractor().extract(text))
         }
 
         // act
-        val itemService = ItemService(listingRepository)
         itemService.process(results)
 
         // assert

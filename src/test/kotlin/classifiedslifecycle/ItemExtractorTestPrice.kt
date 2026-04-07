@@ -16,7 +16,7 @@ class ItemExtractorTestPrice {
     @Test
     fun testSelector() {
 
-        val text = File("src/test/resources/rennraeder20260319_parse_price.htm")
+        val text = File("src/test/resources/data/rennraeder20260319_parse_price.htm")
             .readText()
         //   ?: error("File not found!")
         // println(text)

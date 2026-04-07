@@ -53,8 +53,8 @@ $$;
 -- =============================================================
 
 -- Allow both users to connect to this database
-GRANT CONNECT ON DATABASE kleinanzeigen TO crawler;
-GRANT CONNECT ON DATABASE kleinanzeigen TO analyst;
+GRANT CONNECT ON DATABASE ${flyway:database} TO crawler;
+GRANT CONNECT ON DATABASE ${flyway:database} TO analyst;
 
 -- Allow usage of the public schema (replace 'public' as needed)
 GRANT USAGE ON SCHEMA public TO crawler;
