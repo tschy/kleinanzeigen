@@ -11,7 +11,6 @@ class FetcherService(
     fun fetch(url: String): String {
         val request = Request.Builder().url(url).build();
 
-
         val body = client.newCall(request).execute().use { response ->
             response.body.string()
         }

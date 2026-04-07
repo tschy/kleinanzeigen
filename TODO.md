@@ -17,6 +17,7 @@ TODO:
     - [x] investigate why the test with static htm files generates variable scrape counts > 1 / > other entries
     - [x] why do the test results in 3/1 scrape counts? aren't the database changes ephemeral? -> stale items that don't get cleaned up between different test runs
 - [x] zweites datenbankschema, fuer echte und fuers Testen: public und test (recherchieren - wie man das macht, flyway konfigurieren fuer zweite db, oder zweiten Docker container)
+- [x] ItemExtractor test, test for number of scraped items and scrape count == 1~~~~
 
 - [ ] Testen echten scrape mit db write, 
 - [ ] add scraping of original price for items that have been reduced

@@ -68,14 +68,12 @@ class ItemServiceTestMockDb {
     @Test
     fun updateItem() {
         every { mockRepository.findByIdId(any()) } returns listOf(oldItemDb1, oldItemDb2)
-//        every { mockRepository.save(any()) } answers { firstArg() }
         every { mockRepository.updateScrapeCount(any(), any(), any(), any()) } just Runs
 
         val itemService = ItemService(mockRepository)
 
         itemService.process(setOf(newItem2))
 
-//        verify(exactly = 1) { mockRepository.save(any()) }
         verify(exactly = 1) { mockRepository.findByIdId(any()) }
 
         verify(exactly = 1) { mockRepository.updateScrapeCount(
