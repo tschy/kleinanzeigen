@@ -3,13 +3,15 @@ package classifiedslifecycle
 import classifiedslifecycle.model.ScrapeItem
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
+import org.springframework.stereotype.Component
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import kotlin.io.println
 import kotlin.text.contains
 import java.time.Instant
 
-// change: today was passed into the ItemExtractor but not used
+
+@Component
 class ItemExtractor(
     val today: LocalDate = LocalDate.now(), // change from  val today: LocalDate,
     // default value is actual today, under test conditions test date is being passed into the function

@@ -3,10 +3,11 @@ package classifiedslifecycle
 import classifiedslifecycle.model.ScrapeItem
 import classifiedslifecycle.model.SearchConfig
 import org.jsoup.Jsoup
+import org.springframework.stereotype.Component
 import java.io.File
 import java.time.Instant
 
-
+@Component
 class Paginator(val fetcherService: FetcherService,
                     val itemExtractor: ItemExtractor) {
 

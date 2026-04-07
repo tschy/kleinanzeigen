@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component
 @Component
 @Profile("!test")
 class AppStartupRunner(
-    private val itemService: ItemService
+    private val itemService: ItemService,
+    private val paginator: Paginator
 ) : ApplicationRunner {
 
     @Override
@@ -24,7 +25,7 @@ class AppStartupRunner(
             radius = 10
         )
 
-        val scrapeItems = Paginator(FetcherService(), ItemExtractor()).run(config)
+        val scrapeItems = paginator.run(config)
         itemService.process(scrapeItems)
 
     }

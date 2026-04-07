@@ -18,10 +18,10 @@ TODO:
     - [x] why do the test results in 3/1 scrape counts? aren't the database changes ephemeral? -> stale items that don't get cleaned up between different test runs
 - [x] zweites datenbankschema, fuer echte und fuers Testen: public und test (recherchieren - wie man das macht, flyway konfigurieren fuer zweite db, oder zweiten Docker container)
 - [x] ItemExtractor test, test for number of scraped items and scrape count == 1~~~~
+- [x] add scraping of original price for items that have been reduced
 
 - [ ] FetcherService, Paginator, integrate into Spring Boot Framework as beans
 - [ ] Testen echten scrape mit db write, 
-- [ ] add scraping of original price for items that have been reduced
 - [ ] echter Test: mit verschwindenen Items/ ausfuehren, bis was verschwunden ist - oefter scrapen
 - [ ] funktion die alle anzeigt, die verschwunden sind (als zweites main programm) - (laesst Spring Boot das zu? - ausrobieren, herausfinden)
 
