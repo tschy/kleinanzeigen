@@ -19,24 +19,32 @@ class ItemService(
             .distinctBy { it.id } // removes duplicates based on the id property, relevant for TOP ads
 
         sortedItems.forEach { scrapeItem ->
-            println(" ------ $scrapeItem")
+//            println(" ------ $scrapeItem")
 
             // get the most recent listing of the ad
             val itemSaved = listingRepository
                 .findByIdId(scrapeItem.id).maxByOrNull { it.id.firstScrape }
 
-            if (itemSaved != null && itemSaved.matches(scrapeItem)) {
+            val newItem = Item.fromScrapeItem(scrapeItem)
+            if (itemSaved != null) {
 
-                listingRepository
-                    .updateScrapeCount(
-                        (itemSaved.scrapeCount + 1),
-                        lastScrape = scrapeItem.scrapeTime,
-                        itemSaved.id.id,
-                        itemSaved.id.firstScrape
-                    )
-            } else {
-                listingRepository.save(Item.fromScrapeItem(scrapeItem))
+                if (itemSaved.matches(scrapeItem)) {
+
+                    listingRepository
+                        .updateScrapeCount(
+                            (itemSaved.scrapeCount + 1),
+                            lastScrape = scrapeItem.scrapeTime,
+                            itemSaved.id.id,
+                            itemSaved.id.firstScrape
+                        )
+                    return@forEach
+                } else {
+                    println("db item: " + itemSaved.toDebugString())
+                    println("scraped item: " + newItem.toDebugString())
+                    println("---")
+                }
             }
+            listingRepository.save(newItem)
         }
     }
 }

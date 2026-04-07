@@ -14,7 +14,7 @@ data class Item(
 
     @EmbeddedId
     val id: ListingId,
-    val lastScrape: Instant, // make sure they are always UTC? still relevant?
+    val lastScrape: Instant,
     val scrapeCount: Int,
 
     val title: String,
@@ -43,11 +43,15 @@ data class Item(
             )
         }
     }
+
     fun matches(scrapeItem: ScrapeItem): Boolean =
-        title == scrapeItem.title &&
+        id.id == scrapeItem.id &&
+                title == scrapeItem.title &&
                 price == scrapeItem.price &&
                 negotiable == scrapeItem.negotiable &&
                 created == scrapeItem.created
+
+    fun toDebugString() =
+        "'${id.id}' : '${id.firstScrape}' : '${title}' : '${price}' : '${oldPrice}' : '${negotiable}' : '${created}' "
+
 }
-
-

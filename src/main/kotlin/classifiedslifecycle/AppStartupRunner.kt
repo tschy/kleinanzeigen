@@ -26,6 +26,7 @@ class AppStartupRunner(
         )
 
         val scrapeItems = paginator.run(config)
+        println("found ${scrapeItems.size} items")
         itemService.process(scrapeItems)
 
     }
