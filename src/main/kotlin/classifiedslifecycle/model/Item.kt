@@ -52,6 +52,6 @@ data class Item(
                 created == scrapeItem.created
 
     fun toDebugString() =
-        "'${id.id}' : '${id.firstScrape}' : '${title}' : '${price}' : '${oldPrice}' : '${negotiable}' : '${created}' "
+        "'${id.id}' : '${id.firstScrape}' : '${lastScrape}' : '${scrapeCount}': '${title}' : '${price}' : '${oldPrice}' : '${negotiable}' : '${created}' "
 
 }

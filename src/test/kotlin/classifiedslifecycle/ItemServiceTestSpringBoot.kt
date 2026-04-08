@@ -51,22 +51,25 @@ class ItemServiceTestSpringBoot {
 
         for (savedItemBeforeScrape in savedItemListBeforeScrape) {
             map[savedItemBeforeScrape.id.id] = savedItemBeforeScrape.scrapeCount
+            println("db item: " + savedItemBeforeScrape.toDebugString())
         }
 
 
         // act
         itemService.process(results)
 
+
         // assert
         for (scrapeItem in results) {
             assertThat(listingRepository.findByIdId(scrapeItem.id)).isNotEmpty
 
-            //println("Processing id: ${scrapeItem.id}")
+            println("Processing id: ${scrapeItem.id}")
 
             val savedItemList = listingRepository.findByIdId(scrapeItem.id)
             for (savedItem in savedItemList) {
                 val scrapeCount = savedItem.scrapeCount
                 println("${scrapeItem.id} -- ${savedItem.id} -- ${savedItem.scrapeCount}  -- ${savedItem.title}")
+                println(map.getOrDefault(scrapeItem.id, 0))
                 assertThat(scrapeItem.id).isEqualTo(savedItem.id.id)
                 assertThat(savedItem.scrapeCount).isEqualTo(map.getOrDefault(scrapeItem.id, 0)+1)
             }

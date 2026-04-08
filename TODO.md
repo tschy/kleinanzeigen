@@ -20,35 +20,29 @@ TODO:
 - [x] ItemExtractor test, test for number of scraped items and scrape count == 1
 - [x] add scraping of original price for items that have been reduced
 - [x] FetcherService, Paginator, integrate into Spring Boot Framework as beans
+- [x] docker volume backup, produktionsdatenbank daten schuetzen
+- [x] dritte db fuer manuelle tests - manuelle tests nicht auf prod db -> test datenbank
+-[x] sicherstellen: main methode aufrufen - default test datenbank aufrufen, tests: testdatenbank (main mit spez paramter) produ db manuelle daten/tests dritte db
+  - [x] test code in src main - neue mainmethode in anderer datei als classifeslifecycleapplication
+  - [x] gradle: prod ausrufen
+  - [x] aus intellij immer testdatenbank
 
 
-- [ ] Testen echten scrape mit db write, 
+- [ ] Testen echten scrape mit db write,
 - [ ] echter Test: mit verschwindenen Items/ ausfuehren, bis was verschwunden ist - oefter scrapen
 - [ ] funktion die alle anzeigt, die verschwunden sind (als zweites main programm) - (laesst Spring Boot das zu? - ausrobieren, herausfinden)
 
-FREITAG 10.4.26:
-test code in src main - neue mainmethode in anderer datei als classifeslifecycleapplication
-gradle: prod ausrufen
-aus intellij immer testdatenbank
 
-- [ ] // alle, deren last scrape aelter als 24h und juenger als 48 std ist - 4 und 8 std. am 8.4. 
-
-- [ ] docker volume backup, produktionsdatenbank daten schuetzen
-- [ ] manuelle tests nicht auf prod db -> test datenbank
-- [ ] dritte db fuer manuelle tests
+- [ ] // alle, deren last scrape aelter als 24h und juenger als 48 std ist - 4 und 8 std. am 8.4.
 - [ ] Logging into files -> k logging oder anderes modernes framework verwenden (kotlin logging? -> roberts projekte nachschauen)
 
-8.4./9.4.
+ 8.4./9.4.
 - [ ] 7.4. abends einen scrape machen, mehrmals pro tag, 2 bis 3 mal
 - [ ] logging
-- [ ] dritte db aufsetzen
+- [x] dritte db aufsetzen
 - [ ] sql queries aus analyser ausfuehren durch spring boot jpa, nach jedem scrape ausfuehren und gucken ob alles passt
+- [ ] Beispieltest fuer die dritte DB
 
-
-sicherstellen: main methode aufrufen - default test datenbank aufrufen
-tests: testdatenbank
- (main mit spez paramter) produ db
-manuelle daten/tests dritte db
 
 - [ ] konfiguration als yaml datei, und so, dass man mehrere Auftraege aufeinmal eintragen kann.
 

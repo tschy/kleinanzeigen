@@ -8,8 +8,6 @@ import java.io.File
 class ItemExtractorTest {
 
     val itemExtractor = ItemExtractor()
-    // zaehlen
-    // wenn alles gelesen wurde sollte der ScrapeCount 1 sein
 
     @Test
     fun `extracts items from htm and creates item objects`() {

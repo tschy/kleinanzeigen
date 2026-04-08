@@ -28,23 +28,6 @@ class ItemService(
             val newItem = Item.fromScrapeItem(scrapeItem)
 
 
-////////////////////////////////////
-//            if (itemSaved != null && itemSaved.matches(scrapeItem)) {
-//
-//                listingRepository
-//                    .updateScrapeCount(
-//                        itemSaved.scrapeCount + 1,
-//                        lastScrape = scrapeItem.scrapeTime,
-//                        itemSaved.id.id,
-//                        itemSaved.id.firstScrape,
-//
-//                    )
-//
-//            } else {
-//                listingRepository.save(Item.fromScrapeItem(scrapeItem))
-//            }
-////////////////////////////////////
-
             if (itemSaved != null) {
 
                 if (itemSaved.matches(scrapeItem)) {
