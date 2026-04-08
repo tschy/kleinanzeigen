@@ -26,16 +26,36 @@ class ItemService(
                 .findByIdId(scrapeItem.id).maxByOrNull { it.id.firstScrape }
 
             val newItem = Item.fromScrapeItem(scrapeItem)
+
+
+////////////////////////////////////
+//            if (itemSaved != null && itemSaved.matches(scrapeItem)) {
+//
+//                listingRepository
+//                    .updateScrapeCount(
+//                        itemSaved.scrapeCount + 1,
+//                        lastScrape = scrapeItem.scrapeTime,
+//                        itemSaved.id.id,
+//                        itemSaved.id.firstScrape,
+//
+//                    )
+//
+//            } else {
+//                listingRepository.save(Item.fromScrapeItem(scrapeItem))
+//            }
+////////////////////////////////////
+
             if (itemSaved != null) {
 
                 if (itemSaved.matches(scrapeItem)) {
 
                     listingRepository
                         .updateScrapeCount(
-                            (itemSaved.scrapeCount + 1),
+                            itemSaved.scrapeCount + 1,
                             lastScrape = scrapeItem.scrapeTime,
                             itemSaved.id.id,
-                            itemSaved.id.firstScrape
+                            itemSaved.id.firstScrape,
+
                         )
                     return@forEach
                 } else {
@@ -47,6 +67,8 @@ class ItemService(
             listingRepository.save(newItem)
         }
     }
+
+
 }
 
 

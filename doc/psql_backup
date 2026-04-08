@@ -1,0 +1,3 @@
+
+docker exec -it kleinanzeigen-db-1 pg_dump -U postgres kleinanzeigen > backup.sql
+docker exec -i kleinanzeigen-db-1 psql -U postgres -d kleinanzeigen < backup.sql

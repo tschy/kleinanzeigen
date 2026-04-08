@@ -19,6 +19,17 @@ services:
     volumes:
       - db-test-data:/var/lib/postgresql
 
+  db-test-m:
+    image: postgres:alpine
+    environment:
+      POSTGRES_PASSWORD: fennpfuhl
+      POSTGRES_DB: kleinanzeigen_test_m
+    ports:
+      - "5434:5432"
+    volumes:
+      - db-test-data:/var/lib/postgresql
+
 volumes:
   db-data:
   db-test-data:
+  db-test-m-data:
