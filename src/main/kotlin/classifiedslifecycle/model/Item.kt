@@ -10,7 +10,7 @@ import java.time.Instant
 
 @Entity
 @Table(name = "listing")
-data class Item(
+open class Item(
 
     @EmbeddedId
     val id: ListingId,

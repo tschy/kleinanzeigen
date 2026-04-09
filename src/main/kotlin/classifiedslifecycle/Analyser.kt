@@ -1,17 +1,41 @@
 package classifiedslifecycle
 
-class Analyser {
-// alle suchen, die sich in den letzten 24 std geandert haben
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 
+@Service
+class Analyser(
+    val listingRepository: ListingRepository
+) {
 
+    @Transactional
+    fun analyse() {
 
-//    fix
-//select id from listing group by id having count(id) > 1 AND MAX(firstScrape) > today - 24h;
+        println("Analysing $listingRepository")
+        println("---Listing changed items:")
+        listingRepository.queryChangedItems()
+            .forEach { listing ->  println(listing.toDebugString()) }
 
-    // alle, deren last scrape aelter als 24h und juenger als 48 std ist
+        println("---Listing items that changed in the last 24 hours:")
+        listingRepository.queryChangedItemsLast24hrs(
+            Instant.now().minus(
+                24, ChronoUnit.HOURS
+            )
+        ).forEach { listing -> println(listing.toDebugString())}
 
-    // verschwundene und geanderte anzeigen:
-    // Select * from listing where last_scrape < '2026-04-07 14:20';q
+        println("---Listing items that changed and whose latest known version\n" +
+                "    was last scraped between 24h and 48h ago\n" +
+                "    (i.e., potentially disappeared listings):")
+        listingRepository.queryItemsDisappearedBetween24And48Hours(
+            Instant.now().minus(
+                24, ChronoUnit.HOURS
+            ),
+            Instant.now().minus(
+                48, ChronoUnit.HOURS
+            )
+        ).forEach { listing -> println(listing.toDebugString()) }
 
-// group by: gucken, ob es keine andere row gibt
+    }
 }

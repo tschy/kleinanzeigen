@@ -7,10 +7,11 @@ import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
 
 @Component
-//@Profile("!test") // anschalten um nur Testklassen laufen zu lassen
+//@Profile("!test") // anschalten, um nur Testklassen laufen zu lassen
 class AppStartupRunner(
     private val itemService: ItemService,
-    private val paginator: Paginator
+    private val paginator: Paginator,
+    private val analyser: Analyser
 ) : ApplicationRunner {
 
     @Override
@@ -28,6 +29,7 @@ class AppStartupRunner(
         val scrapeItems = paginator.run(config)
         println("found ${scrapeItems.size} items")
         itemService.process(scrapeItems)
+        analyser.analyse()
 
     }
 
