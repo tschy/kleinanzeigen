@@ -4,14 +4,18 @@ import classifiedslifecycle.model.Item
 import classifiedslifecycle.model.ScrapeItem
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import io.github.oshai.kotlinlogging.KotlinLogging
+
+private val logger = KotlinLogging.logger {}
 
 @Service
 class ItemService(
+
+
     val listingRepository: ListingRepository
 ) {
     @Transactional
     fun process(scrapeItems: Set<ScrapeItem>) {
-
 
         // sort list so the most recent listing is the first entry
         val sortedItems = scrapeItems
@@ -19,7 +23,7 @@ class ItemService(
             .distinctBy { it.id } // removes duplicates based on the id property, relevant for TOP ads
 
         sortedItems.forEach { scrapeItem ->
-//            println(" ------ $scrapeItem")
+
 
             // get the most recent listing of the ad
             val itemSaved = listingRepository
@@ -32,6 +36,9 @@ class ItemService(
 
                 if (itemSaved.matches(scrapeItem)) {
 
+//                    logger.info { "updateScrapeCount: "  }
+                    logger.debug { "Item already exists" + itemSaved.toDebugString()}
+
                     listingRepository
                         .updateScrapeCount(
                             itemSaved.scrapeCount + 1,
@@ -39,12 +46,13 @@ class ItemService(
                             itemSaved.id.id,
                             itemSaved.id.firstScrape,
 
-                        )
+                            )
                     return@forEach
                 } else {
-                    println("db item: " + itemSaved.toDebugString())
-                    println("scraped item: " + newItem.toDebugString())
-                    println("---")
+
+                    logger.info { "db item: " + itemSaved.toDebugString() }
+                    logger.info { "scraped item: " + newItem.toDebugString() }
+                    logger.info { "---" }
                 }
             }
             listingRepository.save(newItem)

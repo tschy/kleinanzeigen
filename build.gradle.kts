@@ -41,6 +41,8 @@ dependencies {
     implementation("org.flywaydb:flyway-database-postgresql:11.8.2")
     implementation("org.jsoup:jsoup:1.22.1")
     implementation("com.squareup.okhttp3:okhttp:5.3.2")
+    implementation("io.github.oshai:kotlin-logging-jvm:5.1.0")
+    implementation("ch.qos.logback:logback-classic:1.5.18")
 
     testImplementation(platform("org.testcontainers:testcontainers-bom:1.20.4"))
     testImplementation("org.springframework.boot:spring-boot-starter-test")

@@ -27,7 +27,7 @@ services:
     ports:
       - "5434:5432"
     volumes:
-      - db-test-data:/var/lib/postgresql
+      - db-test-m-data:/var/lib/postgresql
 
 volumes:
   db-data:

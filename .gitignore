@@ -8,6 +8,8 @@ backups/
 *.class
 .idea/
 src/test/resources/data
+doc_t
+logs
 
 
 secrets.txt
