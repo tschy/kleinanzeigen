@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import io.github.oshai.kotlinlogging.KotlinLogging
 
-private val logger = KotlinLogging.logger {}
+
 
 @Service
 class ItemService(
@@ -14,6 +14,9 @@ class ItemService(
 
     val listingRepository: ListingRepository
 ) {
+    private val logger = KotlinLogging.logger {}
+
+    // TODO is that a good place for Transactional, we don't want to roll back 10000 items
     @Transactional
     fun process(scrapeItems: Set<ScrapeItem>) {
 

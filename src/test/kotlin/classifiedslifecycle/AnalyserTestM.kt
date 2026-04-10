@@ -1,13 +1,10 @@
 package classifiedslifecycle
 
 import classifiedslifecycle.model.Item
-import classifiedslifecycle.model.ScrapeItem
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.assertj.core.api.Assertions.assertThat
 import org.springframework.test.context.ActiveProfiles
-import java.io.File
 import java.time.LocalDate
 import java.time.Month
 import java.time.temporal.ChronoUnit
@@ -74,11 +71,11 @@ class AnalyserTestM {
         created = LocalDate.of(2026, Month.MARCH, 19)
     )
     @Test
-    fun analyse() {
+    fun analyseTest() {
 
         listingRepository.saveAll(listOf(item1, item2, item3, item4))
 
         val analyser = Analyser(listingRepository)
-        analyser.analyse()
+        analyser.analyseTest()
     }
 }

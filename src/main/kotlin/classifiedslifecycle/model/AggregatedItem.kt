@@ -5,14 +5,16 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 
-data class AggregatedItem(
+class AggregatedItem(
 
     val id: String,
     val firstScrape: Instant,
     val lastScrape: Instant,
-    val scrapeCount: Int,
+    val scrapeCount: Long,
     val firstCreated: LocalDate?,
+
 ) {
+
     val ageDays = ChronoUnit.DAYS.between(
         firstCreated,
         lastScrape
@@ -22,5 +24,7 @@ data class AggregatedItem(
             .toLocalDate()
     )
 
-    val ageGroup = if (ageDays < 14) "$ageDays days" else "${ageDays/7} weeks"
+    val ageGroup = if (ageDays < 14) "$ageDays days" else "${ageDays / 7} weeks"
+
+    fun isOnline(lastGlobalScrape: Instant) = lastGlobalScrape == lastScrape
 }

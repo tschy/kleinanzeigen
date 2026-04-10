@@ -52,18 +52,17 @@ TODO:
 
 
 
-Analyse: Wie lange waren die Items online 
- Buckets Zeit, 1 Tag, 1 Woche, 7 Wochen, 1 Jahr Anzahl Tage, Anzahl Wochen (besser)
-Definition "Alter" -> group by auf id.id - letztes (juengste) last Scrape datum - aeltestes created
+- [x] Analyse: Wie lange waren die Items online 
+  - Buckets Zeit, 1 Tag, 1 Woche, 7 Wochen, 1 Jahr Anzahl Tage, Anzahl Wochen (besser) 
+  - Definition "Alter" -> group by auf id.id - letztes (juengste) last Scrape datum - aeltestes created
+- [x] integer fuer alter, boolean fuer stillOnline -> nur im Speicher waehrend der Analyse, direkt ausgeben
+- [x] data class, aggregiertes objekt -> Item global, in db in verschd. versionen - nur noch id ohne comp key
 
-Wenn das juengste nicht das letzte ist -> Item ist verschwunden/nicht online
-globales letztes scrape datum festlegen (wenn ein Datensatz da nicht mehr drin ist, ist er online)
+  Wenn das juengste nicht das letzte ist -> Item ist verschwunden/nicht online
+  globales letztes scrape datum festlegen (wenn ein Datensatz da nicht mehr drin ist, ist er nicht mehr online)
 
-integer fuer alter, boolean fuer stillOnline -> nur im Speicher waehrend der Analyse, direkt ausgeben
+  Verteilung des Alters fuer die, die verschwunden sind, und die die nicht verschw sind
+  alle Artikel die noch aktiv sind die Altersverteilung ausgeben (Tabelle)
+  created nicht bis heute, sondern bis last scrape
 
-Verteilung des Alters fuer die, die verschwunden sind, und die die nicht verschw sind
-alle Artikel die noch aktiv sind die Altersverteilung ausgeben (Tabelle)
-created nicht bis heute, sondern bis last scrape
-
-data class, aggregiertes objekt -> Item global, in db in verschd. versionen - nur noch id ohne comp key
 

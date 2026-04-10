@@ -17,7 +17,7 @@ class AnalyserTest {
 
 
     @Test
-    fun analyse() {
+    fun analyseTest() {
         val analyser = Analyser(listingRepository)
         analyser.analyse()
     }

@@ -1,6 +1,7 @@
 package classifiedslifecycle
 
 import classifiedslifecycle.model.SearchConfig
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.context.annotation.Profile
@@ -8,16 +9,19 @@ import org.springframework.stereotype.Component
 
 @Component
 //@Profile("!test") // anschalten, um nur Testklassen laufen zu lassen
-@Profile("!test-m") // anschalten, um nur Testklassen laufen zu lassen
+//@Profile("!test-m") // anschalten, um nur Testklassen laufen zu lassen
 class AppStartupRunner(
     private val itemService: ItemService,
     private val paginator: Paginator,
     private val analyser: Analyser
 ) : ApplicationRunner {
 
+    private val logger = KotlinLogging.logger {}
+
     @Override
     override fun run(args: ApplicationArguments) {
 
+        logger.info {"---running the scraper"}
         // set search parameters
         val config = SearchConfig(
             category = "fahrraeder",
@@ -27,9 +31,11 @@ class AppStartupRunner(
             radius = 10
         )
 
-        val scrapeItems = paginator.run(config)
-        println("found ${scrapeItems.size} items")
-        itemService.process(scrapeItems)
+//
+//        val scrapeItems = paginator.run(config)
+//        println("found ${scrapeItems.size} items")
+//        itemService.process(scrapeItems)
+
         analyser.analyse()
 
     }

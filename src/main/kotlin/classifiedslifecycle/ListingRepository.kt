@@ -1,5 +1,6 @@
 package classifiedslifecycle
 
+import classifiedslifecycle.model.AggregatedItem
 import classifiedslifecycle.model.Item
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
@@ -40,7 +41,8 @@ interface ListingRepository : JpaRepository<Item, ListingId> {
 
     // changed listings with a new version in the last 24h
     // SELECT *  FROM listing GROUP BY id HAVING COUNT(id) > 1 AND MAX(first_scrape) > NOW() - INTERVAL '24 hours';
-    @Query("""
+    @Query(
+        """
     SELECT i FROM Item i
     WHERE i.id.id IN (
         SELECT i2.id.id FROM Item i2
@@ -48,7 +50,8 @@ interface ListingRepository : JpaRepository<Item, ListingId> {
         HAVING COUNT(i2.id.id) > 1 
            AND MAX(i2.id.firstScrape) > :cutoff
     )
-""")
+"""
+    )
     fun queryChangedItemsLast24hrs(cutoff: Instant): List<Item>
 
     // Listings whose **latest known version** was last scraped between 24h and 48h ago (i.e., potentially disappeared listings)
@@ -69,4 +72,27 @@ interface ListingRepository : JpaRepository<Item, ListingId> {
         twentyFourHoursAgo: Instant,
         fortyEightHoursAgo: Instant
     ): List<Item>
+
+
+    // get lastGlobalScrape
+    @Query("SELECT MAX(i.lastScrape) FROM Item i")
+    fun queryGlobalLastScrape(): Instant?
+
+
+    // changed listings with a new version in the last 24h
+    // SELECT *  FROM listing GROUP BY id HAVING COUNT(id) > 1 AND MAX(first_scrape) > NOW() - INTERVAL '24 hours';
+    @Query(
+        """
+    SELECT NEW classifiedslifecycle.model.AggregatedItem(
+        i.id.id,
+        MIN(i.id.firstScrape), 
+        MAX(i.lastScrape), 
+        SUM(i.scrapeCount), 
+        MIN(i.created))
+    FROM Item i
+    GROUP BY i.id.id
+"""
+    )
+    fun queryAggregateItems(): List<AggregatedItem>
+
 }

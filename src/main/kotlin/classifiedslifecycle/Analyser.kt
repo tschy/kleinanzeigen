@@ -1,33 +1,40 @@
 package classifiedslifecycle
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
+
+
 @Service
 class Analyser(
     val listingRepository: ListingRepository
-) {
 
-    @Transactional
-    fun analyse() {
+
+) {
+    private val logger = KotlinLogging.logger {}
+
+    fun showChangedItems() {
 
         println("Analysing $listingRepository")
         println("---Listing changed items:")
         listingRepository.queryChangedItems()
-            .forEach { listing ->  println(listing.toDebugString()) }
+            .forEach { listing -> println(listing.toDebugString()) }
 
         println("---Listing items that changed in the last 24 hours:")
         listingRepository.queryChangedItemsLast24hrs(
             Instant.now().minus(
                 24, ChronoUnit.HOURS
             )
-        ).forEach { listing -> println(listing.toDebugString())}
+        ).forEach { listing -> println(listing.toDebugString()) }
 
-        println("---Listing items that changed and whose latest known version\n" +
-                "    was last scraped between 24h and 48h ago\n" +
-                "    (i.e., potentially disappeared listings):")
+        println(
+            "---Listing items that changed and whose latest known version\n" +
+                    "    was last scraped between 24h and 48h ago\n" +
+                    "    (i.e., potentially disappeared listings):"
+        )
         listingRepository.queryItemsDisappearedBetween24And48Hours(
             Instant.now().minus(
                 24, ChronoUnit.HOURS
@@ -37,6 +44,14 @@ class Analyser(
             )
         ).forEach { listing -> println(listing.toDebugString()) }
 
+    }
+
+    fun analyse() {
+        val lastGlobalScrape: Instant? = listingRepository.queryGlobalLastScrape()
+
+        val aggregatedItems = listingRepository.queryAggregateItems()
+
+        logger.info("Analysing ${aggregatedItems.size} items")
     }
 }
 
