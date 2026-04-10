@@ -29,21 +29,19 @@ TODO:
   - [x] aus intellij immer testdatenbank
 - [x] Logging into files -> k logging oder anderes modernes framework verwenden (kotlin logging? -> roberts projekte nachschauen) https://www.baeldung.com/kotlin/kotlin-logging-library
 
+- [x] alle, deren last scrape aelter als 24h und juenger als 48 std ist - 4 und 8 std. am 8.4.
+
+8.4./9.4.
+- [-] 7.4. abends einen scrape machen, mehrmals pro tag, 2 bis 3 mal
+- [x] logging
+- [x] dritte db aufsetzen
+- [x] sql queries aus analyser ausfuehren durch spring boot jpa, nach jedem scrape ausfuehren
+  - [ ]und gucken ob alles passt
+- [x] Beispieltest fuer die dritte DB
 
 - [ ] Testen echten scrape mit db write,
 - [ ] echter Test: mit verschwindenen Items/ ausfuehren, bis was verschwunden ist - oefter scrapen
 - [ ] funktion die alle anzeigt, die verschwunden sind (als zweites main programm) - (laesst Spring Boot das zu? - ausrobieren, herausfinden)
-
-
-- [x] alle, deren last scrape aelter als 24h und juenger als 48 std ist - 4 und 8 std. am 8.4.
-
- 8.4./9.4.
-- [-] 7.4. abends einen scrape machen, mehrmals pro tag, 2 bis 3 mal
-- [x] logging
-- [x] dritte db aufsetzen
-- [x] sql queries aus analyser ausfuehren durch spring boot jpa, nach jedem scrape ausfuehren 
-  - [ ]und gucken ob alles passt
-- [ ] Beispieltest fuer die dritte DB
 
 
 - [ ] konfiguration als yaml datei, und so, dass man mehrere Auftraege aufeinmal eintragen kann.
@@ -51,3 +49,21 @@ TODO:
 
 1. aus den Daten, die wir scrapen können, soviel Weisheit wie möglich zu extrahieren 
 2. dabei links und rechts Beispiele anschauen, um ein intuitives Bild dafür zu bekommen, wie zuverlässig unsere Datenweisheit die echte Welt abbildet.
+
+
+
+Analyse: Wie lange waren die Items online 
+ Buckets Zeit, 1 Tag, 1 Woche, 7 Wochen, 1 Jahr Anzahl Tage, Anzahl Wochen (besser)
+Definition "Alter" -> group by auf id.id - letztes (juengste) last Scrape datum - aeltestes created
+
+Wenn das juengste nicht das letzte ist -> Item ist verschwunden/nicht online
+globales letztes scrape datum festlegen (wenn ein Datensatz da nicht mehr drin ist, ist er online)
+
+integer fuer alter, boolean fuer stillOnline -> nur im Speicher waehrend der Analyse, direkt ausgeben
+
+Verteilung des Alters fuer die, die verschwunden sind, und die die nicht verschw sind
+alle Artikel die noch aktiv sind die Altersverteilung ausgeben (Tabelle)
+created nicht bis heute, sondern bis last scrape
+
+data class, aggregiertes objekt -> Item global, in db in verschd. versionen - nur noch id ohne comp key
+
