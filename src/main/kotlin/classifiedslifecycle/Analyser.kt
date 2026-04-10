@@ -39,3 +39,5 @@ class Analyser(
 
     }
 }
+
+// Select * from listing where last_scrape < '2026-04-07 14:20';

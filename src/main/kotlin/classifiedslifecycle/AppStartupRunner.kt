@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component
 
 @Component
 //@Profile("!test") // anschalten, um nur Testklassen laufen zu lassen
+@Profile("!test-m") // anschalten, um nur Testklassen laufen zu lassen
 class AppStartupRunner(
     private val itemService: ItemService,
     private val paginator: Paginator,

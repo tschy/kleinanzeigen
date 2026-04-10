@@ -1,7 +1,7 @@
 three different scenarios:
 
 ./gradlew bootRun
-runs the application and writes data into the db
+runs the application and writes data into the db -> use sh run.sh from the terminal to also create a backup of the data before the new scrape
 
 ./gradlew bootRun --args='--spring.profiles.active=test'
 runs the application and writes data into the test db only if AppStartupRunner has the annotation when @Profile("!test") commented out
