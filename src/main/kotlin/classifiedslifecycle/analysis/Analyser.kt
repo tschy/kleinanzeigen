@@ -1,12 +1,10 @@
-package classifiedslifecycle
+package classifiedslifecycle.analysis
 
+import classifiedslifecycle.shared.ListingRepository
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.time.temporal.ChronoUnit
-
-
 
 @Service
 class Analyser(
@@ -54,5 +52,3 @@ class Analyser(
         logger.info("Analysing ${aggregatedItems.size} items")
     }
 }
-
-// Select * from listing where last_scrape < '2026-04-07 14:20';

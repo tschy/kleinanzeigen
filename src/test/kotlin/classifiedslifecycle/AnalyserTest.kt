@@ -1,5 +1,7 @@
 package classifiedslifecycle
 
+import classifiedslifecycle.analysis.Analyser
+import classifiedslifecycle.shared.ListingRepository
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest

@@ -1,6 +1,9 @@
 package classifiedslifecycle
 
-import classifiedslifecycle.model.ScrapeItem
+import classifiedslifecycle.scraper.ItemExtractor
+import classifiedslifecycle.scraper.ItemService
+import classifiedslifecycle.scraper.ScrapeItem
+import classifiedslifecycle.shared.ListingRepository
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest

@@ -1,7 +1,7 @@
-package classifiedslifecycle
+package classifiedslifecycle.scraper
 
-import classifiedslifecycle.model.ScrapeItem
-import classifiedslifecycle.model.SearchConfig
+import classifiedslifecycle.scraper.FetcherService
+import classifiedslifecycle.scraper.SearchConfig
 import org.jsoup.Jsoup
 import org.springframework.stereotype.Component
 import java.io.File
@@ -9,7 +9,8 @@ import java.time.Instant
 
 @Component
 class Paginator(val fetcherService: FetcherService,
-                    val itemExtractor: ItemExtractor) {
+                val itemExtractor: ItemExtractor
+) {
 
         fun run(config: SearchConfig): Set<ScrapeItem> {
 
@@ -35,9 +36,11 @@ class Paginator(val fetcherService: FetcherService,
             val body = fetcherService.fetch(url)
             val soup = Jsoup.parse(body)
 
-            File("src/test/resources/data/" +
-                    "${url.replace("/","_")}_" +
-                    "${Instant.now()}.htm")
+            File(
+                "src/test/resources/data/" +
+                        "${url.replace("/", "_")}_" +
+                        "${Instant.now()}.htm"
+            )
                 .writeText(body)
 
             // test if pagination-next marker is present
@@ -48,8 +51,8 @@ class Paginator(val fetcherService: FetcherService,
                 Thread.sleep(1000)
             }
 
-//        } while (soup.select(".pagination-next").isNotEmpty())
-        } while (n < 2)
+        } while (soup.select(".pagination-next").isNotEmpty())
+//        } while (n < 2)
         return allItems
     }
 }

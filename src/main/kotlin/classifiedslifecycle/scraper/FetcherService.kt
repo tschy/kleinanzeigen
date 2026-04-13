@@ -1,4 +1,4 @@
-package classifiedslifecycle
+package classifiedslifecycle.scraper
 
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -19,5 +19,3 @@ class FetcherService(
         return body
     }
 }
-
-

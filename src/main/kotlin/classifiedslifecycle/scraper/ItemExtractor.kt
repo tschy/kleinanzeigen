@@ -1,15 +1,11 @@
-package classifiedslifecycle
+package classifiedslifecycle.scraper
 
-import classifiedslifecycle.model.ScrapeItem
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.springframework.stereotype.Component
+import java.time.Instant
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import kotlin.io.println
-import kotlin.text.contains
-import java.time.Instant
-
 
 @Component
 class ItemExtractor(

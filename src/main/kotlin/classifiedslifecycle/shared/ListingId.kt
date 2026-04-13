@@ -1,4 +1,4 @@
-package classifiedslifecycle
+package classifiedslifecycle.shared
 
 import jakarta.persistence.Embeddable
 import java.io.Serializable

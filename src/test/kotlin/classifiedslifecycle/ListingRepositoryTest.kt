@@ -1,19 +1,15 @@
-package classifiedslifecycle.model
+package classifiedslifecycle
 
-import classifiedslifecycle.ListingRepository
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.test.context.DynamicPropertyRegistry
-import org.springframework.test.context.DynamicPropertySource
-import org.testcontainers.containers.PostgreSQLContainer
+import classifiedslifecycle.shared.ListingRepository
 import org.assertj.core.api.Assertions
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
+import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
-
 
 // uses Testcontainers, container is started once per test class and stopped afterwards
 @DataJpaTest

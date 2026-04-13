@@ -1,12 +1,13 @@
-package classifiedslifecycle.model
+package classifiedslifecycle.shared
 
-import classifiedslifecycle.ListingId
+import classifiedslifecycle.shared.ListingId
+import classifiedslifecycle.scraper.ScrapeItem
 import jakarta.persistence.Column
 import jakarta.persistence.EmbeddedId
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
-import java.time.LocalDate
 import java.time.Instant
+import java.time.LocalDate
 
 @Entity
 @Table(name = "listing")

@@ -1,10 +1,12 @@
 package classifiedslifecycle
 
-import classifiedslifecycle.model.SearchConfig
+import classifiedslifecycle.analysis.Analyser
+import classifiedslifecycle.scraper.ItemService
+import classifiedslifecycle.scraper.SearchConfig
+import classifiedslifecycle.scraper.Paginator
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
-import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
 
 @Component
@@ -31,10 +33,10 @@ class AppStartupRunner(
             radius = 10
         )
 
-//
-//        val scrapeItems = paginator.run(config)
-//        println("found ${scrapeItems.size} items")
-//        itemService.process(scrapeItems)
+
+        val scrapeItems = paginator.run(config)
+        println("found ${scrapeItems.size} items")
+        itemService.process(scrapeItems)
 
         analyser.analyse()
 

@@ -1,6 +1,7 @@
 package classifiedslifecycle
 
-import classifiedslifecycle.model.Item
+import classifiedslifecycle.scraper.ItemExtractor
+import classifiedslifecycle.shared.Item
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import java.io.File

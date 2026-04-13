@@ -1,4 +1,4 @@
-package classifiedslifecycle.model
+package classifiedslifecycle.analysis
 
 import java.time.Instant
 import java.time.LocalDate
@@ -13,7 +13,7 @@ class AggregatedItem(
     val scrapeCount: Long,
     val firstCreated: LocalDate?,
 
-) {
+    ) {
 
     val ageDays = ChronoUnit.DAYS.between(
         firstCreated,
@@ -24,7 +24,7 @@ class AggregatedItem(
             .toLocalDate()
     )
 
-    val ageGroup = if (ageDays < 14) "$ageDays days" else "${ageDays / 7} weeks"
+    val ageGroup = if (ageDays <= 13) "$ageDays days" else if (ageDays <= 13*7) "${ageDays / 7} weeks" else "${ageDays / 30} months"
 
     fun isOnline(lastGlobalScrape: Instant) = lastGlobalScrape == lastScrape
 }

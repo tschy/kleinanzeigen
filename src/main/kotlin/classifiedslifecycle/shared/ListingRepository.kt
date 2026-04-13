@@ -1,7 +1,6 @@
-package classifiedslifecycle
+package classifiedslifecycle.shared
 
-import classifiedslifecycle.model.AggregatedItem
-import classifiedslifecycle.model.Item
+import classifiedslifecycle.analysis.AggregatedItem
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
@@ -83,7 +82,7 @@ interface ListingRepository : JpaRepository<Item, ListingId> {
     // SELECT *  FROM listing GROUP BY id HAVING COUNT(id) > 1 AND MAX(first_scrape) > NOW() - INTERVAL '24 hours';
     @Query(
         """
-    SELECT NEW classifiedslifecycle.model.AggregatedItem(
+    SELECT NEW classifiedslifecycle.analysis.AggregatedItem(
         i.id.id,
         MIN(i.id.firstScrape), 
         MAX(i.lastScrape), 

@@ -66,3 +66,15 @@ TODO:
   created nicht bis heute, sondern bis last scrape
 
 
+-------------------------------------------------
+- verteilung age groups ausgeben - wie viele Anzeigen in jeder Gruppe, max 50 age groups
+- getrennt nach anzeigen online/nicht online (zu jeder age group zwei ausgeben) 
+- stichpropenartiger test ob die online/nicht online funktion sinnvoll ist (nicht ablenken lassen wenn sich die kleinanz. id geaendert hat, ignorieren) mit SQL damit die Versionen nicht geladen werden muessen (sub Abfrage? aeltesten old price und neusten price ausgeben - felder oldest price und newest price - nicht min und max, sondern das aelteste und das neuste firstScrape finden - subqueries) - zurueckfragen nach dem nachdenken
+- val discount - average discount/age korrelationen machen -> toolset waere csv und data science bibl -> fuehrt zu weit
+- anteil derjenigen berechnen, bei denen oldest und newest price gleich geblieben ist, in den verschiede. age groups - rabattfaktor (anz der elem die rabattiert wurden)
+- kotlin hat auch group by -> map oder so, auf der analyse gemacht werden kann - data class mit count online/count offline, discount rate online, dis rate offl fuer jede age group [group by age group und online flag - waere auch moeglich], auch fuer verhandelbar
+- weitere sinnvolle analysen mit daten ueberlegen 
+-----------------------
+- railway.com, was muesste man machen um die db und das tool zu deployen, notizen machen, terraform -> intro lesen
+  - versuchen dort eine db aufzusetzen und von lokal aus drauf zugreifen - wieviel kostet eine db pro tag? wenn alles ins budget passt waere das gut (kostenlose version)
+nicht machen: - spring boot console application - es muesste erst ein konzept gemacht werden, wie die app in verschieden. modi mit verschied. db ausfuehren 

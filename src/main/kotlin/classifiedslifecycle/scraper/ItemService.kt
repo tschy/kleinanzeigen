@@ -1,12 +1,10 @@
-package classifiedslifecycle
+package classifiedslifecycle.scraper
 
-import classifiedslifecycle.model.Item
-import classifiedslifecycle.model.ScrapeItem
+import classifiedslifecycle.shared.Item
+import classifiedslifecycle.shared.ListingRepository
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import io.github.oshai.kotlinlogging.KotlinLogging
-
-
 
 @Service
 class ItemService(
@@ -32,7 +30,7 @@ class ItemService(
             val itemSaved = listingRepository
                 .findByIdId(scrapeItem.id).maxByOrNull { it.id.firstScrape }
 
-            val newItem = Item.fromScrapeItem(scrapeItem)
+            val newItem = Item.Companion.fromScrapeItem(scrapeItem)
 
 
             if (itemSaved != null) {
@@ -61,9 +59,4 @@ class ItemService(
             listingRepository.save(newItem)
         }
     }
-
-
 }
-
-
-

@@ -1,6 +1,6 @@
 package classifiedslifecycle
 
-import classifiedslifecycle.model.SearchConfig
+import classifiedslifecycle.scraper.SearchConfig
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
