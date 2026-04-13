@@ -4,13 +4,14 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.springframework.test.context.ActiveProfiles
 import java.io.File
 
 // Integration test (@SpringBootTest) using a separate test database specified in application-test.properties.
 
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles("test-m")
 //@Transactional  // rollback changes
 class ItemServiceTestSpringBoot {
 
@@ -23,11 +24,11 @@ class ItemServiceTestSpringBoot {
     val results = mutableSetOf<ScrapeItem>()
 
 
-//    // delete stale entries in the db from previous test runs
-//    @BeforeEach
-//    fun setup() {
-//        listingRepository.deleteAll()
-//    }
+    // delete stale entries in the db from previous test runs
+    @BeforeEach
+    fun setup() {
+        listingRepository.deleteAll()
+    }
 
 
     @Test
