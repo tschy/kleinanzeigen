@@ -4,12 +4,12 @@ build
 
 
 .env
-backups/
+ops/backups/
+ops/logs
 *.class
 .idea/
 src/test/resources/data
-doc_t
-logs
+misc
 
 
 secrets.txt

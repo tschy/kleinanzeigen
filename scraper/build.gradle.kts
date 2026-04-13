@@ -11,6 +11,7 @@ dependencyManagement {
     }
 }
 
+
 repositories {
     mavenCentral()
 }
@@ -30,4 +31,8 @@ dependencies {
 
 application {
     mainClass.set("classifiedslifecycle.ScraperApplicationKt")
+}
+
+tasks.named<JavaExec>("bootRun") {
+    workingDir = rootProject.projectDir
 }
