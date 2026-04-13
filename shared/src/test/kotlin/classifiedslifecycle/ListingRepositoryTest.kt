@@ -1,6 +1,5 @@
 package classifiedslifecycle
 
-import classifiedslifecycle.shared.ListingRepository
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,7 +28,7 @@ class ListingRepositoryTest {
 
     @Test
     fun dbRunning() {
-        Assertions.assertThat(db.isRunning)
+        Assertions.assertThat(db.isRunning).isTrue
     }
 
     // db item exists

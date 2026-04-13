@@ -1,7 +1,5 @@
 package classifiedslifecycle
 
-import classifiedslifecycle.scraper.ItemExtractor
-import classifiedslifecycle.shared.Item
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -13,7 +11,7 @@ class ItemExtractorTest {
     @Test
     fun `extracts items from htm and creates item objects`() {
 
-        val pageText = File("src/test/resources/data/rennraeder20260319.htm")
+        val pageText = File("../misc/html-debug/rennraeder20260319.htm")
             .readText()
 
         val itemsScraped = itemExtractor.extract(pageText)
@@ -24,7 +22,7 @@ class ItemExtractorTest {
         val items = mutableListOf<Item>()
 
         for (scrapeItem in itemsScraped) {
-            items.add(Item.fromScrapeItem(scrapeItem))
+            items.add(toItem(scrapeItem))
         }
 
         assertThat(items).hasSize(27)

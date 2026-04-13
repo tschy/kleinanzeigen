@@ -4,7 +4,9 @@ import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.stereotype.Component
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.context.annotation.Profile
 
+@Profile("!test")
 @Component
 class ScraperRunner(
     private val itemService: ItemService,

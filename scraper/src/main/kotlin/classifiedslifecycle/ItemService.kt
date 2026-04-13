@@ -26,6 +26,7 @@ class ItemService(
         sortedItems.forEach { scrapeItem ->
 
 
+
             // get the most recent listing of the ad
             val itemSaved = listingRepository
                 .findByIdId(scrapeItem.id).maxByOrNull { it.id.firstScrape }
@@ -60,25 +61,5 @@ class ItemService(
         }
     }
 
-    private fun toItem(scrapeItem: ScrapeItem): Item {
-        val instant = Instant.now()
-        return Item(
-            ListingId(scrapeItem.id, instant),
-            instant,
-            1,
-            scrapeItem.title,
-            scrapeItem.price,
-            scrapeItem.oldPrice,
-            scrapeItem.negotiable,
-            scrapeItem.created
-        )
-    }
-
-    private fun Item.matches(scrapeItem: ScrapeItem): Boolean =
-        id.id == scrapeItem.id &&
-                title == scrapeItem.title &&
-                price == scrapeItem.price &&
-                negotiable == scrapeItem.negotiable &&
-                created == scrapeItem.created
 
 }

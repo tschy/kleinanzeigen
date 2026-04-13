@@ -1,9 +1,5 @@
 package classifiedslifecycle
 
-import classifiedslifecycle.scraper.ItemExtractor
-import classifiedslifecycle.scraper.ItemService
-import classifiedslifecycle.scraper.ScrapeItem
-import classifiedslifecycle.shared.ListingRepository
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -39,7 +35,7 @@ class ItemServiceTestSpringBoot {
 
         // arrange
         for (i in 0..27) {
-            val text = File("src/test/resources/data/db_test_$i.htm")
+            val text = File("../misc/html-debug/db_test_$i.htm")
                 .readText()
 
             results.addAll(ItemExtractor().extract(text))
@@ -59,20 +55,19 @@ class ItemServiceTestSpringBoot {
         // act
         itemService.process(results)
 
-
+        val dedupedResults = results.sortedByDescending { it.created }.distinctBy { it.id }
         // assert
-        for (scrapeItem in results) {
+        for (scrapeItem in dedupedResults) {
             assertThat(listingRepository.findByIdId(scrapeItem.id)).isNotEmpty
 
             println("Processing id: ${scrapeItem.id}")
 
             val savedItemList = listingRepository.findByIdId(scrapeItem.id)
             for (savedItem in savedItemList) {
-                val scrapeCount = savedItem.scrapeCount
                 println("${scrapeItem.id} -- ${savedItem.id} -- ${savedItem.scrapeCount}  -- ${savedItem.title}")
                 println(map.getOrDefault(scrapeItem.id, 0))
                 assertThat(scrapeItem.id).isEqualTo(savedItem.id.id)
-                assertThat(savedItem.scrapeCount).isEqualTo(map.getOrDefault(scrapeItem.id, 0)+1)
+                assertThat(savedItem.scrapeCount).isEqualTo(map.getOrDefault(scrapeItem.id, 0) + 1)
             }
         }
     }

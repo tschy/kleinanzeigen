@@ -6,17 +6,17 @@ import java.io.File
 import java.time.Instant
 
 @Component
-class Paginator(val fetcherService: FetcherService,
-                val itemExtractor: ItemExtractor
+class Paginator(
+    val fetcherService: FetcherService,
+    val itemExtractor: ItemExtractor
 ) {
 
-        fun run(config: SearchConfig): Set<ScrapeItem> {
+    fun run(config: SearchConfig): Set<ScrapeItem> {
 
         var n = 1
         val allItems = mutableSetOf<ScrapeItem>()
 
-        do
-        {
+        do {
             val url = "https://www.kleinanzeigen.de/s-" +
                     "${config.category}/" +
                     "${config.art}/" +
@@ -29,17 +29,14 @@ class Paginator(val fetcherService: FetcherService,
             println("paginator ${url}")
 
 
-
             // get HTML content for this page
             val body = fetcherService.fetch(url)
             val soup = Jsoup.parse(body)
 
-            File(
-                "src/test/resources/data/" +
-                        "${url.replace("/", "_")}_" +
-                        "${Instant.now()}.htm"
-            )
+            File("../misc/html-debug/${url.replace("/", "_")}_${Instant.now()}.htm")
+                .also { it.parentFile.mkdirs() }
                 .writeText(body)
+
 
             // test if pagination-next marker is present
             if (soup.select(".pagination-next").isNotEmpty()) {

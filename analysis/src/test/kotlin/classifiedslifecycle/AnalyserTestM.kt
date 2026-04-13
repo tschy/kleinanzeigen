@@ -1,9 +1,6 @@
 package classifiedslifecycle
 
-import classifiedslifecycle.analysis.Analyser
-import classifiedslifecycle.shared.Item
-import classifiedslifecycle.shared.ListingId
-import classifiedslifecycle.shared.ListingRepository
+
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -79,6 +76,6 @@ class AnalyserTestM {
         listingRepository.saveAll(listOf(item1, item2, item3, item4))
 
         val analyser = Analyser(listingRepository)
-        analyser.analyseTest()
+        analyser.analyse()
     }
 }

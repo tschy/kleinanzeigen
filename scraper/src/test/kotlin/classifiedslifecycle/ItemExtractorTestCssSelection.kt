@@ -1,6 +1,5 @@
 package classifiedslifecycle
 
-import classifiedslifecycle.scraper.ItemExtractor
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -18,7 +17,7 @@ class ItemExtractorTestCssSelection {
     @Test
     fun testSelector() {
 
-        val text = File("src/test/resources/data/rennraeder20260319.htm")
+        val text = File("../misc/html-debug/rennraeder20260319.htm")
             .readText()
         //   ?: error("File not found!")
         // println(text)

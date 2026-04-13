@@ -1,10 +1,5 @@
 package classifiedslifecycle
 
-import classifiedslifecycle.scraper.ItemService
-import classifiedslifecycle.shared.Item
-import classifiedslifecycle.scraper.ScrapeItem
-import classifiedslifecycle.shared.ListingId
-import classifiedslifecycle.shared.ListingRepository
 import io.mockk.Runs
 import io.mockk.confirmVerified
 import io.mockk.every
