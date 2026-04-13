@@ -1,5 +1,4 @@
-package classifiedslifecycle.scraper
-
+package classifiedslifecycle
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.springframework.stereotype.Component

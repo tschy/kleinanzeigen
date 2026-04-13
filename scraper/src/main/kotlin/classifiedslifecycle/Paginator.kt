@@ -1,7 +1,5 @@
-package classifiedslifecycle.scraper
+package classifiedslifecycle
 
-import classifiedslifecycle.scraper.FetcherService
-import classifiedslifecycle.scraper.SearchConfig
 import org.jsoup.Jsoup
 import org.springframework.stereotype.Component
 import java.io.File

@@ -1,4 +1,4 @@
-package classifiedslifecycle.scraper
+package classifiedslifecycle
 
 import java.time.Instant
 import java.time.LocalDate

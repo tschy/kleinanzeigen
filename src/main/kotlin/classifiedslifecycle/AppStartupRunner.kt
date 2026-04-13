@@ -23,7 +23,7 @@ class AppStartupRunner(
     @Override
     override fun run(args: ApplicationArguments) {
 
-        logger.info {"---running the scraper"}
+        logger.info { "---running the scraper" }
         // set search parameters
         val config = SearchConfig(
             category = "fahrraeder",

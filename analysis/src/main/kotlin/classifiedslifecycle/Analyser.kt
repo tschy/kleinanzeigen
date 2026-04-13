@@ -1,6 +1,5 @@
-package classifiedslifecycle.analysis
+package classifiedslifecycle
 
-import classifiedslifecycle.shared.ListingRepository
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
 import java.time.Instant
@@ -49,6 +48,6 @@ class Analyser(
 
         val aggregatedItems = listingRepository.queryAggregateItems()
 
-        logger.info("Analysing ${aggregatedItems.size} items")
+        logger.info {"Analysing ${aggregatedItems.size} items" }
     }
 }

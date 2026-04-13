@@ -1,10 +1,9 @@
-package classifiedslifecycle.scraper
+package classifiedslifecycle
 
-import classifiedslifecycle.shared.Item
-import classifiedslifecycle.shared.ListingRepository
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Instant
 
 @Service
 class ItemService(
@@ -13,6 +12,7 @@ class ItemService(
     val listingRepository: ListingRepository
 ) {
     private val logger = KotlinLogging.logger {}
+
 
     // TODO is that a good place for Transactional, we don't want to roll back 10000 items
     @Transactional
@@ -30,7 +30,7 @@ class ItemService(
             val itemSaved = listingRepository
                 .findByIdId(scrapeItem.id).maxByOrNull { it.id.firstScrape }
 
-            val newItem = Item.Companion.fromScrapeItem(scrapeItem)
+            val newItem = toItem(scrapeItem)
 
 
             if (itemSaved != null) {
@@ -38,7 +38,7 @@ class ItemService(
                 if (itemSaved.matches(scrapeItem)) {
 
 //                    logger.info { "updateScrapeCount: "  }
-                    logger.debug { "Item already exists" + itemSaved.toDebugString()}
+                    logger.debug { "Item already exists" + itemSaved.toDebugString() }
 
                     listingRepository
                         .updateScrapeCount(
@@ -56,7 +56,29 @@ class ItemService(
                     logger.info { "---" }
                 }
             }
-            listingRepository.save(newItem)
+            listingRepository.save<Item>(newItem)
         }
     }
+
+    private fun toItem(scrapeItem: ScrapeItem): Item {
+        val instant = Instant.now()
+        return Item(
+            ListingId(scrapeItem.id, instant),
+            instant,
+            1,
+            scrapeItem.title,
+            scrapeItem.price,
+            scrapeItem.oldPrice,
+            scrapeItem.negotiable,
+            scrapeItem.created
+        )
+    }
+
+    private fun Item.matches(scrapeItem: ScrapeItem): Boolean =
+        id.id == scrapeItem.id &&
+                title == scrapeItem.title &&
+                price == scrapeItem.price &&
+                negotiable == scrapeItem.negotiable &&
+                created == scrapeItem.created
+
 }
