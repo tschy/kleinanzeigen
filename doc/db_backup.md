@@ -7,8 +7,14 @@ docker exec -i kleinanzeigen-db-test-1 psql -U postgres -c "DROP DATABASE kleina
 
 Recreate the database:
 docker exec -i kleinanzeigen-db-1 psql -U postgres -c "CREATE DATABASE kleinanzeigen;"
-docker exec -i kleinanzeigen-db-test-1 psql -U postgres -c "CREATE DA~~~~TABASE kleinanzeigen_test;"
+docker exec -i kleinanzeigen-db-test-1 psql -U postgres -c "CREATE DATABASE kleinanzeigen_test;"
 
 Restore the backup:
 docker exec -i kleinanzeigen-db-1 psql -U postgres -d kleinanzeigen < ops/backups/2026-04-09_11-28-03.sql
 docker exec -i kleinanzeigen-db-test-1 psql -U postgres -d kleinanzeigen_test < ops/backups/2026-04-09_11-28-03.sql
+
+Connect to the database:
+docker exec -it kleinanzeigen-db-test-1 psql -U postgres -d kleinanzeigen_test
+docker exec -it kleinanzeigen-db-1 psql -U postgres -d kleinanzeigen
+
+select * from listing;
