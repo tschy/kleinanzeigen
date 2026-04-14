@@ -14,7 +14,7 @@ docker exec -i kleinanzeigen-db-1 psql -U postgres -d kleinanzeigen < ops/backup
 docker exec -i kleinanzeigen-db-test-1 psql -U postgres -d kleinanzeigen_test < ops/backups/2026-04-09_11-28-03.sql
 
 Connect to the database:
-docker exec -it kleinanzeigen-db-test-1 psql -U postgres -d kleinanzeigen_test
 docker exec -it kleinanzeigen-db-1 psql -U postgres -d kleinanzeigen
+docker exec -it kleinanzeigen-db-test-1 psql -U postgres -d kleinanzeigen_test
 
 select * from listing;

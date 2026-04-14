@@ -29,12 +29,10 @@ class AggregatedItem(
     else "${ageDays / 30} months"
 
     //    fun isOnline(lastGlobalScrape: Instant?) = lastGlobalScrape == lastScrape
-    fun isOnline(lastGlobalScrape: Instant?, tolerance: Long, timeFrame: ChronoUnit ): Boolean {
-        println(" $lastGlobalScrape  $lastScrape")
+    fun isOnline(lastGlobalScrape: Instant?, tolerance: Long, timeFrame: ChronoUnit) =
+        (lastScrape > lastGlobalScrape!!.minus(tolerance, timeFrame)
+                && lastScrape < lastGlobalScrape.plus(tolerance, timeFrame))
 
-        return (lastScrape > lastGlobalScrape!!.minus(tolerance, timeFrame)
-            &&  lastScrape < lastGlobalScrape.plus(tolerance, timeFrame))
-    }
 
     fun toDebugString() =
         "'${id}' : '${firstScrape}' : '${lastScrape}' : '${scrapeCount}': '${firstCreated}'"

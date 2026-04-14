@@ -13,7 +13,7 @@ class AnalysisRunner(
 
     override fun run(args: ApplicationArguments) {
         logger.info { "---running the analyser" }
-        analyser.analyse()
         analyser.showChangedItems()
+        analyser.analyse()
     }
 }

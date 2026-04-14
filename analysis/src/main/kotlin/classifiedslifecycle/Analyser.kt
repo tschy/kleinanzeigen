@@ -10,7 +10,7 @@ import javax.sql.DataSource
 class Analyser(
     val listingRepository: ListingRepository,
 
-) {
+    ) {
     private val logger = KotlinLogging.logger {}
 
     val lastGlobalScrape: Instant? = listingRepository.queryGlobalLastScrape()
@@ -50,8 +50,33 @@ class Analyser(
 
         logger.info { "Analysing ${aggregatedItems.size} items" }
 
+        aggregatedItems.forEach { item ->
+            println(
+                item.toDebugString() + " // " + item.isOnline(
+                    lastGlobalScrape,
+                    10,
+                    ChronoUnit.MINUTES
+                )
+            )
+        }
 
-        println(lastGlobalScrape)
-        aggregatedItems.forEach { item -> println(item.toDebugString() + " // "+ item.isOnline(lastGlobalScrape, 10, ChronoUnit.MINUTES)) }
+
+        val sortedAggregateItem = aggregatedItems.sortedBy { it.ageDays }
+
+        val ageDistribution = mutableMapOf<String, Int>()
+
+        sortedAggregateItem.forEach { item ->
+            ageDistribution[item.ageGroup] =
+                ageDistribution.getOrDefault(item.ageGroup, 0) + 1
+        }
+
+        print(ageDistribution)
+        println("%-12s %s".format("Age Group", "Count"))
+        println("-".repeat(20))
+        ageDistribution.forEach { (group, count) ->
+            println("%-12s %d".format(group, count))
+        }
     }
+
+
 }
