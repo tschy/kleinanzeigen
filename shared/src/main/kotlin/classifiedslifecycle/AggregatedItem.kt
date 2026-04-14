@@ -28,8 +28,11 @@ class AggregatedItem(
     else if (ageDays <= 13 * 7) "${ageDays / 7} weeks"
     else "${ageDays / 30} months"
 
+    val tolerance: Long = 5
+    val timeFrame = ChronoUnit.MINUTES
+
     //    fun isOnline(lastGlobalScrape: Instant?) = lastGlobalScrape == lastScrape
-    fun isOnline(lastGlobalScrape: Instant?, tolerance: Long, timeFrame: ChronoUnit) =
+    fun isOnline(lastGlobalScrape: Instant?) =
         (lastScrape > lastGlobalScrape!!.minus(tolerance, timeFrame)
                 && lastScrape < lastGlobalScrape.plus(tolerance, timeFrame))
 

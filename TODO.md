@@ -73,10 +73,34 @@ TODO:
   - [x] split gradle project into modules with two different main methods
 - [x] fix areItemsOnline with tolerance Window
 - [x] verteilung age groups ausgeben - wie viele Anzeigen in jeder Gruppe, max 50 age groups
+- [x] getrennt nach anzeigen online/nicht online (zu jeder age group zwei ausgeben)
+- [x] Stichprobenartiger Test der Online/Offline-Logik Manuell prüfen ob isOnline() sinnvolle Ergebnisse liefert — einige Einträge direkt in der DB überprüfen. Fälle ignorieren, bei denen sich die Kleinanzeigen-ID geändert hat.
+      **2026-04-13T15:01:16.093805Z**
+      '3132479011' : '2026-04-07T13:50:44.158561Z' : '2026-04-13T15:01:13.259646Z' : '16': '2025-07-11' // true
+      '3365959547' : '2026-04-07T13:50:43.420417Z' : '2026-04-13T15:00:52.871598Z' : '16': '2026-03-28' // true
+      '3372937415' : '2026-04-07T13:50:43.212069Z' : '2026-04-07T14:19:38.745478Z' : '5': '2026-04-05' // false
+      '3357998159' : '2026-04-07T13:50:43.642005Z' : '2026-04-13T15:00:57.901963Z' : '16': '2026-03-20' // true
+      '3174562151' : '2026-04-07T13:50:44.132501Z' : '2026-04-13T15:01:13.259194Z' : '16': '2025-08-30' // true
+      '3276376174' : '2026-04-07T13:50:44.073921Z' : '2026-04-09T05:24:20.374074Z' : '12': '2025-12-18' // false
+      '3372825406' : '2026-04-07T13:50:43.217399Z' : '2026-04-09T05:23:51.728587Z' : '12': '2026-04-05' // false
+      '3332653317' : '2026-04-07T13:50:43.998280Z' : '2026-04-13T15:01:08.266491Z' : '16': '2026-02-21' // true
+      '3378064575' : '2026-04-13T04:41:35.190396Z' : '2026-04-13T15:00:40.445137Z' : '4': '2026-04-10' // true
+      '3365127201' : '2026-04-07T13:50:43.437252Z' : '2026-04-09T05:23:58.590023Z' : '12': '2026-03-28' // false
+      '3372221915' : '2026-04-07T13:50:43.232023Z' : '2026-04-13T15:00:47.820058Z' : '16': '2026-04-04' // true
+      '3347111995' : '2026-04-07T13:50:43.835423Z' : '2026-04-13T15:01:03.379370Z' : '16': '2026-03-09' // true
+      '3375023367' : '2026-04-07T13:50:43.088911Z' : '2026-04-09T05:23:47.757905Z' : '12': '2026-04-07' // false
+      '3346750334' : '2026-04-07T13:50:43.841910Z' : '2026-04-13T15:01:03.379503Z' : '16': '2026-03-08' // true
+      '3361781109' : '2026-04-07T13:50:43.576499Z' : '2026-04-13T15:00:55.274856Z' : '16': '2026-03-24' // true
+      '3337686577' : '2026-04-07T13:50:43.965391Z' : '2026-04-09T05:24:16.487060Z' : '12': '2026-02-27' // false
 
+
+- missing tests? : 
+- Aggregation in Aggregate Item
+- counting in ageDistribution and ageDistributionOnlineOffline
 -------------------------------------------------
-- getrennt nach anzeigen online/nicht online (zu jeder age group zwei ausgeben) 
-- stichpropenartiger test ob die online/nicht online funktion sinnvoll ist (nicht ablenken lassen wenn sich die kleinanz. id geaendert hat, ignorieren) mit SQL damit die Versionen nicht geladen werden muessen (sub Abfrage? aeltesten old price und neusten price ausgeben - felder oldest price und newest price - nicht min und max, sondern das aelteste und das neuste firstScrape finden - subqueries) - zurueckfragen nach dem nachdenken
+~~~~
+ - eine Abfrage schreiben, die für jede Anzeige den ältesten Preis (aus der Zeile mit dem frühesten firstScrape) und den neuesten Preis (aus der Zeile mit dem spätesten firstScrape) zurückgibt — mit Subqueries. Nicht MIN/MAX des Preises, sondern den Preis zum ältesten und neuesten Scrapezeitpunkt.
+
 - val discount - average discount/age korrelationen machen -> toolset waere csv und data science bibl -> fuehrt zu weit
 - anteil derjenigen berechnen, bei denen oldest und newest price gleich geblieben ist, in den verschiede. age groups - rabattfaktor (anz der elem die rabattiert wurden)
 - kotlin hat auch group by -> map oder so, auf der analyse gemacht werden kann - data class mit count online/count offline, discount rate online, dis rate offl fuer jede age group [group by age group und online flag - waere auch moeglich], auch fuer verhandelbar

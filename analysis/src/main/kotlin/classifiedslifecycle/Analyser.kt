@@ -50,19 +50,16 @@ class Analyser(
 
         logger.info { "Analysing ${aggregatedItems.size} items" }
 
+        println(lastGlobalScrape)
         aggregatedItems.forEach { item ->
             println(
-                item.toDebugString() + " // " + item.isOnline(
-                    lastGlobalScrape,
-                    10,
-                    ChronoUnit.MINUTES
-                )
+                item.toDebugString() + " // " + item.isOnline(lastGlobalScrape)
             )
         }
 
+        // print age distribution
 
         val sortedAggregateItem = aggregatedItems.sortedBy { it.ageDays }
-
         val ageDistribution = mutableMapOf<String, Int>()
 
         sortedAggregateItem.forEach { item ->
@@ -70,13 +67,32 @@ class Analyser(
                 ageDistribution.getOrDefault(item.ageGroup, 0) + 1
         }
 
-        print(ageDistribution)
+        println(ageDistribution)
         println("%-12s %s".format("Age Group", "Count"))
         println("-".repeat(20))
         ageDistribution.forEach { (group, count) ->
             println("%-12s %d".format(group, count))
         }
+
+        // getrennt nach anzeigen online/nicht online (zu jeder age group zwei ausgeben)
+        val ageDistributionOnlineOffline = mutableMapOf<String, Pair<Int, Int>>()
+
+        sortedAggregateItem.forEach { item ->
+            val onlineCount = ageDistributionOnlineOffline[item.ageGroup]?.first ?: 0
+            val offlineCount = ageDistributionOnlineOffline[item.ageGroup]?.second ?: 0
+
+            ageDistributionOnlineOffline[item.ageGroup] =
+                if (item.isOnline(lastGlobalScrape)) Pair(onlineCount + 1, offlineCount)
+                else (Pair(onlineCount, offlineCount + 1));
+        }
+
+
+        println(ageDistributionOnlineOffline)
+        println("%-12s %s %s".format("Age Group", "OnlineCount", "OfflineCount"))
+        println("-".repeat(30))
+        ageDistributionOnlineOffline.forEach { (group, counts) ->
+            val (onlineCount, offlineCount) = counts
+            println("%-12s %6d      %6d".format(group, onlineCount, offlineCount))
+        }
     }
-
-
 }
