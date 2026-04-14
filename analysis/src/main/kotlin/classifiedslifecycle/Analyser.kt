@@ -4,18 +4,19 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.time.temporal.ChronoUnit
+import javax.sql.DataSource
 
 @Service
 class Analyser(
-    val listingRepository: ListingRepository
-
+    val listingRepository: ListingRepository,
 
 ) {
     private val logger = KotlinLogging.logger {}
 
+    val lastGlobalScrape: Instant? = listingRepository.queryGlobalLastScrape()
+
     fun showChangedItems() {
 
-        println("Analysing $listingRepository")
         println("---Listing changed items:")
         listingRepository.queryChangedItems()
             .forEach { listing -> println(listing.toDebugString()) }
@@ -44,10 +45,13 @@ class Analyser(
     }
 
     fun analyse() {
-        val lastGlobalScrape: Instant? = listingRepository.queryGlobalLastScrape()
 
         val aggregatedItems = listingRepository.queryAggregateItems()
 
-        logger.info {"Analysing ${aggregatedItems.size} items" }
+        logger.info { "Analysing ${aggregatedItems.size} items" }
+
+
+        println(lastGlobalScrape)
+        aggregatedItems.forEach { item -> println(item.toDebugString() + " // "+ item.isOnline(lastGlobalScrape, 10, ChronoUnit.MINUTES)) }
     }
 }

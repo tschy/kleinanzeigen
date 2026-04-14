@@ -29,6 +29,14 @@ open class Item(
 ) {
 
     fun toDebugString() =
-        "'${id.id}' : '${id.firstScrape}' : '${lastScrape}' : '${scrapeCount}': '${title}' : '${price}' : '${oldPrice}' : '${negotiable}' : '${created}' "
+        "'${id.id}' " +
+                ": '${id.firstScrape}' " +
+                ": '${lastScrape}'" +
+                " : '${scrapeCount}'" +
+                ": '${title}' " +
+                ": '${price}' " +
+                ": '${oldPrice}' " +
+                ": '${negotiable}' " +
+                ": '${created}' "
 
 }

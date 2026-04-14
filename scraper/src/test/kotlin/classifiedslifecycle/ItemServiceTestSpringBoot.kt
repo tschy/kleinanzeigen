@@ -11,7 +11,7 @@ import java.io.File
 // Integration test (@SpringBootTest) using a separate test database specified in application-test.properties.
 
 @SpringBootTest
-@ActiveProfiles("test-m")
+//@ActiveProfiles("test-m") // determines into which db the data from this class is written
 //@Transactional  // rollback changes
 class ItemServiceTestSpringBoot {
 

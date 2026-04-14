@@ -66,6 +66,8 @@ TODO:
   created nicht bis heute, sondern bis last scrape
 
 
+-----------------------------------
+log which db is being used, analyser and itemservice remove printout fun
 -------------------------------------------------
 - verteilung age groups ausgeben - wie viele Anzeigen in jeder Gruppe, max 50 age groups
 - getrennt nach anzeigen online/nicht online (zu jeder age group zwei ausgeben) 
