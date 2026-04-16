@@ -13,7 +13,15 @@ class AnalysisRunner(
 
     override fun run(args: ApplicationArguments) {
         logger.info { "---running the analyser" }
-        analyser.showChangedItems()
-        analyser.analyse()
+//        analyser.printChangedItems()
+
+        analyser.printAgeGroupDistribution()
+//
+////NEXT
+        analyser.printAgeGroupDistributionForItemsOnlineAndOffline()
+//        analyser.printIsItemOnline()
+//        analyser.printAggregatedItems()
+        analyser.platzhalter()
+//
     }
 }
