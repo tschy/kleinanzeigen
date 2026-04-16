@@ -5,6 +5,7 @@ plugins {
     id("org.springframework.boot") version "3.4.5" apply false
     id("io.spring.dependency-management") version "1.1.7" apply false
     id("org.flywaydb.flyway") version "11.8.2" apply false
+    id("com.google.cloud.tools.jib") version "3.5.3" apply false
 }
 
 // Java toolchain applied to all submodules

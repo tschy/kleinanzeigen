@@ -179,9 +179,10 @@ TODO:
 -[x] built docker image
     gradle -v
     ./gradlew wrapper --gradle-version=8.13
-    ./gradlew :scraper:jibDockerBuild --image=classifieds-scraper
+    ./gradlew :scraper:jibDockerBuild --image=classifieds-scraper:v1
     docker images | grep classifieds-scraper
-    docker run --network host classifieds-scraper -> in cron reinschreiben
+    docker run --network host classifieds-scraper  -> in cron reinschreiben
+    docker run --rm --network host classifieds-scraper  
 
 check all implemented functions are having correct output
 discount: how do we deal with the oldPrice data. Do we trust it to have been an actual price?
