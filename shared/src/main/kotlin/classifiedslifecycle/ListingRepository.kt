@@ -77,8 +77,15 @@ interface ListingRepository : JpaRepository<Item, ListingId> {
     fun queryGlobalLastScrape(): Instant?
 
 
-    // changed listings with a new version in the last 24h
-    // SELECT *  FROM listing GROUP BY id HAVING COUNT(id) > 1 AND MAX(first_scrape) > NOW() - INTERVAL '24 hours';
+//        SELECT
+//        id,
+//        (SELECT i2.price FROM listing i2 WHERE i2.id = i.id AND i2.first_scrape  =
+//        (SELECT MIN(i3.first_scrape) FROM listing i3 WHERE i3.id = i.id)),
+//        (SELECT i4.price FROM listing i4 WHERE i4.id = i.id AND i4.first_scrape =
+//        (SELECT MAX(i5.first_scrape) FROM listing i5 WHERE i5.id = i.id))
+//
+//    FROM listing i where id = '3369255532'
+//    GROUP BY id
     @Query(
         """
     SELECT NEW classifiedslifecycle.AggregatedItem(
@@ -86,11 +93,15 @@ interface ListingRepository : JpaRepository<Item, ListingId> {
         MIN(i.id.firstScrape), 
         MAX(i.lastScrape), 
         SUM(i.scrapeCount), 
-        MIN(i.created))
+        MIN(i.created),
+        (SELECT i2.price FROM Item i2 WHERE i2.id.id = i.id.id AND i2.id.firstScrape  = 
+        (SELECT MIN(i3.id.firstScrape) FROM Item i3 WHERE i3.id.id = i.id.id)),
+        (SELECT i4.price FROM Item i4 WHERE i4.id.id = i.id.id AND i4.id.firstScrape = 
+        (SELECT MAX(i5.id.firstScrape) FROM Item i5 WHERE i5.id.id = i.id.id))
+    )
     FROM Item i
     GROUP BY i.id.id
 """
     )
     fun queryAggregateItems(): List<AggregatedItem>
-
 }

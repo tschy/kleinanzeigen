@@ -71,7 +71,7 @@ TODO:
 - [x] nicht machen: - spring boot console application - es muesste erst ein konzept gemacht werden, wie die app in verschieden. modi mit verschied. db ausfuehren
   - [x] repair that scraper and analyser can run on the db
   - [x] split gradle project into modules with two different main methods
-- [x] fix areItemsOnline with tolerance Window
+- [x] fix areItemsOnline with tolerance window
 - [x] verteilung age groups ausgeben - wie viele Anzeigen in jeder Gruppe, max 50 age groups
 - [x] getrennt nach anzeigen online/nicht online (zu jeder age group zwei ausgeben)
 - [x] Stichprobenartiger Test der Online/Offline-Logik Manuell prüfen ob isOnline() sinnvolle Ergebnisse liefert — einige Einträge direkt in der DB überprüfen. Fälle ignorieren, bei denen sich die Kleinanzeigen-ID geändert hat.
@@ -98,9 +98,96 @@ TODO:
 - Aggregation in Aggregate Item
 - counting in ageDistribution and ageDistributionOnlineOffline
 -------------------------------------------------
-~~~~
- - eine Abfrage schreiben, die für jede Anzeige den ältesten Preis (aus der Zeile mit dem frühesten firstScrape) und den neuesten Preis (aus der Zeile mit dem spätesten firstScrape) zurückgibt — mit Subqueries. Nicht MIN/MAX des Preises, sondern den Preis zum ältesten und neuesten Scrapezeitpunkt.
 
+ - [x] eine Abfrage schreiben, die für jede Anzeige den ältesten Preis (aus der Zeile mit dem frühesten firstScrape) und den neuesten Preis (aus der Zeile mit dem spätesten firstScrape) zurückgibt — mit Subqueries. Nicht MIN/MAX des Preises, sondern den Preis zum ältesten und neuesten Scrapezeitpunkt.
+   mit SQL damit die Versionen nicht geladen werden muessen (sub Abfrage? aeltesten old price und neusten price ausgeben - felder oldest price und newest price - nicht min und max, sondern das aelteste und das neuste firstScrape finden - subqueries) - zurueckfragen nach dem nachdenken
+    - [x] stichprobenartiger Test auf Korrektheit der Abfrage
+                 id     |  price  |  price  
+            ------------+---------+---------
+             3372945238 | 1250.00 | 1190.00
+             3372945238 | 1250.00 | 1190.00
+            (2 rows)
+                  '3372945238' : '1250.0' : '1190.0'
+            kleinanzeigen_test=# 
+            kleinanzeigen_test=# select id, price from listing where id = '3318777714';
+            kleinanzeigen_test=# select id, price from listing where id = '3372945238';
+                 id     |  price  
+            ------------+---------
+             3372945238 | 1250.00
+             3372945238 | 1190.00
+            (2 rows)
+            '3372945238' : '1250.0' : '1190.0'
+            kleinanzeigen_test=# select id, price, first_scrape, created from listing wh
+            ere id = '337
+                 id     |  price  |         first_scrape          |  created   
+            ------------+---------+-------------------------------+------------
+             3372945238 | 1250.00 | 2026-04-07 13:50:43.210801+00 | 2026-04-05
+             3372945238 | 1190.00 | 2026-04-13 12:14:16.65134+00  | 2026-04-05
+            (2 rows)
+            '3372945238' : '1250.0' : '1190.0'
+            kleinanzeigen_test=# select id, price, first_scrape, created from listing where id = '3373079396';
+                 id     |  price  |         first_scrape          |  created   
+            ------------+---------+-------------------------------+------------
+             3373079396 | 1049.00 | 2026-04-07 13:50:43.189309+00 | 2026-04-05
+             3373079396 | 1025.00 | 2026-04-13 04:41:35.461747+00 | 2026-04-05
+            (2 rows)
+            '3373079396' : '1049.0' : '1025.0'
+            kleinanzeigen_test=# select id, price, first_scrape, created from listing where id = '3351835097';
+                 id     |  price  |         first_scrape          |  created   
+            ------------+---------+-------------------------------+------------
+             3351835097 | 1449.00 | 2026-04-07 13:50:43.763933+00 | 2026-03-14
+             3351835097 | 1399.00 | 2026-04-13 04:41:35.81943+00  | 2026-03-14
+             3351835097 | 1299.00 | 2026-04-13 12:14:16.823987+00 | 2026-03-14
+            (3 rows)
+            '3351835097' : '1449.0' : '1299.0'
+            
+            kleinanzeigen_test=# select id, price, first_scrape, created from listing where id = '3349216556';
+                 id     |  price  |         first_scrape          |  created   
+            ------------+---------+-------------------------------+------------
+             3349216556 | 4550.00 | 2026-04-07 13:50:43.795419+00 | 2026-03-11
+             3349216556 | 4499.00 | 2026-04-08 10:56:12.469166+00 | 2026-03-11
+            (2 rows)
+            '3349216556' : '4550.0' : '4499.0'
+            
+                 id     | price |         first_scrape          |  created   
+            ------------+-------+-------------------------------+------------
+             3373019454 |  5.00 | 2026-04-07 13:50:43.203287+00 | 2026-04-05
+            (1 row)
+            '3373019454' : '5.0' : '5.0'
+
+- [x] run cron job on laptop to scrape data hourly
+  - crontab -l to show the config file
+  - crontab -e to edit and load the config file
+  - less /var/mail/robert to see the output
+  - pgrep cron to get the PID of the cron job
+
+
+
+- [x] solve .jar executable problem -> do not try to execute the -plain.jar
+- 
+ /home/robert/Downloads/jdk-21_linux-x64_bin/jdk-21.0.10/bin/java -jar /home/robert/kleinanzeigen/scraper/build/libs/scraper.jar
+- 
+  - Executable jars can be built using the bootJar task. The task is automatically created when the java plugin is applied and is an instance of BootJar. The assemble task is automatically configured to depend upon the bootJar task so running assemble (or build) will also run the bootJar task. https://docs.spring.io/spring-boot/docs/2.5.1/gradle-plugin/reference/htmlsingle/#packaging-executable.and-plain-archives
+     
+  - Gemini:
+   analysis.jar (The Executable Archive): This is the "Fat Jar." It contains your compiled code plus every library your app needs to run (Spring Framework, Hibernate, etc.). This is the one you run with java -jar.
+
+    analysis-plain.jar (The Standard Archive): This is a "thin" jar. It contains only your compiled code and resources. It will not run on its own because it doesn't include its dependencies.
+    
+  - https://stackoverflow.com/questions/67935064/difference-between-spring-boot-2-5-0-generated-jar-and-plain-jar/67935468]
+
+-[x] built docker image
+    gradle -v
+    ./gradlew wrapper --gradle-version=8.13
+    ./gradlew :scraper:jibDockerBuild --image=classifieds-scraper
+    docker images | grep classifieds-scraper
+    docker run --network host classifieds-scraper
+
+check all implemented functions are having correct output
+discount: how do we deal with the oldPrice data. Do we trust it to have been an actual price?
+
+
+-------------------------------------------------
 - val discount - average discount/age korrelationen machen -> toolset waere csv und data science bibl -> fuehrt zu weit
 - anteil derjenigen berechnen, bei denen oldest und newest price gleich geblieben ist, in den verschiede. age groups - rabattfaktor (anz der elem die rabattiert wurden)
 - kotlin hat auch group by -> map oder so, auf der analyse gemacht werden kann - data class mit count online/count offline, discount rate online, dis rate offl fuer jede age group [group by age group und online flag - waere auch moeglich], auch fuer verhandelbar
@@ -108,3 +195,5 @@ TODO:
 -----------------------
 - railway.com, was muesste man machen um die db und das tool zu deployen, notizen machen, terraform -> intro lesen
   - versuchen dort eine db aufzusetzen und von lokal aus drauf zugreifen - wieviel kostet eine db pro tag? wenn alles ins budget passt waere das gut (kostenlose version)
+
+--------------------------------
