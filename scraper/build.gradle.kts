@@ -6,6 +6,16 @@ plugins {
     id("com.google.cloud.tools.jib")
 }
 
+jib {
+    to {
+        image = "ghcr.io/tschy/classifieds-scraper"
+        auth {
+            username = System.getenv("GITHUB_ACTOR") ?: ""
+            password = System.getenv("GITHUB_TOKEN") ?: ""
+        }
+    }
+}
+
 dependencyManagement {
     imports {
         mavenBom("org.springframework.boot:spring-boot-dependencies:3.4.5")
