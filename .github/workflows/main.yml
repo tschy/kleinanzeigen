@@ -26,6 +26,9 @@ jobs:
     - name: Build and push image
       run: ./gradlew :scraper:jib --image=ghcr.io/tschy/classifieds-scraper:${{ github.run_number }}
 
+    - name: Install Railway CLI
+      run: curl -fsSL cli.new | sh
+      
     - name: Update Railway Image
   
       run: |
