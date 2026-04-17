@@ -28,7 +28,7 @@ jobs:
       run: ./gradlew :scraper:jib --image=ghcr.io/tschy/classifieds-scraper:${{ github.run_number }}
 
     - name: Install Railway CLI
-      run: curl -fsSL cli.new | sh
+      run: npm install -g @railway/cli
       
     - name: Update Railway Image
       run: railway variables set --environment 9ab185c3-cf54-4d14-b44d-ecc7411ddd8e DOCKER_IMAGE_TAG=${{ github.run_number }}
