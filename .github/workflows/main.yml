@@ -31,7 +31,7 @@ jobs:
       run: npm install -g @railway/cli
       
     - name: Update Railway Image
-      run: railway variables set --environment 9ab185c3-cf54-4d14-b44d-ecc7411ddd8e DOCKER_IMAGE_TAG=${{ github.run_number }}
+      run: railway variables set --service a4ddda22-f288-4219-8124-87c47c015ed1 DOCKER_IMAGE_TAG=${{ github.run_number }}
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
