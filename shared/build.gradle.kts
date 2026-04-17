@@ -31,6 +31,9 @@ dependencies {
     implementation("org.postgresql:postgresql:42.7.3")
     implementation("io.github.oshai:kotlin-logging-jvm:5.1.0")
     implementation("ch.qos.logback:logback-classic:1.5.18")
+    // Your other usual dependencies...
+    implementation("org.postgresql:postgresql:42.7.2")
+    implementation("org.flywaydb:flyway-database-postgresql:10.11.0")
 
     testImplementation(platform("org.testcontainers:testcontainers-bom:1.20.4"))
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -47,4 +50,5 @@ flyway {
     user = "postgres"
     password = "fennpfuhl"
     schemas = arrayOf("public")
+    configurations = arrayOf("runtimeClasspath")
 }
