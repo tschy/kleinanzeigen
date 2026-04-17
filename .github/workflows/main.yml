@@ -18,4 +18,4 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Build and push image
-      run:   ./gradlew :scraper:jibBuild --image=ghcr.io/tschy/classifieds-scraper:$(date +"%y%m%d-%H%M%S")
+      run:   ./gradlew :scraper:jib --image=ghcr.io/tschy/classifieds-scraper:$(date +"%y%m%d-%H%M%S")
