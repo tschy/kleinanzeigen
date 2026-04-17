@@ -31,7 +31,7 @@ jobs:
       run: curl -fsSL cli.new | sh
       
     - name: Update Railway Image
-      run: railway variables set --service YOUR_SERVICE_ID_FROM_URL DOCKER_IMAGE_TAG=${{ github.run_number }}
+      run: railway variables set --env 9ab185c3-cf54-4d14-b44d-ecc7411ddd8e=${{ github.run_number }}
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
