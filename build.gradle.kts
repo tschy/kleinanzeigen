@@ -1,3 +1,16 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        // By putting these here, they are available to ALL modules
+        // and the Flyway Gradle task itself.
+        classpath("org.flywaydb:flyway-database-postgresql:11.8.2")
+        classpath("org.postgresql:postgresql:42.7.3")
+    }
+}
+
+
 plugins {
     kotlin("jvm") version "2.1.20" apply false
     kotlin("plugin.spring") version "2.1.20" apply false
