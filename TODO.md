@@ -155,6 +155,7 @@ TODO:
             (1 row)
             '3373019454' : '5.0' : '5.0'
 
+
 - [x] run cron job on laptop to scrape data hourly
   - crontab -l to show the config file
   - crontab -e to edit and load the config file
