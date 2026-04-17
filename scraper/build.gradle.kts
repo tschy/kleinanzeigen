@@ -8,7 +8,6 @@ plugins {
 
 jib {
     to {
-        image = "ghcr.io/tschy/classifieds-scraper"
         auth {
             username = System.getenv("GITHUB_ACTOR") ?: ""
             password = System.getenv("GITHUB_TOKEN") ?: ""
