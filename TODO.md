@@ -185,15 +185,43 @@ TODO:
     docker run --network host classifieds-scraper  -> in cron reinschreiben
     docker run --rm --network host classifieds-scraper  
 
+- exclude src/test, should happen automatically, verify by checking the docker img
+
 check all implemented functions are having correct output
 discount: how do we deal with the oldPrice data. Do we trust it to have been an actual price?
 
+work on analyser/work on scraper
+pause work on analyser, resume after scraper has been deployed
+
+follow 
+implement code changes pull request -> whos doing the merging?
+aeltester oldPrice
+
+docker build in der github action machen 
+in die github container registry hochladen (deployment koennte ein extra Schritt sein, oder auch nicht -> railway)
+docker image auf railway laufen lassen -> vorher die db konfigurieren
+
+find out which user agent string is used and think about which one we should use
+
+
+x verstehen was das deployment model von railway ist und der unterschied von uns
+    gradle nicht auf produ, soll nur auf entwl servern laufen
+    benutzt railway gradle
+    dort db laufen lassen kann und von lokal mit vpn zugreifen?
+
+docker image, jedes mal ein neues erstellen wenn es eine neue version gibt
 
 -------------------------------------------------
-- val discount - average discount/age korrelationen machen -> toolset waere csv und data science bibl -> fuehrt zu weit
-- anteil derjenigen berechnen, bei denen oldest und newest price gleich geblieben ist, in den verschiede. age groups - rabattfaktor (anz der elem die rabattiert wurden)
-- kotlin hat auch group by -> map oder so, auf der analyse gemacht werden kann - data class mit count online/count offline, discount rate online, dis rate offl fuer jede age group [group by age group und online flag - waere auch moeglich], auch fuer verhandelbar
-- weitere sinnvolle analysen mit daten ueberlegen 
+
+
+    Discount rate per age group — what percentage of items had a price reduction (oldest price ≠ newest price), broken down by age group, and separately for online/offline
+    Online/offline distribution per age group — count and percentage of online vs offline items per age group (partially done)
+    Data class for age group stats — a data class holding: count online, count offline, discount rate online, discount rate offline — grouped by age group (and optionally by online flag)
+    Correlation skipped — average discount vs age group correlation requires CSV/data science tooling, out of scope for now -> Kotlin Data Frame as well
+    Further analysis — think of other meaningful insights from the data
+
+
+
 -----------------------
 - railway.com, was muesste man machen um die db und das tool zu deployen, notizen machen, terraform -> intro lesen
   - versuchen dort eine db aufzusetzen und von lokal aus drauf zugreifen - wieviel kostet eine db pro tag? wenn alles ins budget passt waere das gut (kostenlose version)

@@ -76,7 +76,38 @@ class Analyser(
         }
     }
 
+
+    // wie kann ich in den age grous abzaehlen, wie viele elemente in der gruppe sind? die information habe
+    // ich doch. Ich brauche aber die Information, wieviele davon rabattiert sind.
+
     fun platzhalter() {
+
+        println(
+            "AGE GROUP".padEnd(15) +
+                    "ONLINE".padEnd(10) +
+                    "COUNT".padEnd(8) +
+                    "PERCENT".padEnd(10)
+        )
+        println("-".repeat(43))
+        aggregatedItemsByAgeGroup.forEach { (ageGroup, items) ->
+            val itemsGroupedOnlineOrOffline = items.groupBy {
+                it.isOnline(lastGlobalScrape)
+            }
+            itemsGroupedOnlineOrOffline.forEach { (isOnline, itemsOnlineOffline) ->
+                println(
+                    ageGroup.padEnd(15) +
+                            isOnline.toString().padEnd(10) +
+                            itemsOnlineOffline.size.toString().padEnd(8) +
+                            "${
+                                round(
+                                    itemsOnlineOffline.size.toDouble() /
+                                            items.size * 100
+                                )
+                            }%".padEnd(10)
+                )
+            }
+            println()
+        }
 
         aggregatedItemsByAgeGroup.forEach { (ageGroup, items) ->
             println(ageGroup + " " + items.size)
@@ -85,45 +116,28 @@ class Analyser(
 
             itemsGroupedOnlineOrOffline.forEach { (isOnline, itemsOnlineOffline) ->
 
-                print("$isOnline ")
+                print("isOnline: $isOnline ")
 
-                print(
-                    "${itemsOnlineOffline.size}, " +
-                            "${
-                                round(
-                                    itemsOnlineOffline.size.toDouble() /
-                                            items.size * 100
-                                )
-                            }% "
+                val roundedPercentage = round(
+                    itemsOnlineOffline.size.toDouble() /
+                            items.size * 100
                 )
-//                itemsOnlineOffline.forEach { print(it.id + ", ") }
+                print("${itemsOnlineOffline.size}, ${roundedPercentage}% ")
+                itemsOnlineOffline.forEach { its ->
+                    print(" ${its.id}  disc: ${its.discount != 0.0}, ")
+
+
+                }
+                println()
+                itemsOnlineOffline.groupBy { it.discount != 0.0 }.forEach { (disc, itemsA) ->
+                    items.forEach { println(it.id + " disco " + it.discount + " " + disc + " " + itemsA.size + " - " + (itemsA.size/itemsOnlineOffline.size.toDouble())) }
+                }
                 println()
             }
             println()
         }
-
-        println("AGE GROUP".padEnd(15) +
-                "ONLINE".padEnd(10) +
-                "COUNT".padEnd(8) +
-                "PERCENT".padEnd(10))
-        println("-".repeat(43))
-        aggregatedItemsByAgeGroup.forEach { (ageGroup, items) ->
-            val itemsGroupedOnlineOrOffline = items.groupBy {
-                it.isOnline(lastGlobalScrape) }
-            itemsGroupedOnlineOrOffline.forEach { (isOnline, itemsOnlineOffline) ->
-                println(
-                    ageGroup.padEnd(15) +
-                            isOnline.toString().padEnd(10) +
-                            itemsOnlineOffline.size.toString().padEnd(8) +
-                            "${round(
-                                itemsOnlineOffline.size.toDouble() /
-                                        items.size * 100)}%".padEnd(10)
-                )
-            }
-            println()
-        }
-
     }
+
 
     fun printAggregatedItems(
     ) {
@@ -131,7 +145,7 @@ class Analyser(
             "ID".padEnd(12) +
                     "OLDEST".padEnd(12) +
                     "NEWEST".padEnd(12) +
-                    "DISCOUNT".padEnd(8) +
+                    "DISCOUNT".padEnd(12) +
                     "AGE GROUP".padEnd(12) +
                     "ONLINE".padEnd(12)
         )
@@ -142,7 +156,7 @@ class Analyser(
                 item.id.padEnd(12) +
                         item.oldestPrice.toString().padEnd(12) +
                         item.newestPrice.toString().padEnd(12) +
-                        item.discount.toString().padEnd(8)
+                        item.discount.toString().padEnd(12)
                             .replace("0.0", "   ") +
                         item.ageGroup.padEnd(12) +
                         item.isOnline(lastGlobalScrape).toString().padEnd(12)

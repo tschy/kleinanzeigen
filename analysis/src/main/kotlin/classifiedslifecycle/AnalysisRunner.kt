@@ -18,9 +18,9 @@ class AnalysisRunner(
         analyser.printAgeGroupDistribution()
 //
 ////NEXT
-        analyser.printAgeGroupDistributionForItemsOnlineAndOffline()
 //        analyser.printIsItemOnline()
-//        analyser.printAggregatedItems()
+        analyser.printAgeGroupDistributionForItemsOnlineAndOffline()
+        analyser.printAggregatedItems()
         analyser.platzhalter()
 //
     }

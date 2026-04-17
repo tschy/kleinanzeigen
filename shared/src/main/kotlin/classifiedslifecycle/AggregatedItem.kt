@@ -14,6 +14,8 @@ class AggregatedItem(
     val firstCreated: LocalDate?,
     val oldestPrice: Double?,
     val newestPrice: Double?,
+
+
     ) {
 
     val ageDays = ChronoUnit.DAYS.between(
