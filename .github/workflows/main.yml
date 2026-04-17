@@ -1,4 +1,5 @@
 
+
 name: Scraper build
 on:
   push:
@@ -30,9 +31,8 @@ jobs:
       run: curl -fsSL cli.new | sh
       
     - name: Update Railway Image
-  
-      run: |
-        railway variables set DOCKER_IMAGE_TAG=${{ github.run_number }}
-        railway redeploy
+      run: railway variables set --service YOUR_SERVICE_ID_FROM_URL DOCKER_IMAGE_TAG=${{ github.run_number }}
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+        
