@@ -6,6 +6,8 @@ import java.time.Instant
 import java.time.temporal.ChronoUnit
 import kotlin.collections.component1
 import kotlin.collections.component2
+import kotlin.collections.mutableMapOf
+import kotlin.collections.set
 import kotlin.math.round
 
 @Service
@@ -13,6 +15,7 @@ class Analyser(
     val listingRepository: ListingRepository,
 
     ) {
+
     private val logger = KotlinLogging.logger {}
 
     val lastGlobalScrape: Instant? = listingRepository.queryGlobalLastScrape()
@@ -22,124 +25,165 @@ class Analyser(
 
     val aggregatedItemsByAgeGroup = aggregatedItems.groupBy { it.ageGroup }
 
-    fun printAgeGroupDistribution() {
+    val itemsAgeGroupsDiscountedOnline = mutableMapOf<String, List<Int>>()
+
+    val itemsAgeGroupsDiscounted = mutableMapOf<String, Int>()
+    val itemsAgeGroupOffline = mutableMapOf<String, Int>()
+    val itemsAgeGroupOnline = mutableMapOf<String, Int>()
+
+
+
+    fun printTableDiscountsOnlineAndOffline() {
+
+        calculatePercentageDiscount()
+
+        val columnWide = 10
+        val columnNarrow = 6
+
+        println()
+        println("[1] Number of Items")
+        println("[2] % of Discounted Items")
+        println("[3] Number of Online Items")
+        println("[4] Number of Offline Items")
+        println("[5] % of Discounted Online Items")
+        println("[6] % of Discounted Offline Items")
+        println()
+
+        val headerFormat = "%-${columnWide}s " +
+                "%${columnNarrow}s " +
+                "%${columnWide}s " +
+                "%${columnNarrow}s " +
+                "%${columnNarrow}s " +
+                "%${columnNarrow}s " +
+                "%${columnNarrow}s"
+        println(
+            (headerFormat)
+                .format("Age Group", "[1]", "[2]", "[3]", "[4]", "[5]", "[6]")
+        )
+
         aggregatedItemsByAgeGroup.forEach { (ageGroup, items) ->
-            print(ageGroup + " " + items.size)
-            items.forEach { item -> print(" ${item.id},") }
-            println()
+
+            val percentageDiscounted =
+                "%.2f".format(
+                    itemsAgeGroupsDiscounted[ageGroup]
+                        ?.toDouble()
+                        ?.div(items.size.toDouble())
+                        ?.times(100.0)
+                )
+
+            val percentageDiscountedOnline =
+                "%.2f".format(
+                    itemsAgeGroupsDiscountedOnline[ageGroup]
+                        ?.get(0)
+                        ?.toDouble()
+                        ?.div(items.size.toDouble())
+                        ?.times(100.0)
+                )
+
+            val percentageDiscountedOffline =
+                "%.2f".format(
+                    itemsAgeGroupsDiscountedOnline[ageGroup]
+                        ?.get(1)
+                        ?.toDouble()
+                        ?.div(items.size.toDouble())
+                        ?.times(100.0)
+                )
+
+            val string = headerFormat.format(
+                ageGroup,
+                items.size,
+                percentageDiscounted,
+                itemsAgeGroupOnline[ageGroup]?.takeIf { it != 0 } ?: "",
+                itemsAgeGroupOffline[ageGroup]?.takeIf { it != 0 } ?: "",
+                percentageDiscountedOnline,
+                percentageDiscountedOffline,
+            ).replace("0.00", "    ")
+                .replace(".00", "   ")
+                .trimIndent()
+
+            println(string)
         }
     }
 
-    fun printIsItemOnline() {
-        logger.info { "Analysing ${aggregatedItems.size} items" }
-        println(lastGlobalScrape)
-        aggregatedItems.forEach { item ->
-            println(
-                item.toDebugString() + " // " + item.isOnline(lastGlobalScrape)
+    fun calculatePercentageDiscount() {
+
+        aggregatedItemsByAgeGroup.forEach { (ageGroup, itemsAgeGroup) ->
+
+            var numberItemsDiscOnl = 0
+            var numberItemsDiscNotOnl = 0
+            var numberItemsNotDiscOnl = 0
+            var numberItemsNotDiscNotOnl = 0
+
+            val itemsOnlineOrOffline =
+                itemsAgeGroup.groupBy { it.isOnline(lastGlobalScrape) }
+
+            itemsOnlineOrOffline.forEach { (online, itemsOnlineOffline) ->
+
+                val itemsDiscNotDiscOnlNotOnl =
+                    itemsOnlineOffline.groupBy { it.discount != 0.0 }
+
+                itemsDiscNotDiscOnlNotOnl.forEach { (discount, itemsDiscNotDisc) ->
+
+                    if (discount && online)
+                        numberItemsDiscOnl = itemsDiscNotDisc.size
+                    if (discount && !online)
+                        numberItemsDiscNotOnl = itemsDiscNotDisc.size
+                    if (!discount && online)
+                        numberItemsNotDiscOnl = itemsDiscNotDisc.size
+                    if (!discount && !online)
+                        numberItemsNotDiscNotOnl = itemsDiscNotDisc.size
+                }
+            }
+
+            itemsAgeGroupsDiscountedOnline[ageGroup] = listOf(
+                numberItemsDiscOnl,
+                numberItemsDiscNotOnl,
+                numberItemsNotDiscOnl,
+                numberItemsNotDiscNotOnl
             )
-        }
-    }
 
-    fun determineAgeGroupDistributionForItemsOnlineAndOffline():
-            MutableMap<String, Pair<Int, Int>> {
-        logger.info { "Analysing ${aggregatedItems.size} items" }
+            itemsAgeGroupsDiscounted[ageGroup] =
+                numberItemsDiscOnl + numberItemsDiscNotOnl
 
-        // getrennt nach anzeigen online/nicht online (zu jeder age group zwei ausgeben)
-        val ageDistributionOnlineOffline = mutableMapOf<String, Pair<Int, Int>>()
+            itemsAgeGroupOnline[ageGroup] =
+                numberItemsDiscOnl + numberItemsNotDiscOnl
 
-        aggregatedItems.forEach { item ->
-            val onlineCount = ageDistributionOnlineOffline[item.ageGroup]?.first ?: 0
-            val offlineCount = ageDistributionOnlineOffline[item.ageGroup]?.second ?: 0
+            itemsAgeGroupOffline[ageGroup] =
+                numberItemsDiscNotOnl + numberItemsNotDiscNotOnl
 
-            ageDistributionOnlineOffline[item.ageGroup] =
-                if (item.isOnline(lastGlobalScrape)) Pair(onlineCount + 1, offlineCount)
-                else (Pair(onlineCount, offlineCount + 1));
-        }
-        return ageDistributionOnlineOffline
-    }
-
-    fun printAgeGroupDistributionForItemsOnlineAndOffline() {
-
-        val ageDistributionOnlineOffline =
-            determineAgeGroupDistributionForItemsOnlineAndOffline()
-        println(ageDistributionOnlineOffline)
-        println("%-12s %s %s".format("Age Group", "OnlineCount", "OfflineCount"))
-        println("-".repeat(30))
-        ageDistributionOnlineOffline.forEach { (group, counts) ->
-            val (onlineCount, offlineCount) = counts
-            println("%-12s %6d      %6d".format(group, onlineCount, offlineCount))
-        }
-
-        println("%-12s %s".format("Age Group", "Count", "% Discounted"))
-        aggregatedItemsByAgeGroup.forEach { (string, items) ->
-            println(string + " " + items.size + " ")
         }
     }
 
 
-    // wie kann ich in den age grous abzaehlen, wie viele elemente in der gruppe sind? die information habe
-    // ich doch. Ich brauche aber die Information, wieviele davon rabattiert sind.
+    fun debugPrintChangedItems() {
+        println("---Listing changed items:")
+        listingRepository.queryChangedItems()
+            .forEach { listing -> println(listing.toDebugString()) }
 
-    fun platzhalter() {
+        println("---Listing items that changed in the last 24 hours:")
+        listingRepository.queryChangedItemsLast24hrs(
+            Instant.now().minus(
+                24, ChronoUnit.HOURS
+            )
+        ).forEach { listing -> println(listing.toDebugString()) }
 
         println(
-            "AGE GROUP".padEnd(15) +
-                    "ONLINE".padEnd(10) +
-                    "COUNT".padEnd(8) +
-                    "PERCENT".padEnd(10)
+            "---Listing items that changed and whose latest known version was last " +
+                    "scraped between 24h and 48h ago i.e., " +
+                    "potentially disappeared listings:"
         )
-        println("-".repeat(43))
-        aggregatedItemsByAgeGroup.forEach { (ageGroup, items) ->
-            val itemsGroupedOnlineOrOffline = items.groupBy {
-                it.isOnline(lastGlobalScrape)
-            }
-            itemsGroupedOnlineOrOffline.forEach { (isOnline, itemsOnlineOffline) ->
-                println(
-                    ageGroup.padEnd(15) +
-                            isOnline.toString().padEnd(10) +
-                            itemsOnlineOffline.size.toString().padEnd(8) +
-                            "${
-                                round(
-                                    itemsOnlineOffline.size.toDouble() /
-                                            items.size * 100
-                                )
-                            }%".padEnd(10)
-                )
-            }
-            println()
-        }
-
-        aggregatedItemsByAgeGroup.forEach { (ageGroup, items) ->
-            println(ageGroup + " " + items.size)
-            val itemsGroupedOnlineOrOffline =
-                items.groupBy { it.isOnline(lastGlobalScrape) }
-
-            itemsGroupedOnlineOrOffline.forEach { (isOnline, itemsOnlineOffline) ->
-
-                print("isOnline: $isOnline ")
-
-                val roundedPercentage = round(
-                    itemsOnlineOffline.size.toDouble() /
-                            items.size * 100
-                )
-                print("${itemsOnlineOffline.size}, ${roundedPercentage}% ")
-                itemsOnlineOffline.forEach { its ->
-                    print(" ${its.id}  disc: ${its.discount != 0.0}, ")
-
-
-                }
-                println()
-                itemsOnlineOffline.groupBy { it.discount != 0.0 }.forEach { (disc, itemsA) ->
-                    items.forEach { println(it.id + " disco " + it.discount + " " + disc + " " + itemsA.size + " - " + (itemsA.size/itemsOnlineOffline.size.toDouble())) }
-                }
-                println()
-            }
-            println()
-        }
+        listingRepository.queryItemsDisappearedBetween24And48Hours(
+            Instant.now().minus(
+                24, ChronoUnit.HOURS
+            ),
+            Instant.now().minus(
+                48, ChronoUnit.HOURS
+            )
+        ).forEach { listing -> println(listing.toDebugString()) }
     }
 
 
-    fun printAggregatedItems(
+    fun debugPrintAggregatedItems(
     ) {
         println(
             "ID".padEnd(12) +
@@ -165,29 +209,16 @@ class Analyser(
     }
 
 
-    fun printChangedItems() {
-
-        println("---Listing changed items:")
-        listingRepository.queryChangedItems()
-            .forEach { listing -> println(listing.toDebugString()) }
-
-        println("---Listing items that changed in the last 24 hours:")
-        listingRepository.queryChangedItemsLast24hrs(
-            Instant.now().minus(
-                24, ChronoUnit.HOURS
-            )
-        ).forEach { listing -> println(listing.toDebugString()) }
-
-        println(
-            "---Listing items that changed and whose latest known version was last scraped between 24h and 48h ago i.e., potentially disappeared listings:"
-        )
-        listingRepository.queryItemsDisappearedBetween24And48Hours(
-            Instant.now().minus(
-                24, ChronoUnit.HOURS
-            ),
-            Instant.now().minus(
-                48, ChronoUnit.HOURS
-            )
-        ).forEach { listing -> println(listing.toDebugString()) }
+    fun debugPrintAgeGroupDistribution() {
+        aggregatedItemsByAgeGroup.forEach { (ageGroup, items) ->
+            print(ageGroup + " " + items.size)
+            items.forEach { item -> print(" ${item.id},") }
+            println()
+        }
     }
+
+
+
+
+
 }

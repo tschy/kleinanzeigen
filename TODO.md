@@ -94,9 +94,6 @@ TODO:
       '3337686577' : '2026-04-07T13:50:43.965391Z' : '2026-04-09T05:24:16.487060Z' : '12': '2026-02-27' // false
 
 
-- missing tests? : 
-- Aggregation in Aggregate Item
-- counting in ageDistribution and ageDistributionOnlineOffline
 -------------------------------------------------
 
  - [x] eine Abfrage schreiben, die für jede Anzeige den ältesten Preis (aus der Zeile mit dem frühesten firstScrape) und den neuesten Preis (aus der Zeile mit dem spätesten firstScrape) zurückgibt — mit Subqueries. Nicht MIN/MAX des Preises, sondern den Preis zum ältesten und neuesten Scrapezeitpunkt.
@@ -162,8 +159,7 @@ TODO:
   - less /var/mail/robert to see the output
   - pgrep cron to get the PID of the cron job
 
-
-
+    
 - [x] solve .jar executable problem -> do not try to execute the -plain.jar
 - 
  /home/robert/Downloads/jdk-21_linux-x64_bin/jdk-21.0.10/bin/java -jar /home/robert/kleinanzeigen/scraper/build/libs/scraper.jar
@@ -211,10 +207,12 @@ x verstehen was das deployment model von railway ist und der unterschied von uns
 
 docker image, jedes mal ein neues erstellen wenn es eine neue version gibt
 
+"Configure a pre-deploy command to run database migrations before each deployment."
+
 -------------------------------------------------
 
 
-    Discount rate per age group — what percentage of items had a price reduction (oldest price ≠ newest price), broken down by age group, and separately for online/offline
+   - [x ] Discount rate per age group — what percentage of items had a price reduction (oldest price ≠ newest price), broken down by age group, and separately for online/offline
     Online/offline distribution per age group — count and percentage of online vs offline items per age group (partially done)
     Data class for age group stats — a data class holding: count online, count offline, discount rate online, discount rate offline — grouped by age group (and optionally by online flag)
     Correlation skipped — average discount vs age group correlation requires CSV/data science tooling, out of scope for now -> Kotlin Data Frame as well
@@ -227,3 +225,8 @@ docker image, jedes mal ein neues erstellen wenn es eine neue version gibt
   - versuchen dort eine db aufzusetzen und von lokal aus drauf zugreifen - wieviel kostet eine db pro tag? wenn alles ins budget passt waere das gut (kostenlose version)
 
 --------------------------------
+ich überlege gerade, wie man geschickt das Datenmodell ergänzen kann, damit an den Einträgen ersichtlich ist, zu welcher SearchConfig sie gehören.
+￼
+vielleicht in der SearchConfig Klasse noch ein Feld "key" hinzufügen und dieses dann in jedem ScrapeItem hinzufügen.
+
+
