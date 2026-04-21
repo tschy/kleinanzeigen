@@ -16,7 +16,7 @@ class AnalysisRunner(
 
         analyser.printTableDiscountsOnlineAndOffline()
 
-        analyser.debugPrintAggregatedItems()
+//        analyser.debugPrintAggregatedItems()
 
     }
 }

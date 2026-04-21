@@ -28,7 +28,8 @@ class AggregatedItem(
 
     val ageGroup = if (ageDays <= 13) "$ageDays days"
     else if (ageDays <= 13 * 7) "${ageDays / 7} weeks"
-    else "${ageDays / 30} months"
+    else if (ageDays <= 30 * 12 * 2) "${ageDays / 30} months"
+        else "${ageDays / 365} years"
 
     val tolerance: Long = 5
     val timeFrame = ChronoUnit.MINUTES

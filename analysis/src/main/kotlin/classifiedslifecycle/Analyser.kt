@@ -107,8 +107,6 @@ class Analyser(
                         ?.times(100.0)
                 )
 
-
-
             val string = headerFormat.format(
                 ageGroup,
                 items.size,
