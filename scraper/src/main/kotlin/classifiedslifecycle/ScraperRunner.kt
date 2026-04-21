@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.annotation.Profile
 
-@Profile("!test & !test-m") //prevents scraping into the prod db when tests are running
+//@Profile("!test & !test-m") //prevents scraping into the prod db when tests are running
 @Component
 class ScraperRunner(
     private val itemService: ItemService,

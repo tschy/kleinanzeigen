@@ -212,7 +212,8 @@ docker image, jedes mal ein neues erstellen wenn es eine neue version gibt
 -------------------------------------------------
 
 
-   - [x ] Discount rate per age group — what percentage of items had a price reduction (oldest price ≠ newest price), broken down by age group, and separately for online/offline
+   - [x] Discount rate per age group — what percentage of items had a price reduction (oldest price ≠ newest price), broken down by age group, and separately for online/offline
+   - [x] Fix oldest price issue: take original price into account
     Online/offline distribution per age group — count and percentage of online vs offline items per age group (partially done)
     Data class for age group stats — a data class holding: count online, count offline, discount rate online, discount rate offline — grouped by age group (and optionally by online flag)
     Correlation skipped — average discount vs age group correlation requires CSV/data science tooling, out of scope for now -> Kotlin Data Frame as well

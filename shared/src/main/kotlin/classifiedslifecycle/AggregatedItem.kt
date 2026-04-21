@@ -14,9 +14,8 @@ class AggregatedItem(
     val firstCreated: LocalDate?,
     val oldestPrice: Double?,
     val newestPrice: Double?,
-
-
-    ) {
+    val originalPrice: Double?
+) {
 
     val ageDays = ChronoUnit.DAYS.between(
         firstCreated,
@@ -39,11 +38,12 @@ class AggregatedItem(
         (lastScrape > lastGlobalScrape!!.minus(tolerance, timeFrame)
                 && lastScrape < lastGlobalScrape.plus(tolerance, timeFrame))
 
+    val discount = if (newestPrice != null && originalPrice != null) newestPrice - originalPrice
+    else if  (newestPrice != null && oldestPrice != null && originalPrice == null) newestPrice - oldestPrice
+        else  0.0
 
-    val discount = if (newestPrice != null && oldestPrice != null) newestPrice - oldestPrice
-    else 0.0
 
     fun toDebugString() =
-        "'${id}' : '${firstScrape}' : '${lastScrape}' : '${scrapeCount}': '${firstCreated}  : '${oldestPrice}' : '${newestPrice}''"
+        "'${id}' : '${firstScrape}' : '${lastScrape}' : '${scrapeCount}': '${firstCreated}  : '${oldestPrice}' : '${newestPrice}' : '${originalPrice}''"
 
 }

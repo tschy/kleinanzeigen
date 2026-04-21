@@ -43,8 +43,8 @@ class Analyser(
         println()
         println("[1] Number of Items")
         println("[2] % of Discounted Items")
-        println("[3] Number of Online Items")
-        println("[4] Number of Offline Items")
+        println("[3] % of Online Items")
+        println("[4] % of Offline Items")
         println("[5] % of Discounted Online Items")
         println("[6] % of Discounted Offline Items")
         println()
@@ -63,8 +63,10 @@ class Analyser(
 
         aggregatedItemsByAgeGroup.forEach { (ageGroup, items) ->
 
+            val numberFormatString = "%6.2f"
+
             val percentageDiscounted =
-                "%.2f".format(
+                numberFormatString.format(
                     itemsAgeGroupsDiscounted[ageGroup]
                         ?.toDouble()
                         ?.div(items.size.toDouble())
@@ -72,7 +74,7 @@ class Analyser(
                 )
 
             val percentageDiscountedOnline =
-                "%.2f".format(
+                numberFormatString.format(
                     itemsAgeGroupsDiscountedOnline[ageGroup]
                         ?.get(0)
                         ?.toDouble()
@@ -81,7 +83,7 @@ class Analyser(
                 )
 
             val percentageDiscountedOffline =
-                "%.2f".format(
+                numberFormatString.format(
                     itemsAgeGroupsDiscountedOnline[ageGroup]
                         ?.get(1)
                         ?.toDouble()
@@ -89,16 +91,35 @@ class Analyser(
                         ?.times(100.0)
                 )
 
+            val percentageOnlineItems =
+                numberFormatString.format(
+                    itemsAgeGroupOnline[ageGroup]
+                        ?.toDouble()
+                        ?.div(items.size.toDouble())
+                        ?.times(100.0)
+                )
+
+            val percentageOfflineItems =
+                numberFormatString.format(
+                    itemsAgeGroupOffline[ageGroup]
+                        ?.toDouble()
+                        ?.div(items.size.toDouble())
+                        ?.times(100.0)
+                )
+
+
+
             val string = headerFormat.format(
                 ageGroup,
                 items.size,
                 percentageDiscounted,
-                itemsAgeGroupOnline[ageGroup]?.takeIf { it != 0 } ?: "",
-                itemsAgeGroupOffline[ageGroup]?.takeIf { it != 0 } ?: "",
+                percentageOnlineItems,
+                percentageOfflineItems,
                 percentageDiscountedOnline,
                 percentageDiscountedOffline,
-            ).replace("0.00", "    ")
+            ).replace(" 0.00", "     ")
                 .replace(".00", "   ")
+
                 .trimIndent()
 
             println(string)
@@ -189,6 +210,7 @@ class Analyser(
             "ID".padEnd(12) +
                     "OLDEST".padEnd(12) +
                     "NEWEST".padEnd(12) +
+                    "ORIGINAL".padEnd(12) +
                     "DISCOUNT".padEnd(12) +
                     "AGE GROUP".padEnd(12) +
                     "ONLINE".padEnd(12)
@@ -200,8 +222,9 @@ class Analyser(
                 item.id.padEnd(12) +
                         item.oldestPrice.toString().padEnd(12) +
                         item.newestPrice.toString().padEnd(12) +
-                        item.discount.toString().padEnd(12)
-                            .replace("0.0", "   ") +
+                        item.originalPrice.toString().padEnd(12)
+                            .replace("null", "    ") +
+                        (item.discount.takeIf { it != 0.0 }?.toString() ?: "").padEnd(12) +
                         item.ageGroup.padEnd(12) +
                         item.isOnline(lastGlobalScrape).toString().padEnd(12)
             )
