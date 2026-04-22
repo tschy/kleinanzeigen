@@ -14,9 +14,9 @@ class AnalysisRunner(
     override fun run(args: ApplicationArguments) {
         logger.info { "---running the analyser" }
 
+        analyser.debugPrintAggregatedItems()
         analyser.printTableDiscountsOnlineAndOffline()
 
-//        analyser.debugPrintAggregatedItems()
 
     }
 }

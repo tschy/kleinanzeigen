@@ -1,6 +1,8 @@
 package classifiedslifecycle
 
+import classifiedslifecycle.model.AgeGroupStats
 import io.github.oshai.kotlinlogging.KotlinLogging
+import jdk.javadoc.internal.doclets.formats.html.markup.HtmlStyle
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -27,10 +29,7 @@ class Analyser(
 
     val itemsAgeGroupsDiscountedOnline = mutableMapOf<String, List<Int>>()
 
-    val itemsAgeGroupsDiscounted = mutableMapOf<String, Int>()
-    val itemsAgeGroupOffline = mutableMapOf<String, Int>()
-    val itemsAgeGroupOnline = mutableMapOf<String, Int>()
-
+    val listAgeGroupStats = mutableListOf<AgeGroupStats>()
 
 
     fun printTableDiscountsOnlineAndOffline() {
@@ -61,55 +60,27 @@ class Analyser(
                 .format("Age Group", "[1]", "[2]", "[3]", "[4]", "[5]", "[6]")
         )
 
-        aggregatedItemsByAgeGroup.forEach { (ageGroup, items) ->
+        listAgeGroupStats.forEach{ item ->
 
             val numberFormatString = "%6.2f"
 
             val percentageDiscounted =
-                numberFormatString.format(
-                    itemsAgeGroupsDiscounted[ageGroup]
-                        ?.toDouble()
-                        ?.div(items.size.toDouble())
-                        ?.times(100.0)
-                )
+                numberFormatString.format(item.percentageDiscount)
 
             val percentageDiscountedOnline =
-                numberFormatString.format(
-                    itemsAgeGroupsDiscountedOnline[ageGroup]
-                        ?.get(0)
-                        ?.toDouble()
-                        ?.div(items.size.toDouble())
-                        ?.times(100.0)
-                )
+                numberFormatString.format(item.percentageDiscountOnline)
 
             val percentageDiscountedOffline =
-                numberFormatString.format(
-                    itemsAgeGroupsDiscountedOnline[ageGroup]
-                        ?.get(1)
-                        ?.toDouble()
-                        ?.div(items.size.toDouble())
-                        ?.times(100.0)
-                )
+                numberFormatString.format(   item.percentageDiscountOffline)
 
             val percentageOnlineItems =
-                numberFormatString.format(
-                    itemsAgeGroupOnline[ageGroup]
-                        ?.toDouble()
-                        ?.div(items.size.toDouble())
-                        ?.times(100.0)
-                )
-
+                numberFormatString.format(item.percentageOnline)
             val percentageOfflineItems =
-                numberFormatString.format(
-                    itemsAgeGroupOffline[ageGroup]
-                        ?.toDouble()
-                        ?.div(items.size.toDouble())
-                        ?.times(100.0)
-                )
+                numberFormatString.format( item.percentageOffline)
 
             val string = headerFormat.format(
-                ageGroup,
-                items.size,
+                item.ageGroup,
+                item.count,
                 percentageDiscounted,
                 percentageOnlineItems,
                 percentageOfflineItems,
@@ -119,15 +90,18 @@ class Analyser(
                 .replace(".00", "   ")
 
                 .trimIndent()
-
             println(string)
         }
+        println()
     }
 
     fun calculatePercentageDiscount() {
 
+        listAgeGroupStats.clear()
+
         aggregatedItemsByAgeGroup.forEach { (ageGroup, itemsAgeGroup) ->
 
+            val countAgeGroup = itemsAgeGroup.size
             var numberItemsDiscOnl = 0
             var numberItemsDiscNotOnl = 0
             var numberItemsNotDiscOnl = 0
@@ -154,22 +128,35 @@ class Analyser(
                 }
             }
 
-            itemsAgeGroupsDiscountedOnline[ageGroup] = listOf(
-                numberItemsDiscOnl,
-                numberItemsDiscNotOnl,
-                numberItemsNotDiscOnl,
-                numberItemsNotDiscNotOnl
+
+            listAgeGroupStats.add(
+                AgeGroupStats(
+                    ageGroup,
+                    countAgeGroup,
+                    (numberItemsDiscOnl + numberItemsNotDiscOnl),
+                    (numberItemsDiscNotOnl + numberItemsNotDiscNotOnl),
+                    (numberItemsDiscOnl + numberItemsDiscNotOnl)
+                        .toDouble()
+                        .div(countAgeGroup.toDouble())
+                        .times(100.0),
+                    numberItemsDiscOnl
+                        .toDouble()
+                        .div(countAgeGroup.toDouble())
+                        .times(100.0),
+                    numberItemsDiscNotOnl
+                        .toDouble()
+                        .div(countAgeGroup.toDouble())
+                        .times(100.0),
+                    (numberItemsDiscOnl + numberItemsNotDiscOnl)
+                        .toDouble()
+                        .div(countAgeGroup.toDouble())
+                        .times(100.0),
+                    (numberItemsDiscNotOnl + numberItemsNotDiscNotOnl)
+                        .toDouble()
+                        .div(countAgeGroup.toDouble())
+                        .times(100.0)
+                )
             )
-
-            itemsAgeGroupsDiscounted[ageGroup] =
-                numberItemsDiscOnl + numberItemsDiscNotOnl
-
-            itemsAgeGroupOnline[ageGroup] =
-                numberItemsDiscOnl + numberItemsNotDiscOnl
-
-            itemsAgeGroupOffline[ageGroup] =
-                numberItemsDiscNotOnl + numberItemsNotDiscNotOnl
-
         }
     }
 
@@ -237,9 +224,6 @@ class Analyser(
             println()
         }
     }
-
-
-
 
 
 }
