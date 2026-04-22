@@ -260,7 +260,7 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
  docker run --network host classifieds-scraper -> in cron reinschreiben
  docker run --rm --network host classifieds-scraper
 
-- exclude src/test, should happen automatically, verify by checking the docker img
+
 
 - [x] check all implemented functions are having correct output
 - [x] discount: how do we deal with the oldPrice data. Do we trust it to have been an actual price? -> we do
@@ -285,39 +285,68 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 -[x] docker build in der github action machen 
     -[x] build new image
 -[x] in die github container registry hochladen (deployment koennte ein extra Schritt sein, oder auch nicht -> railway) ghcr.io/tsch/classifieds-scraper:17
+-[x] push newly built docker image to github container registry
 -[x] verstehen was das deployment model von railway ist und der unterschied von uns
   - gradle nicht auf produ, soll nur auf entwl servern laufen
   - benutzt railway gradle
 
 -------------------------------------------------
+# Open Tasks
 
--[] push newly built docker image to railway
+
+-[] railway to pull the newly built docker image
 
 -[] find out which user agent string is used and think about which one we should use
 
--[] db auf railway laufen lassen kann und von lokal mit vpn zugreifen?
+-[] db auf railway laufen lassen kann und von lokal mit vpn zugreifen? 
+    -[x] install railway cli, use railway connect to access db
 
 -[] Configure a pre-deploy command to run database migrations before each deployment.
 
 -------------------------------------------------
+# Analysis
 
     - Correlation skipped — average discount vs age group correlation requires CSV/data science tooling, out of scope for now -> Kotlin Data Frame as well
     - Further analysis — think of other meaningful insights from the data
     - [] check for a correlation between discount and time online,
 -----------------------
+# Deployment
 
 - [] terraform -> intro lesen
 - [] von lokal aus auf die railway db zugreifen
 - [] cron job schritte reproduzieren, neuen Service aufsetzen der auch erfolgreich scraped
 - [] fix: no automatic deployment on pushing a new commit
-- 
+- [] exclude src/test, should happen automatically, verify by checking the docker img
+
 --------------------------------
+# Scraper
+
+- [] Spring Boot: sollte die Anwendung beenden, von alleine und von Spring gemanagt werden, der manuellen Code-Loesung ist das vorzuziehen
 - ich überlege gerade, wie man geschickt das Datenmodell ergänzen kann, damit an den Einträgen ersichtlich ist, zu welcher SearchConfig sie gehören.
 ￼
 - vielleicht in der SearchConfig Klasse noch ein Feld "key" hinzufügen und dieses dann in jedem ScrapeItem hinzufügen.
 
 --------------------------------
 
+# Questions
 
 - [] Wo sind die Pull Request Review Kommentare?
-- [] implement code changes pull request -> whos doing the merging?
+- [] implement code changes pull request -> whos doing the merging? -> kommt drauf an, mein projekt - git hub main gehoert mir, also mach ich den. wenn es ein team projekt ware dann gaebe es team regeln, dann muss einer approve druecken vielleicht. oder leute sind selbstverantwortlich, haben die changes befolgt/comments gefixed, dann machen die das alleine
+- [] Git History zusammen ansehen
+  - [] merge machen, main nach dev mergen
+
+
+
+
+
+prod umgebung konfigurieren application.prod
+und umgebungsvariablen nutzen
+
+
+DONE
+in secrets reingeschrieben
+zu gitignore zugefuegt, warum reicht das nicht?
+
+altes TODO
+
+docker checken/for test src files

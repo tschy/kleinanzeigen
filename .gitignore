@@ -10,7 +10,7 @@ ops/logs
 .idea/
 src/test/resources/data
 misc
-
+analysis/src/main/resources/application-railway-test.properties
 
 secrets.txt
 
