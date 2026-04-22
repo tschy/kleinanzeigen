@@ -7,7 +7,9 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 
 @Component
 class AnalysisRunner(
-    private val analyser: Analyser
+    private val analyser: Analyser,
+    private val dbTest: DbConnectionTest
+
 ) : ApplicationRunner {
     private val logger = KotlinLogging.logger {}
 
@@ -16,7 +18,6 @@ class AnalysisRunner(
 
         analyser.debugPrintAggregatedItems()
         analyser.printTableDiscountsOnlineAndOffline()
-
 
     }
 }
