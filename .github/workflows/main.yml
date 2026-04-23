@@ -27,12 +27,12 @@ jobs:
     - name: Build and push image
       run: ./gradlew :scraper:jib --image=ghcr.io/tschy/classifieds-scraper:${{ github.run_number }}
 
-    - name: Install Railway CLI
-      run: npm install -g @railway/cli
+    # - name: Install Railway CLI
+    #   run: npm install -g @railway/cli
       
-    - name: Update Railway Image
-      run: railway variables set --service a4ddda22-f288-4219-8124-87c47c015ed1 DOCKER_IMAGE_TAG=${{ github.run_number }}
-      env:
-        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+    # - name: Update Railway Image
+    #   run: railway variables set --service a4ddda22-f288-4219-8124-87c47c015ed1 DOCKER_IMAGE_TAG=${{ github.run_number }}
+    #   env:
+    #     RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
         
