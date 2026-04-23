@@ -290,11 +290,36 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
   - gradle nicht auf produ, soll nur auf entwl servern laufen
   - benutzt railway gradle
 
+#### Questions
+
+- [x] Wo sind die Pull Request Review Kommentare?
+- [x] implement code changes pull request -> whos doing the merging? -> kommt drauf an, mein projekt - git hub main gehoert mir, also mach ich den. wenn es ein team projekt ware dann gaebe es team regeln, dann muss einer approve druecken vielleicht. oder leute sind selbstverantwortlich, haben die changes befolgt/comments gefixed, dann machen die das alleine
+- [x] Git History zusammen ansehen
+    - [x] merge machen, main nach dev mergen
+
+
+--------------------------------------------------
+
+-[x] railway to pull the newly built docker image -> bessere Kontrolle mit Versionsnummern, leichtes roll back moeglich
+- 
+--------------------------------------------------
+# Analysis
+
+    - Correlation skipped — average discount vs age group correlation requires CSV/data science tooling, out of scope for now -> Kotlin Data Frame as well
+    - Further analysis — think of other meaningful insights from the data
+    - [] check for a correlation between discount and time online,
+
+###  Ausgabe Analysis
+
+- [] percent discounted
+
+- [] besser lesbar, zweizeilig, oder abkuerzungen einfuehren
+
+- [] grafik - website -> nebensaechlich, terraform ist sinnvoller
+
+
 -------------------------------------------------
 # Open Tasks
-
-
--[] railway to pull the newly built docker image
 
 -[] find out which user agent string is used and think about which one we should use
 
@@ -303,13 +328,10 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 
 -[] Configure a pre-deploy command to run database migrations before each deployment.
 
+- [] docker checken/for test src files being exluded
+- 
 -------------------------------------------------
-# Analysis
 
-    - Correlation skipped — average discount vs age group correlation requires CSV/data science tooling, out of scope for now -> Kotlin Data Frame as well
-    - Further analysis — think of other meaningful insights from the data
-    - [] check for a correlation between discount and time online,
------------------------
 # Deployment
 
 - [] terraform -> intro lesen
@@ -328,25 +350,37 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 
 --------------------------------
 
-# Questions
 
-- [] Wo sind die Pull Request Review Kommentare?
-- [] implement code changes pull request -> whos doing the merging? -> kommt drauf an, mein projekt - git hub main gehoert mir, also mach ich den. wenn es ein team projekt ware dann gaebe es team regeln, dann muss einer approve druecken vielleicht. oder leute sind selbstverantwortlich, haben die changes befolgt/comments gefixed, dann machen die das alleine
-- [] Git History zusammen ansehen
-  - [] merge machen, main nach dev mergen
+## Git
 
+- [] rebase - videos angucken, ist wichtig oder lesen, nicht jeder erklaert es auf die gleiche weise die zum eigenen passt
 
+## TODO
 
+- u. U. zu advanced: sicherheit von postgres verbessern, manuell zugriff bauen uber eigenen proxy
 
-
-prod umgebung konfigurieren application.prod
-und umgebungsvariablen nutzen
+- [] terraform!
 
 
-DONE
-in secrets reingeschrieben
-zu gitignore zugefuegt, warum reicht das nicht?
 
-altes TODO
 
-docker checken/for test src files
+
+
+robert@hypatia:~/terraform$terraform import railway_project.classifieds-lifecycle classifieds-lifecycle
+╷
+│ Error: Missing API token
+│ 
+│   with provider["registry.terraform.io/terraform-community-providers/railway"],
+│   on /home/robert/terraform/terraform.tf line 10, in provider "railway":
+│   10: provider "railway" {
+│ 
+│ Required token could not be found. Please set the token using an input variable in the provider
+│ configuration block or by using the `RAILWAY_TOKEN` environment variable.
+╵
+
+robert@hypatia:~/terraform$ 
+
+
+nachschlagen in der railway doc, https://registry.terraform.io/providers/terraform-community-providers/railway/latest/docs/resources/project
+oder sonstwo
+
