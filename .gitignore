@@ -4,7 +4,7 @@ build
 
 
 .env
-ops/backups/
+ops/local_backups/
 ops/logs
 *.class
 .idea/

@@ -298,15 +298,13 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 - [x] terraform -> intro lesen
 - [x] von lokal aus auf die railway db zugreifen
 
---------------------------------------------------
-- [x] verstehen, warum railway service laeuft:
-  - [x] es braucht kein custom start command
-  - [x] kein tear down
-  - [x] keine explizites exit with code 0 in der main/spring application class
-  - [x] der Deployment state darf active sein
-  - -> es dauert eine Weile, bis die Cron Jobs anfangen zu laufen, bis zu 20 Minuten
-
 --------------------------------------
+- [x] verstehen, warum railway service laeuft:
+    - [x] es braucht kein custom start command
+    - [x] kein tear down
+    - [x] keine explizites exit with code 0 in der main/spring application class
+    - [x] der Deployment state darf active sein
+    - -> es dauert eine Weile, bis die Cron Jobs anfangen zu laufen, bis zu 20 Minuten
 
 - [x] cron job schritte reproduzieren, neuen Service aufsetzen der auch erfolgreich scraped
 - [x] fix: no automatic deployment on pushing a new commit
@@ -335,6 +333,13 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
     -[x] install railway cli, use railway connect to access db  
 - [x] percent discounted als header
 - [x] besser lesbar, zweizeilig, oder abkuerzungen einfuehren
+- 
+- [x] write backups to dropbox [gemini/claude]
+  - [x] create bash script: create pd dump backup of the railway db, push to dropbox
+  - [x] build docker image which executes bash script
+  - [x] use terraform to create the following service:
+    - [x] pull docker image from ghcr
+    - [x] start cron job to do a run the backup service once a day
 --------------------------------------------------
 # Analysis
 
@@ -366,12 +371,9 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 
 --------------------------------
 
-
-
 ## TODO
 
 - u. U. zu advanced: sicherheit von postgres verbessern, manuell zugriff bauen uber eigenen proxy
-
 
 - [] abschaetzen wieviel byte ist ein datensatz, wieviele datensaetze.
 
