@@ -2,81 +2,94 @@ package classifiedslifecycle
 
 import classifiedslifecycle.model.AgeGroupStats
 import io.github.oshai.kotlinlogging.KotlinLogging
-import jdk.javadoc.internal.doclets.formats.html.markup.HtmlStyle
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import kotlin.collections.component1
 import kotlin.collections.component2
-import kotlin.collections.mutableMapOf
-import kotlin.collections.set
-import kotlin.math.round
 
 @Service
 class Analyser(
     val listingRepository: ListingRepository,
-
-    ) {
+) {
 
     private val logger = KotlinLogging.logger {}
 
     val lastGlobalScrape: Instant? = listingRepository.queryGlobalLastScrape()
 
     val aggregatedItems =
-        listingRepository.queryAggregateItems().sortedBy { it.ageDays }
+        listingRepository.queryAggregateItems()
+            .sortedBy { it.ageDays }
 
-    val aggregatedItemsByAgeGroup = aggregatedItems.groupBy { it.ageGroup }
-
-    val itemsAgeGroupsDiscountedOnline = mutableMapOf<String, List<Int>>()
+    val aggregatedItemsByAgeGroup = aggregatedItems
+        .groupBy { it.ageGroup }
 
     val listAgeGroupStats = mutableListOf<AgeGroupStats>()
-
 
     fun printTableDiscountsOnlineAndOffline() {
 
         calculatePercentageDiscount()
 
         val columnWide = 10
-        val columnNarrow = 6
+        val columnNarrow = 8
+        val space = " ".repeat(5)
 
         println()
-        println("[1] Number of Items")
-        println("[2] % of Discounted Items")
-        println("[3] % of Online Items")
-        println("[4] % of Offline Items")
-        println("[5] % of Discounted Online Items")
-        println("[6] % of Discounted Offline Items")
+        println("[1] # Adverts")
+        println("[2] % Discounted Ads")
+        println("[3] % Online Ads")
+        println("[4] % Offline Ads")
+        println("[5] % Discounted Online Ads")
+        println("[6] % Discounted Offline Ads")
         println()
 
         val headerFormat = "%-${columnWide}s " +
                 "%${columnNarrow}s " +
                 "%${columnWide}s " +
-                "%${columnNarrow}s " +
-                "%${columnNarrow}s " +
-                "%${columnNarrow}s " +
-                "%${columnNarrow}s"
+                "%-${columnNarrow}s " +
+                "%-${columnNarrow}s " +
+                "%-${columnWide}s " +
+                "%-${columnWide}s"
+
+
+        println(headerFormat
+            .format("Age Group",
+                "[1]",
+                "[2]",
+                "${space}[3]",
+                "${space}[4]",
+                "${space}[5]",
+                "${space}[6]"))
+
         println(
             (headerFormat)
-                .format("Age Group", "[1]", "[2]", "[3]", "[4]", "[5]", "[6]")
+                .format("",
+                    "#Ad",
+                    "%Disc",
+                    "${space}%Onl",
+                    "${space}%Off",
+                    " %Disc Onl",
+                    " %Disc Off")
         )
 
-        listAgeGroupStats.forEach{ item ->
+        listAgeGroupStats.forEach { item ->
 
-            val numberFormatString = "%6.2f"
+            val numberFormatStringNarrow = "%${columnNarrow}.2f"
+            val numberFormatStringWide = "%${columnWide}.2f"
 
             val percentageDiscounted =
-                numberFormatString.format(item.percentageDiscount)
+                numberFormatStringNarrow.format(item.percentageDiscount)
 
             val percentageDiscountedOnline =
-                numberFormatString.format(item.percentageDiscountOnline)
+                numberFormatStringWide.format(item.percentageDiscountOnline)
 
             val percentageDiscountedOffline =
-                numberFormatString.format(   item.percentageDiscountOffline)
+                numberFormatStringNarrow.format(item.percentageDiscountOffline)
 
             val percentageOnlineItems =
-                numberFormatString.format(item.percentageOnline)
+                numberFormatStringNarrow.format(item.percentageOnline)
             val percentageOfflineItems =
-                numberFormatString.format( item.percentageOffline)
+                numberFormatStringNarrow.format(item.percentageOffline)
 
             val string = headerFormat.format(
                 item.ageGroup,

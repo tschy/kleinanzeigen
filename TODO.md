@@ -329,7 +329,12 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 - [x] docker checken/for test src files being exluded
     -  docker pull ghcr.io/tschy/classifieds-scraper:19
     -  docker run --rm -it --entrypoint sh ghcr.io/tschy/classifieds-scraper:19
-  
+- [x] ausblick: zugriff auf die cloud daten
+    - [x] aus IntelliJ/app heraus
+- [x] db auf railway laufen lassen kann und von lokal mit vpn zugreifen?
+    -[x] install railway cli, use railway connect to access db  
+- [x] percent discounted als header
+- [x] besser lesbar, zweizeilig, oder abkuerzungen einfuehren
 --------------------------------------------------
 # Analysis
 
@@ -345,9 +350,12 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 
 ###  Ausgabe Analysis
 
-- [] percent discounted als header
+- [] how about adding a header or title in front of every report?
+- [] Before all the reports, print a status of the data that was used, such as:
+    - total scraping interval (very first and very last complete scrape)
+    - number of scrapes
+    - minimal scrapes per day
 
-- [] besser lesbar, zweizeilig, oder abkuerzungen einfuehren
 
 - [] grafik - website -> nebensaechlich, terraform ist sinnvoller
 
@@ -356,32 +364,30 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 
 - [] find out which user agent string is used and think about which one we should use
 
-- [] db auf railway laufen lassen kann und von lokal mit vpn zugreifen? 
-    -[x] install railway cli, use railway connect to access db
-
-
 --------------------------------
 
-## Git
 
-- [] rebase - videos angucken, ist wichtig oder lesen, nicht jeder erklaert es auf die gleiche weise die zum eigenen passt
 
 ## TODO
 
 - u. U. zu advanced: sicherheit von postgres verbessern, manuell zugriff bauen uber eigenen proxy
 
-- [] terraform!
 
 - [] abschaetzen wieviel byte ist ein datensatz, wieviele datensaetze.
 
 - [] analyser index auf primary (in der datenbank, teil von flyway script, auf allen feldern mit denen gesucht wird einen index machen, -> einlesen)
 
 
-
-- [x] ausblick: zugriff auf die cloud daten
-  - [x] aus IntelliJ/app heraus
-  - [] mit VPN
+- [] Zugriff auf DB mit VPN -> C: this is tricky because Railway is a managed platform and you don't control the network infrastructure. 
+  - what would work:
+      Tailscale — modern VPN, has Railway integration
+      Railway's default setup: public DB with strong credentials over TLS)
 
 # Questions
 - [] Configure a pre-deploy command to run database migrations before each deployment.
-    - ---> handled by spring.flyway.enabled=true in the application.properties file?
+    - ---> handled by spring.flyway.enabled=true in the application.properties file? - doesn't run, flyway scripts are in shared. should have been deployed together? why did it even work like that?
+
+    
+# ONGOING
+- [/] rebase - videos angucken, ist wichtig oder lesen, nicht jeder erklaert es auf die gleiche weise die zum eigenen passt
+- [/] terraform!
