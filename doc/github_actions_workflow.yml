@@ -1,0 +1,35 @@
+
+name: Scraper build
+on:
+  push:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        run: ./gradlew :scraper:jib --image=ghcr.io/tschy/classifieds-scraper:${{ github.run_number }}
+
+        # - name: Install Railway CLI
+        #   run: npm install -g @railway/cli
+
+        # - name: Update Railway Image
+        #   run: railway variables set --service a4ddda22-f288-4219-8124-87c47c015ed1 DOCKER_IMAGE_TAG=${{ github.run_number }}
+        #   env:
+        #     RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}

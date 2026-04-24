@@ -290,18 +290,46 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
   - gradle nicht auf produ, soll nur auf entwl servern laufen
   - benutzt railway gradle
 
-#### Questions
-
 - [x] Wo sind die Pull Request Review Kommentare?
 - [x] implement code changes pull request -> whos doing the merging? -> kommt drauf an, mein projekt - git hub main gehoert mir, also mach ich den. wenn es ein team projekt ware dann gaebe es team regeln, dann muss einer approve druecken vielleicht. oder leute sind selbstverantwortlich, haben die changes befolgt/comments gefixed, dann machen die das alleine
 - [x] Git History zusammen ansehen
     - [x] merge machen, main nach dev mergen
-
+-[x] railway to pull the newly built docker image -> bessere Kontrolle mit Versionsnummern, leichtes roll back moeglich
+- [x] terraform -> intro lesen
+- [x] von lokal aus auf die railway db zugreifen
 
 --------------------------------------------------
+- [x] verstehen, warum railway service laeuft:
+  - [x] es braucht kein custom start command
+  - [x] kein tear down
+  - [x] keine explizites exit with code 0 in der main/spring application class
+  - [x] der Deployment state darf active sein
+  - -> es dauert eine Weile, bis die Cron Jobs anfangen zu laufen, bis zu 20 Minuten
 
--[x] railway to pull the newly built docker image -> bessere Kontrolle mit Versionsnummern, leichtes roll back moeglich
-- 
+--------------------------------------
+
+- [x] cron job schritte reproduzieren, neuen Service aufsetzen der auch erfolgreich scraped
+- [x] fix: no automatic deployment on pushing a new commit
+  - [x] Spring Boot: sollte die Anwendung beenden, von alleine und von Spring gemanagt werden, der manuellen Code-Loesung ist das vorzuziehen
+
+- [x] solve: robert@hypatia:~/terraform$terraform import railway_project.classifieds-lifecycle classifieds-lifecycle
+      ╷
+      │ Error: Missing API token
+      │
+      │   with provider["registry.terraform.io/terraform-community-providers/railway"],
+      │   on /home/robert/terraform/terraform.tf line 10, in provider "railway":
+      │   10: provider "railway" {
+      │
+      │ Required token could not be found. Please set the token using an input variable in the provider
+      │ configuration block or by using the `RAILWAY_TOKEN` environment variable.
+      ╵
+- [x] nachschlagen in der railway doc, https://registry.terraform.io/providers/terraform-community-providers/railway/latest/docs/resources/project
+    oder sonstwo --> ging nur mit Claude
+
+- [x] docker checken/for test src files being exluded
+    -  docker pull ghcr.io/tschy/classifieds-scraper:19
+    -  docker run --rm -it --entrypoint sh ghcr.io/tschy/classifieds-scraper:19
+  
 --------------------------------------------------
 # Analysis
 
@@ -309,47 +337,30 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
     - Further analysis — think of other meaningful insights from the data
     - [] check for a correlation between discount and time online,
 
+# Scraper
+
+    - ich überlege gerade, wie man geschickt das Datenmodell ergänzen kann, damit an den Einträgen ersichtlich ist, zu welcher SearchConfig sie gehören.
+  ￼ - vielleicht in der SearchConfig Klasse noch ein Feld "key" hinzufügen und dieses dann in jedem ScrapeItem hinzufügen.
+
+
 ###  Ausgabe Analysis
 
-- [] percent discounted
+- [] percent discounted als header
 
 - [] besser lesbar, zweizeilig, oder abkuerzungen einfuehren
 
 - [] grafik - website -> nebensaechlich, terraform ist sinnvoller
 
-
 -------------------------------------------------
 # Open Tasks
 
--[] find out which user agent string is used and think about which one we should use
+- [] find out which user agent string is used and think about which one we should use
 
--[] db auf railway laufen lassen kann und von lokal mit vpn zugreifen? 
+- [] db auf railway laufen lassen kann und von lokal mit vpn zugreifen? 
     -[x] install railway cli, use railway connect to access db
 
--[] Configure a pre-deploy command to run database migrations before each deployment.
-
-- [] docker checken/for test src files being exluded
-- 
--------------------------------------------------
-
-# Deployment
-
-- [] terraform -> intro lesen
-- [] von lokal aus auf die railway db zugreifen
-- [] cron job schritte reproduzieren, neuen Service aufsetzen der auch erfolgreich scraped
-- [] fix: no automatic deployment on pushing a new commit
-- [] exclude src/test, should happen automatically, verify by checking the docker img
 
 --------------------------------
-# Scraper
-
-- [] Spring Boot: sollte die Anwendung beenden, von alleine und von Spring gemanagt werden, der manuellen Code-Loesung ist das vorzuziehen
-- ich überlege gerade, wie man geschickt das Datenmodell ergänzen kann, damit an den Einträgen ersichtlich ist, zu welcher SearchConfig sie gehören.
-￼
-- vielleicht in der SearchConfig Klasse noch ein Feld "key" hinzufügen und dieses dann in jedem ScrapeItem hinzufügen.
-
---------------------------------
-
 
 ## Git
 
@@ -361,26 +372,16 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 
 - [] terraform!
 
+- [] abschaetzen wieviel byte ist ein datensatz, wieviele datensaetze.
+
+- [] analyser index auf primary (in der datenbank, teil von flyway script, auf allen feldern mit denen gesucht wird einen index machen, -> einlesen)
 
 
 
+- [x] ausblick: zugriff auf die cloud daten
+  - [x] aus IntelliJ/app heraus
+  - [] mit VPN
 
-
-robert@hypatia:~/terraform$terraform import railway_project.classifieds-lifecycle classifieds-lifecycle
-╷
-│ Error: Missing API token
-│ 
-│   with provider["registry.terraform.io/terraform-community-providers/railway"],
-│   on /home/robert/terraform/terraform.tf line 10, in provider "railway":
-│   10: provider "railway" {
-│ 
-│ Required token could not be found. Please set the token using an input variable in the provider
-│ configuration block or by using the `RAILWAY_TOKEN` environment variable.
-╵
-
-robert@hypatia:~/terraform$ 
-
-
-nachschlagen in der railway doc, https://registry.terraform.io/providers/terraform-community-providers/railway/latest/docs/resources/project
-oder sonstwo
-
+# Questions
+- [] Configure a pre-deploy command to run database migrations before each deployment.
+    - ---> handled by spring.flyway.enabled=true in the application.properties file?

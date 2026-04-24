@@ -1,9 +1,5 @@
-
-custom start command
-java -cp "/app/resources:/app/classes:/app/libs/*" classifiedslifecycle.ScraperApplicationKt
-
 source image 
-ghcr.io/tschy/classifieds-scraper:17
+ghcr.io/tschy/classifieds-scraper:19
 
 
 SPRING_DATASOURCE_PASSWORD 
@@ -16,7 +12,7 @@ postgres
 
 
 Deployed via Docker Image 
-ghcr.io/tschy/classifieds-scraper:17
+ghcr.io/tschy/classifieds-scraper:19
 
 
 Restart policy 
@@ -26,6 +22,3 @@ never
 status 
 COMPLETED or ACTIVE, both work, crucial: wait for the first cron job to start, it will not start immediately
 
-
-
-spring boot exit thing
