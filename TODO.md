@@ -308,7 +308,7 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 
 - [x] cron job schritte reproduzieren, neuen Service aufsetzen der auch erfolgreich scraped
 - [x] fix: no automatic deployment on pushing a new commit
-  - [x] Spring Boot: sollte die Anwendung beenden, von alleine und von Spring gemanagt werden, der manuellen Code-Loesung ist das vorzuziehen
+- [x] Spring Boot: sollte die Anwendung beenden, von alleine und von Spring gemanagt werden, der manuellen Code-Loesung ist das vorzuziehen
 
 - [x] solve: robert@hypatia:~/terraform$terraform import railway_project.classifieds-lifecycle classifieds-lifecycle
       ╷
@@ -333,7 +333,9 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
     -[x] install railway cli, use railway connect to access db  
 - [x] percent discounted als header
 - [x] besser lesbar, zweizeilig, oder abkuerzungen einfuehren
-- 
+
+- [x] git rebase, run claude led tutorial, create test branches and commits
+
 - [x] write backups to dropbox [gemini/claude]
   - [x] create bash script: create pd dump backup of the railway db, push to dropbox
   - [x] build docker image which executes bash script
@@ -361,7 +363,6 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
     - number of scrapes
     - minimal scrapes per day
 
-
 - [] grafik - website -> nebensaechlich, terraform ist sinnvoller
 
 -------------------------------------------------
@@ -379,15 +380,20 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 
 - [] analyser index auf primary (in der datenbank, teil von flyway script, auf allen feldern mit denen gesucht wird einen index machen, -> einlesen)
 
-
-- [] Zugriff auf DB mit VPN -> C: this is tricky because Railway is a managed platform and you don't control the network infrastructure. 
+- [] Zugriff auf DB mit VPN -> Claude: this is tricky because Railway is a managed platform and you don't control the network infrastructure. 
   - what would work:
       Tailscale — modern VPN, has Railway integration
       Railway's default setup: public DB with strong credentials over TLS)
 
 # Questions
+
+- [] Observability as task, we have only touched theoretically? 
+
+# Find out
 - [] Configure a pre-deploy command to run database migrations before each deployment.
     - ---> handled by spring.flyway.enabled=true in the application.properties file? - doesn't run, flyway scripts are in shared. should have been deployed together? why did it even work like that?
+    - integrate flyway into the docker image that is getting deployed:
+      - Claude: the standard approach for Spring Boot apps is: Flyway runs on startup, managed by Spring. That's the convention 95% of Spring Boot projects use.
 
     
 # ONGOING
