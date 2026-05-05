@@ -4,13 +4,14 @@ import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.stereotype.Component
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.springframework.context.annotation.Profile
+
 
 //@Profile("!test & !test-m") //prevents scraping into the prod db when tests are running
 @Component
 class ScraperRunner(
     private val itemService: ItemService,
-    private val paginator: Paginator
+    private val paginator: Paginator,
+    private val scrapeRepository: ScrapeRepository
 ) : ApplicationRunner {
     private val logger = KotlinLogging.logger {}
 
@@ -26,5 +27,12 @@ class ScraperRunner(
         val scrapeItems = paginator.run(config)
         logger.info { "found ${scrapeItems.size} items" }
         itemService.process(scrapeItems)
+
+        if (!scrapeItems.isEmpty()) {
+            scrapeRepository.save(Scrape(0,scrapeItems.first().scrapeTime))
+
+        }
+
+
     }
 }

@@ -20,16 +20,15 @@ class ItemService(
             .sortedByDescending { it.created } // null ends up at the end of the list
             .distinctBy { it.id } // removes duplicates based on the id property, relevant for TOP ads
 
+
+
         sortedItems.forEach { scrapeItem ->
-
-
 
             // get the most recent listing of the ad
             val itemSaved = listingRepository
                 .findByIdId(scrapeItem.id).maxByOrNull { it.id.firstScrape }
 
             val newItem = toItem(scrapeItem)
-
 
             if (itemSaved != null) {
 
