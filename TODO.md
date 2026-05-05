@@ -343,10 +343,16 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
     - [x] pull docker image from ghcr
     - [x] start cron job to do a run the backup service once a day
    - [x] Fix token/authentication issues
-   
 
-   
 --------------------------------------------------
+
+- [x] Configure a pre-deploy command to run database migrations before each deployment.
+    - ---> handled by spring.flyway.enabled=true in the application.properties file? - doesn't run, flyway scripts are in shared. should have been deployed together? why did it even work like that?
+    - integrate flyway into the docker image that is getting deployed:
+        - Claude: the standard approach for Spring Boot apps is: Flyway runs on startup, managed by Spring. That's the convention 95% of Spring Boot projects use.
+    - moved flyway migration files from shared to scraper, rebuilt image: flyway migrations run when scraper gets executed
+
+
 
 - [x] find out which user agent string is used and think about which one we should use
   -> none
@@ -399,20 +405,7 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
             }
             return body
 
-
-# Analysis
-
-    - Correlation skipped — average discount vs age group correlation requires CSV/data science tooling, out of scope for now -> Kotlin Data Frame out of scope as well
-    - Further analysis — think of other meaningful insights from the data
-    - [] check for a correlation between discount and time online,
-
-# Scraper
-
-    - ich überlege gerade, wie man geschickt das Datenmodell ergänzen kann, damit an den Einträgen ersichtlich ist, zu welcher SearchConfig sie gehören.
-  ￼ - vielleicht in der SearchConfig Klasse noch ein Feld "key" hinzufügen und dieses dann in jedem ScrapeItem hinzufügen.
-
-
-_###  Ausgabe Analysis
+### Questions/Open Topics
 
 - [] how about adding a header or title in front of every report?
 
@@ -423,26 +416,27 @@ _###  Ausgabe Analysis
   
 id	scrape_count
 3380017449	479
-2313276847	15  <-- oldest item with three years
-
-Claude: if an item gets pushed down by newer listings and falls off the results page, it won't be scraped that run, even if it's still active.
-
+2313276847	15  <-- oldest item with three years, Claude: if an item gets pushed down by newer listings and falls off the results page, it won't be scraped that run, even if it's still active.
 
 ---- number of scrapes: Can't be calculated in a direct way, would have to be constructed from the data. and:
 A log file would work too but then you'd have to parse it later. A table is queryable immediately.
 
---> add a new table with flyway, once it is running. there were 479 scrapes from 17/4 up to 5/5/26 10 am, the log records 459 scrapes (scraper was offline temporarily). Hourly scraping started 23/4/26 2pm with minimal downtime.
+- [x] --> add a new table with flyway, once it is running. there were 479 scrapes from 17/4 up to 5/5/26 10 am, the log records 495 scrapes (scraper was offline temporarily). Hourly scraping started 23/4/26 2pm with minimal downtime.
 
 - [] grafik - website -> nebensaechlich, terraform ist sinnvoller
 
 -------------------------------------------------
-# Open Tasks
 
---------------------------------
+- [] Zugriff auf DB mit VPN -> Claude: this is tricky because Railway is a managed platform and you don't control the network infrastructure.
+    - what would work:
+      Tailscale — modern VPN, has Railway integration
+      Railway's default setup: public DB with strong credentials over TLS)
+
+-------------------------------------------------
 
 ## TODO
 
-- u. U. zu advanced: sicherheit von postgres verbessern, manuell zugriff bauen uber eigenen proxy
+- u. U. zu advanced: sicherheit von postgres verbessern, manuell zugriff bauen ueber eigenen proxy
 
 - [] abschaetzen wieviel byte ist ein datensatz, wieviele datensaetze.
 
@@ -453,28 +447,19 @@ A log file would work too but then you'd have to parse it later. A table is quer
 - Index definieren (s. TODO/log 30/4/26)
 --------------------------
 
-
--------------------------
-
-- [] Zugriff auf DB mit VPN -> Claude: this is tricky because Railway is a managed platform and you don't control the network infrastructure. 
-  - what would work:
-      Tailscale — modern VPN, has Railway integration
-      Railway's default setup: public DB with strong credentials over TLS)
-
-# Questions
-
-
-# Find out
-- [] Configure a pre-deploy command to run database migrations before each deployment.
-    - ---> handled by spring.flyway.enabled=true in the application.properties file? - doesn't run, flyway scripts are in shared. should have been deployed together? why did it even work like that?
-    - integrate flyway into the docker image that is getting deployed:
-      - Claude: the standard approach for Spring Boot apps is: Flyway runs on startup, managed by Spring. That's the convention 95% of Spring Boot projects use.
-
-
-    
 # ONGOING
 - [/] rebase - videos angucken, ist wichtig oder lesen, nicht jeder erklaert es auf die gleiche weise die zum eigenen passt
 - [/] terraform!
 
 
 
+# Analysis
+
+    - Correlation skipped — average discount vs age group correlation requires CSV/data science tooling, out of scope for now -> Kotlin Data Frame out of scope as well
+    - Further analysis — think of other meaningful insights from the data
+    - [] check for a correlation between discount and time online,
+
+# Scraper
+
+    - ich überlege gerade, wie man geschickt das Datenmodell ergänzen kann, damit an den Einträgen ersichtlich ist, zu welcher SearchConfig sie gehören.
+￼ - vielleicht in der SearchConfig Klasse noch ein Feld "key" hinzufügen und dieses dann in jedem ScrapeItem hinzufügen.

@@ -8,9 +8,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 @Service
 class FetcherService(
 
-
 ) {
-
     val client = OkHttpClient()
 
     fun fetch(url: String): String {
