@@ -10,17 +10,16 @@ class FetcherService(
 
 
 ) {
-    fun fetch(url: String) {
-        val client = OkHttpClient()
 
-        fun fetch(url: String): String {
-            val request = Request.Builder().url(url).build();
+    val client = OkHttpClient()
 
-            val body = client.newCall(request).execute().use { response ->
-                response.body.string()
-            }
-            return body
+    fun fetch(url: String): String {
+        val request = Request.Builder().url(url).build();
+
+        val body = client.newCall(request).execute().use { response ->
+            response.body.string()
         }
+        return body
     }
 
     fun fetchWithLogging(url: String): String {
@@ -35,7 +34,7 @@ class FetcherService(
             .url(url)
             .header(
                 "User-Agent",
-                "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+                "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (HTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
             )
             .build();
 

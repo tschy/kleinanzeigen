@@ -71,6 +71,8 @@ interface ListingRepository : JpaRepository<Item, ListingId> {
         fortyEightHoursAgo: Instant
     ): List<Item>
 
+    @Query("SELECT MIN(i.lastScrape) FROM Item i")
+    fun queryFirstLastScrape(): Instant?
 
     // get lastGlobalScrape
     @Query("SELECT MAX(i.lastScrape) FROM Item i")
@@ -107,4 +109,6 @@ interface ListingRepository : JpaRepository<Item, ListingId> {
 """
     )
     fun queryAggregateItems(): List<AggregatedItem>
+
+
 }

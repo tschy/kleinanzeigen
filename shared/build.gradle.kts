@@ -34,7 +34,6 @@ dependencies {
     // Your other usual dependencies...
     implementation("org.postgresql:postgresql:42.7.2")
     implementation("org.flywaydb:flyway-database-postgresql:10.11.0")
-
     testImplementation(platform("org.testcontainers:testcontainers-bom:1.20.4"))
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")

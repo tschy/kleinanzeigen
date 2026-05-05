@@ -342,10 +342,67 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
   - [x] use terraform to create the following service:
     - [x] pull docker image from ghcr
     - [x] start cron job to do a run the backup service once a day
+   - [x] Fix token/authentication issues
+   
+
+   
 --------------------------------------------------
+
+- [x] find out which user agent string is used and think about which one we should use
+  -> none
+      --> GET https://www.kleinanzeigen.de/s-fahrraeder/herren/12309/seite:1/rennrad/k0c217l3411r10+fahrraeder.art_s:herren
+      User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+      --> END GET
+      <-- 200 https://www.kleinanzeigen.de/s-fahrraeder/herren/12309/seite:1/rennrad/k0c217l3411r10+fahrraeder.art_s:herren (388ms)
+      content-type: text/html;charset=UTF-8
+      vary: Accept-Encoding
+      x-gateway-request-id: 273c6c8b-0b08-4bfa-af63-842d7915cd4d
+      x-gateway-route: k-desktop
+      strict-transport-security: max-age=31536000; includeSubDomains
+      x-frame-options: DENY
+      x-content-type-options: nosniff
+      x-xss-protection: 0
+      content-language: de-DE
+      vary: User-Agent
+      cache-control: no-cache, no-store, must-revalidate
+      pragma: no-cache
+      expires: 0
+      x-akamai-transformed: 0 - 0 -
+      date: Mon, 04 May 2026 16:29:26 GMT
+      set-cookie: CSRF-TOKEN=7ff52c94-9bd7-44f7-8d2a-aedf72fbf158; Domain=www.kleinanzeigen.de; Path=/; Secure; HttpOnly
+      set-cookie: __ka_postad-v1=enabled; Max-Age=31536000; Expires=Tue, 04 May 2027 16:29:26 GMT; Path=/; Secure; HttpOnly
+      set-cookie: up=%7B%22llstv%22%3A%22liberty-experiment-style%3DA%7CPRO-use-new-perf-data-src%3DB%7CSPEX-1529_adnami-script%3DA%7CBLN-28130_re_top_ad%3DA%7Cfp_pla_desktop%3DC%7CPRPL-252_ces_postad%3DB%7CFLPRO-898_kundenansprache%3DB%22%2C%22lln%22%3A%22cb7893be-ac33-4ead-a008-0e7dfbe240ea%22%7D; Max-Age=31104000; Expires=Thu, 29 Apr 2027 16:29:26 GMT; Path=/; Secure
+      set-cookie: __ka-ls=l%3D3411%26att%3Dfahrraeder.art_s%40herren%26k%3Drennrad%26c%3D217%26fahrraeder.art_s%3Dherren%26r%3D10; Max-Age=31536000; Expires=Tue, 04 May 2027 16:29:26 GMT; Path=/; Secure
+      set-cookie: __ka-sh=l%3D3411%26att%3Dfahrraeder.art_s%40herren%26k%3Drennrad%26c%3D217%26fahrraeder.art_s%3Dherren%26r%3D10; Max-Age=31536000; Expires=Tue, 04 May 2027 16:29:26 GMT; Path=/; Secure
+      set-cookie: _abck=33C09BE6276A82E11343302E8201BCDA~-1~YAAQijQWAuTfDd2dAQAA7bfS8w9yJCzvWvm5KSdUwNQIqL3DhoE5L77kF59ic7Q3RBRS+DY6xW4EBNAB0BjkzFubA+y6BkfRqn0k+4PAZQedjNFdoDQ6dwBUafUFOkPfijXAdoW7GNFhmeqGRjpwMc9/vVW4CakOZI9jQHb6rnNoi2OypHmVhJxCCNs1DcyNlfV1bQMycMLMn/aHwcCtVYnDbSbTXMQEPLW3VP5W4JfFIuLBocmBis6YUosly2uX0pB35ZAAfmpgbMIB7rOE6/Cgl3ctiTEn6ncIY47fJ/zOGPziTUGxJnrvpAQpXRDiB5mR1MQS+hENwzQO5UYZc2Sdz0vT+qzGde2gWb1Tjb70/Q1gY+wIlv9TKcZ0mjN+2tJ1A80rwBeoSrTnKaEzmsYeLD9FDgrfb7GBXnxMnLzOIIq110cg/OBheYRAyLYg78UhlKJVQCJtd8dM/g==~-1~-1~-1~-1~-1; Domain=.kleinanzeigen.de; Path=/; Expires=Tue, 04 May 2027 16:29:26 GMT; Max-Age=31536000; Secure
+      set-cookie: bm_sz=FF0CACF4CDDCC869B4E8DE4C193D2EE8~YAAQijQWAuXfDd2dAQAA7bfS8x8ijVKxfvTI3yJYgLfB+d6p6Hb7+qx1j9Ux2TAcq/++qqsIngYUGocKhY8UhfGy0/qt2QqX45hwsPR1hZydNTh8DjRitJg+News7ip4ZoWhJkyuWwf0yWOHe+cq6W3PjtrlRfvy9gFhOPo7LR+wbGxBDXj8dh2xBRLxeZBBKR/BpwxWGqHyQGd0NcnFOjaGPigpYPoI05Qei6vzKSZmTyOEnf0dKmOwntkPmXC8KO41iv7JHo78Rl7YKmaHucjR1t6u49Ko8ckPQFzafRA7W0lWRsLryXFCHJ0b5GJzJOKPw4OL5CrMIig2it/uRbXaFSWecwv+aZnOEhIi3+16L2I6Wfu4Pg9vyGOwyfsZZJFDwyWtEKVy~3553347~3421238; Domain=.kleinanzeigen.de; Path=/; Expires=Mon, 04 May 2026 20:29:26 GMT; Max-Age=14400
+    
+    
+    fun fetchWithLogging(url: String): String {
+    
+            val logging = HttpLoggingInterceptor { message -> println(message) }
+            logging.level = HttpLoggingInterceptor.Level.BODY
+            val client = OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .build()
+    
+            val request = Request.Builder()
+                .url(url)
+                .header(
+                    "User-Agent",
+                    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+                )
+                .build();
+    
+            val body = client.newCall(request).execute().use { response ->
+                response.body.string()
+            }
+            return body
+
+
 # Analysis
 
-    - Correlation skipped — average discount vs age group correlation requires CSV/data science tooling, out of scope for now -> Kotlin Data Frame as well
+    - Correlation skipped — average discount vs age group correlation requires CSV/data science tooling, out of scope for now -> Kotlin Data Frame out of scope as well
     - Further analysis — think of other meaningful insights from the data
     - [] check for a correlation between discount and time online,
 
@@ -355,20 +412,31 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
   ￼ - vielleicht in der SearchConfig Klasse noch ein Feld "key" hinzufügen und dieses dann in jedem ScrapeItem hinzufügen.
 
 
-###  Ausgabe Analysis
+_###  Ausgabe Analysis
 
 - [] how about adding a header or title in front of every report?
+
 - [] Before all the reports, print a status of the data that was used, such as:
     - total scraping interval (very first and very last complete scrape)
     - number of scrapes
     - minimal scrapes per day
+  
+id	scrape_count
+3380017449	479
+2313276847	15  <-- oldest item with three years
+
+Claude: if an item gets pushed down by newer listings and falls off the results page, it won't be scraped that run, even if it's still active.
+
+
+---- number of scrapes: Can't be calculated in a direct way, would have to be constructed from the data. and:
+A log file would work too but then you'd have to parse it later. A table is queryable immediately.
+
+--> add a new table with flyway, once it is running. there were 479 scrapes from 17/4 up to 5/5/26 10 am, the log records 459 scrapes (scraper was offline temporarily). Hourly scraping started 23/4/26 2pm with minimal downtime.
 
 - [] grafik - website -> nebensaechlich, terraform ist sinnvoller
 
 -------------------------------------------------
 # Open Tasks
-
-- [] find out which user agent string is used and think about which one we should use
 
 --------------------------------
 
@@ -378,7 +446,15 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 
 - [] abschaetzen wieviel byte ist ein datensatz, wieviele datensaetze.
 
-- [] analyser index auf primary (in der datenbank, teil von flyway script, auf allen feldern mit denen gesucht wird einen index machen, -> einlesen)
+- zero down deployment (s. TODO/log 28/4/26)
+
+- observability (s. TODO/log 30/4/26)
+
+- Index definieren (s. TODO/log 30/4/26)
+--------------------------
+
+
+-------------------------
 
 - [] Zugriff auf DB mit VPN -> Claude: this is tricky because Railway is a managed platform and you don't control the network infrastructure. 
   - what would work:
@@ -387,7 +463,6 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 
 # Questions
 
-- [] Observability as task, we have only touched theoretically? 
 
 # Find out
 - [] Configure a pre-deploy command to run database migrations before each deployment.
@@ -395,7 +470,11 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
     - integrate flyway into the docker image that is getting deployed:
       - Claude: the standard approach for Spring Boot apps is: Flyway runs on startup, managed by Spring. That's the convention 95% of Spring Boot projects use.
 
+
     
 # ONGOING
 - [/] rebase - videos angucken, ist wichtig oder lesen, nicht jeder erklaert es auf die gleiche weise die zum eigenen passt
 - [/] terraform!
+
+
+
