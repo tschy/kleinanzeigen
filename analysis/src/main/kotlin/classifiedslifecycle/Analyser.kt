@@ -3,6 +3,7 @@ package classifiedslifecycle
 import classifiedslifecycle.model.AgeGroupStats
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
+import java.time.Duration
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import kotlin.collections.component1
@@ -17,6 +18,8 @@ class Analyser(
 
     val lastGlobalScrape: Instant? = listingRepository.queryGlobalLastScrape()
 
+    val firstGlobalScrape: Instant? = listingRepository.queryFirstLastScrape()
+
     val aggregatedItems =
         listingRepository.queryAggregateItems()
             .sortedBy { it.ageDays }
@@ -25,6 +28,22 @@ class Analyser(
         .groupBy { it.ageGroup }
 
     val listAgeGroupStats = mutableListOf<AgeGroupStats>()
+
+
+//- [] Before all the reports, print a status of the data that was used, such as:
+//    - total scraping interval (very first and very last complete scrape)
+//    - number of scrapes
+//    - minimal scrapes per day
+
+
+    fun printStats() {
+        println()
+        println(
+            "start scraping $firstGlobalScrape \n" +
+                    "last scrape    $lastGlobalScrape \n" +
+                    "scarping interval of ${Duration.between(firstGlobalScrape, lastGlobalScrape).toDays()} days"
+        )
+    }
 
     fun printTableDiscountsOnlineAndOffline() {
 
@@ -43,7 +62,7 @@ class Analyser(
         println("[6] % Discounted Offline Ads")
         println()
 
-        val headerFormat = "%-${columnWide}s " +
+        val headerAndRowFormat = "%-${columnWide}s " +
                 "%${columnNarrow}s " +
                 "%${columnWide}s " +
                 "%-${columnNarrow}s " +
@@ -52,57 +71,49 @@ class Analyser(
                 "%-${columnWide}s"
 
 
-        println(headerFormat
-            .format("Age Group",
-                "[1]",
-                "[2]",
-                "${space}[3]",
-                "${space}[4]",
-                "${space}[5]",
-                "${space}[6]"))
+        println(
+            headerAndRowFormat
+                .format(
+                    "Age Group",
+                    "[1]",
+                    "[2]",
+                    "${space}[3]",
+                    "${space}[4]",
+                    "${space}[5]",
+                    "${space}[6]"
+                )
+        )
 
         println(
-            (headerFormat)
-                .format("",
+            (headerAndRowFormat)
+                .format(
+                    "",
                     "#Ad",
                     "%Disc",
                     "${space}%Onl",
                     "${space}%Off",
                     " %Disc Onl",
-                    " %Disc Off")
+                    " %Disc Off"
+                )
         )
+
+        val numberFormatStringNarrow = "%${columnNarrow}.2f"
+        val numberFormatStringWide = "%${columnWide}.2f"
 
         listAgeGroupStats.forEach { item ->
 
-            val numberFormatStringNarrow = "%${columnNarrow}.2f"
-            val numberFormatStringWide = "%${columnWide}.2f"
-
-            val percentageDiscounted =
-                numberFormatStringNarrow.format(item.percentageDiscount)
-
-            val percentageDiscountedOnline =
-                numberFormatStringWide.format(item.percentageDiscountOnline)
-
-            val percentageDiscountedOffline =
-                numberFormatStringNarrow.format(item.percentageDiscountOffline)
-
-            val percentageOnlineItems =
-                numberFormatStringNarrow.format(item.percentageOnline)
-            val percentageOfflineItems =
-                numberFormatStringNarrow.format(item.percentageOffline)
-
-            val string = headerFormat.format(
+            val string = headerAndRowFormat.format(
                 item.ageGroup,
                 item.count,
-                percentageDiscounted,
-                percentageOnlineItems,
-                percentageOfflineItems,
-                percentageDiscountedOnline,
-                percentageDiscountedOffline,
+                numberFormatStringNarrow.format(item.percentageDiscount),
+                numberFormatStringWide.format(item.percentageDiscountOnline),
+                numberFormatStringNarrow.format(item.percentageDiscountOffline),
+                numberFormatStringNarrow.format(item.percentageOnline),
+                numberFormatStringNarrow.format(item.percentageOffline),
             ).replace(" 0.00", "     ")
                 .replace(".00", "   ")
 
-                .trimIndent()
+
             println(string)
         }
         println()
