@@ -4,6 +4,7 @@ plugins {
     id("io.spring.dependency-management")
     id("application")
     id("com.google.cloud.tools.jib")
+    id("org.flywaydb.flyway")
 }
 
 jib {
@@ -21,7 +22,6 @@ dependencyManagement {
     }
 }
 
-
 repositories {
     mavenCentral()
 }
@@ -35,6 +35,9 @@ dependencies {
     implementation("org.springframework:spring-tx")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
    implementation("com.squareup.okhttp3:logging-interceptor:5.3.0")
+    implementation("org.flywaydb:flyway-core:11.8.2")
+    implementation("org.flywaydb:flyway-database-postgresql:11.8.2")
+    implementation("org.postgresql:postgresql:42.7.3")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.mockk:mockk:1.14.9")
@@ -46,4 +49,12 @@ application {
 
 tasks.named<JavaExec>("bootRun") {
     workingDir = rootProject.projectDir
+}
+
+flyway {
+    url = "jdbc:postgresql://localhost:5432/kleinanzeigen"
+    user = "postgres"
+    password = "fennpfuhl"
+    schemas = arrayOf("public")
+    configurations = arrayOf("runtimeClasspath")
 }
