@@ -348,9 +348,9 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 
 - [x] Configure a pre-deploy command to run database migrations before each deployment.
     - ---> handled by spring.flyway.enabled=true in the application.properties file? - doesn't run, flyway scripts are in shared. should have been deployed together? why did it even work like that?
-    - integrate flyway into the docker image that is getting deployed:
+    - [x] integrate flyway into the docker image that is getting deployed:
         - Claude: the standard approach for Spring Boot apps is: Flyway runs on startup, managed by Spring. That's the convention 95% of Spring Boot projects use.
-    - moved flyway migration files from shared to scraper, rebuilt image: flyway migrations run when scraper gets executed
+    - [x] moved flyway migration files from shared to scraper, rebuilt image: flyway migrations run when scraper gets executed
 
 
 
@@ -410,9 +410,9 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 - [] how about adding a header or title in front of every report?
 
 - [] Before all the reports, print a status of the data that was used, such as:
-    - total scraping interval (very first and very last complete scrape)
-    - number of scrapes
-    - minimal scrapes per day
+    - [x] total scraping interval (very first and very last complete scrape)
+    - [x] number of scrapes
+    - [] minimal scrapes per day
   
 id	scrape_count
 3380017449	479

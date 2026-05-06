@@ -86,8 +86,8 @@ interface ListingRepository : JpaRepository<Item, ListingId> {
 //        (SELECT i4.price FROM listing i4 WHERE i4.id = i.id AND i4.first_scrape =
 //        (SELECT MAX(i5.first_scrape) FROM listing i5 WHERE i5.id = i.id))
 //
-//    FROM listing i where id = '3369255532'
-//    GROUP BY id
+//        FROM listing i where id = '3369255532'
+//        GROUP BY id
     @Query(
         """
     SELECT NEW classifiedslifecycle.AggregatedItem(

@@ -30,7 +30,6 @@ class ScraperRunner(
 
         if (!scrapeItems.isEmpty()) {
             scrapeRepository.save(Scrape(0,scrapeItems.first().scrapeTime))
-
         }
 
 
