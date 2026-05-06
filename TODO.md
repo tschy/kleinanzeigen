@@ -268,10 +268,10 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
     - [x] Discount rate per age group — what percentage of items had a price reduction (oldest price ≠ newest price),
       broken down by age group, and separately for online/offline
     - [x] Fix oldest price issue: take original price into account
-    - [x] Online/offline distribution per age group — count and percentage of online vs offline items per age group 
+    - [x] Online/offline distribution per age group — count and percentage of online vs offline items per age group
     - [x] Data class for age group stats — a data class holding: count online, count offline, discount rate online,
       discount rate offline — grouped by age group (and optionally by online flag)
-  
+
 -[x] work on analyser/work on scraper
 -[x] pause work on analyser, resume after scraper has been deployed
 -[x] aeltester oldPrice
@@ -282,13 +282,13 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 
 -[x] docker image, jedes mal ein neues erstellen wenn es eine neue version gibt
 -[x] docker image auf railway laufen lassen -> vorher die db konfigurieren
--[x] docker build in der github action machen 
+-[x] docker build in der github action machen
     -[x] build new image
 -[x] in die github container registry hochladen (deployment koennte ein extra Schritt sein, oder auch nicht -> railway) ghcr.io/tsch/classifieds-scraper:17
 -[x] push newly built docker image to github container registry
 -[x] verstehen was das deployment model von railway ist und der unterschied von uns
-  - gradle nicht auf produ, soll nur auf entwl servern laufen
-  - benutzt railway gradle
+    - gradle nicht auf produ, soll nur auf entwl servern laufen
+    - benutzt railway gradle
 
 - [x] Wo sind die Pull Request Review Kommentare?
 - [x] implement code changes pull request -> whos doing the merging? -> kommt drauf an, mein projekt - git hub main gehoert mir, also mach ich den. wenn es ein team projekt ware dann gaebe es team regeln, dann muss einer approve druecken vielleicht. oder leute sind selbstverantwortlich, haben die changes befolgt/comments gefixed, dann machen die das alleine
@@ -311,18 +311,18 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 - [x] Spring Boot: sollte die Anwendung beenden, von alleine und von Spring gemanagt werden, der manuellen Code-Loesung ist das vorzuziehen
 
 - [x] solve: robert@hypatia:~/terraform$terraform import railway_project.classifieds-lifecycle classifieds-lifecycle
-      ╷
-      │ Error: Missing API token
-      │
-      │   with provider["registry.terraform.io/terraform-community-providers/railway"],
-      │   on /home/robert/terraform/terraform.tf line 10, in provider "railway":
-      │   10: provider "railway" {
-      │
-      │ Required token could not be found. Please set the token using an input variable in the provider
-      │ configuration block or by using the `RAILWAY_TOKEN` environment variable.
-      ╵
+  ╷
+  │ Error: Missing API token
+  │
+  │   with provider["registry.terraform.io/terraform-community-providers/railway"],
+  │   on /home/robert/terraform/terraform.tf line 10, in provider "railway":
+  │   10: provider "railway" {
+  │
+  │ Required token could not be found. Please set the token using an input variable in the provider
+  │ configuration block or by using the `RAILWAY_TOKEN` environment variable.
+  ╵
 - [x] nachschlagen in der railway doc, https://registry.terraform.io/providers/terraform-community-providers/railway/latest/docs/resources/project
-    oder sonstwo --> ging nur mit Claude
+  oder sonstwo --> ging nur mit Claude
 
 - [x] docker checken/for test src files being exluded
     -  docker pull ghcr.io/tschy/classifieds-scraper:19
@@ -330,19 +330,19 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 - [x] ausblick: zugriff auf die cloud daten
     - [x] aus IntelliJ/app heraus
 - [x] db auf railway laufen lassen kann und von lokal mit vpn zugreifen?
-    -[x] install railway cli, use railway connect to access db  
+    -[x] install railway cli, use railway connect to access db
 - [x] percent discounted als header
 - [x] besser lesbar, zweizeilig, oder abkuerzungen einfuehren
 
 - [x] git rebase, run claude led tutorial, create test branches and commits
 
 - [x] write backups to dropbox [gemini/claude]
-  - [x] create bash script: create pd dump backup of the railway db, push to dropbox
-  - [x] build docker image which executes bash script
-  - [x] use terraform to create the following service:
-    - [x] pull docker image from ghcr
-    - [x] start cron job to do a run the backup service once a day
-   - [x] Fix token/authentication issues
+    - [x] create bash script: create pd dump backup of the railway db, push to dropbox
+    - [x] build docker image which executes bash script
+    - [x] use terraform to create the following service:
+        - [x] pull docker image from ghcr
+        - [x] start cron job to do a run the backup service once a day
+    - [x] Fix token/authentication issues
 
 --------------------------------------------------
 
@@ -356,34 +356,34 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 
 - [x] find out which user agent string is used and think about which one we should use
   -> none
-      --> GET https://www.kleinanzeigen.de/s-fahrraeder/herren/12309/seite:1/rennrad/k0c217l3411r10+fahrraeder.art_s:herren
-      User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
-      --> END GET
-      <-- 200 https://www.kleinanzeigen.de/s-fahrraeder/herren/12309/seite:1/rennrad/k0c217l3411r10+fahrraeder.art_s:herren (388ms)
-      content-type: text/html;charset=UTF-8
-      vary: Accept-Encoding
-      x-gateway-request-id: 273c6c8b-0b08-4bfa-af63-842d7915cd4d
-      x-gateway-route: k-desktop
-      strict-transport-security: max-age=31536000; includeSubDomains
-      x-frame-options: DENY
-      x-content-type-options: nosniff
-      x-xss-protection: 0
-      content-language: de-DE
-      vary: User-Agent
-      cache-control: no-cache, no-store, must-revalidate
-      pragma: no-cache
-      expires: 0
-      x-akamai-transformed: 0 - 0 -
-      date: Mon, 04 May 2026 16:29:26 GMT
-      set-cookie: CSRF-TOKEN=7ff52c94-9bd7-44f7-8d2a-aedf72fbf158; Domain=www.kleinanzeigen.de; Path=/; Secure; HttpOnly
-      set-cookie: __ka_postad-v1=enabled; Max-Age=31536000; Expires=Tue, 04 May 2027 16:29:26 GMT; Path=/; Secure; HttpOnly
-      set-cookie: up=%7B%22llstv%22%3A%22liberty-experiment-style%3DA%7CPRO-use-new-perf-data-src%3DB%7CSPEX-1529_adnami-script%3DA%7CBLN-28130_re_top_ad%3DA%7Cfp_pla_desktop%3DC%7CPRPL-252_ces_postad%3DB%7CFLPRO-898_kundenansprache%3DB%22%2C%22lln%22%3A%22cb7893be-ac33-4ead-a008-0e7dfbe240ea%22%7D; Max-Age=31104000; Expires=Thu, 29 Apr 2027 16:29:26 GMT; Path=/; Secure
-      set-cookie: __ka-ls=l%3D3411%26att%3Dfahrraeder.art_s%40herren%26k%3Drennrad%26c%3D217%26fahrraeder.art_s%3Dherren%26r%3D10; Max-Age=31536000; Expires=Tue, 04 May 2027 16:29:26 GMT; Path=/; Secure
-      set-cookie: __ka-sh=l%3D3411%26att%3Dfahrraeder.art_s%40herren%26k%3Drennrad%26c%3D217%26fahrraeder.art_s%3Dherren%26r%3D10; Max-Age=31536000; Expires=Tue, 04 May 2027 16:29:26 GMT; Path=/; Secure
-      set-cookie: _abck=33C09BE6276A82E11343302E8201BCDA~-1~YAAQijQWAuTfDd2dAQAA7bfS8w9yJCzvWvm5KSdUwNQIqL3DhoE5L77kF59ic7Q3RBRS+DY6xW4EBNAB0BjkzFubA+y6BkfRqn0k+4PAZQedjNFdoDQ6dwBUafUFOkPfijXAdoW7GNFhmeqGRjpwMc9/vVW4CakOZI9jQHb6rnNoi2OypHmVhJxCCNs1DcyNlfV1bQMycMLMn/aHwcCtVYnDbSbTXMQEPLW3VP5W4JfFIuLBocmBis6YUosly2uX0pB35ZAAfmpgbMIB7rOE6/Cgl3ctiTEn6ncIY47fJ/zOGPziTUGxJnrvpAQpXRDiB5mR1MQS+hENwzQO5UYZc2Sdz0vT+qzGde2gWb1Tjb70/Q1gY+wIlv9TKcZ0mjN+2tJ1A80rwBeoSrTnKaEzmsYeLD9FDgrfb7GBXnxMnLzOIIq110cg/OBheYRAyLYg78UhlKJVQCJtd8dM/g==~-1~-1~-1~-1~-1; Domain=.kleinanzeigen.de; Path=/; Expires=Tue, 04 May 2027 16:29:26 GMT; Max-Age=31536000; Secure
-      set-cookie: bm_sz=FF0CACF4CDDCC869B4E8DE4C193D2EE8~YAAQijQWAuXfDd2dAQAA7bfS8x8ijVKxfvTI3yJYgLfB+d6p6Hb7+qx1j9Ux2TAcq/++qqsIngYUGocKhY8UhfGy0/qt2QqX45hwsPR1hZydNTh8DjRitJg+News7ip4ZoWhJkyuWwf0yWOHe+cq6W3PjtrlRfvy9gFhOPo7LR+wbGxBDXj8dh2xBRLxeZBBKR/BpwxWGqHyQGd0NcnFOjaGPigpYPoI05Qei6vzKSZmTyOEnf0dKmOwntkPmXC8KO41iv7JHo78Rl7YKmaHucjR1t6u49Ko8ckPQFzafRA7W0lWRsLryXFCHJ0b5GJzJOKPw4OL5CrMIig2it/uRbXaFSWecwv+aZnOEhIi3+16L2I6Wfu4Pg9vyGOwyfsZZJFDwyWtEKVy~3553347~3421238; Domain=.kleinanzeigen.de; Path=/; Expires=Mon, 04 May 2026 20:29:26 GMT; Max-Age=14400
-    
-    
+  --> GET https://www.kleinanzeigen.de/s-fahrraeder/herren/12309/seite:1/rennrad/k0c217l3411r10+fahrraeder.art_s:herren
+  User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  --> END GET
+  <-- 200 https://www.kleinanzeigen.de/s-fahrraeder/herren/12309/seite:1/rennrad/k0c217l3411r10+fahrraeder.art_s:herren (388ms)
+  content-type: text/html;charset=UTF-8
+  vary: Accept-Encoding
+  x-gateway-request-id: 273c6c8b-0b08-4bfa-af63-842d7915cd4d
+  x-gateway-route: k-desktop
+  strict-transport-security: max-age=31536000; includeSubDomains
+  x-frame-options: DENY
+  x-content-type-options: nosniff
+  x-xss-protection: 0
+  content-language: de-DE
+  vary: User-Agent
+  cache-control: no-cache, no-store, must-revalidate
+  pragma: no-cache
+  expires: 0
+  x-akamai-transformed: 0 - 0 -
+  date: Mon, 04 May 2026 16:29:26 GMT
+  set-cookie: CSRF-TOKEN=7ff52c94-9bd7-44f7-8d2a-aedf72fbf158; Domain=www.kleinanzeigen.de; Path=/; Secure; HttpOnly
+  set-cookie: __ka_postad-v1=enabled; Max-Age=31536000; Expires=Tue, 04 May 2027 16:29:26 GMT; Path=/; Secure; HttpOnly
+  set-cookie: up=%7B%22llstv%22%3A%22liberty-experiment-style%3DA%7CPRO-use-new-perf-data-src%3DB%7CSPEX-1529_adnami-script%3DA%7CBLN-28130_re_top_ad%3DA%7Cfp_pla_desktop%3DC%7CPRPL-252_ces_postad%3DB%7CFLPRO-898_kundenansprache%3DB%22%2C%22lln%22%3A%22cb7893be-ac33-4ead-a008-0e7dfbe240ea%22%7D; Max-Age=31104000; Expires=Thu, 29 Apr 2027 16:29:26 GMT; Path=/; Secure
+  set-cookie: __ka-ls=l%3D3411%26att%3Dfahrraeder.art_s%40herren%26k%3Drennrad%26c%3D217%26fahrraeder.art_s%3Dherren%26r%3D10; Max-Age=31536000; Expires=Tue, 04 May 2027 16:29:26 GMT; Path=/; Secure
+  set-cookie: __ka-sh=l%3D3411%26att%3Dfahrraeder.art_s%40herren%26k%3Drennrad%26c%3D217%26fahrraeder.art_s%3Dherren%26r%3D10; Max-Age=31536000; Expires=Tue, 04 May 2027 16:29:26 GMT; Path=/; Secure
+  set-cookie: _abck=33C09BE6276A82E11343302E8201BCDA~-1~YAAQijQWAuTfDd2dAQAA7bfS8w9yJCzvWvm5KSdUwNQIqL3DhoE5L77kF59ic7Q3RBRS+DY6xW4EBNAB0BjkzFubA+y6BkfRqn0k+4PAZQedjNFdoDQ6dwBUafUFOkPfijXAdoW7GNFhmeqGRjpwMc9/vVW4CakOZI9jQHb6rnNoi2OypHmVhJxCCNs1DcyNlfV1bQMycMLMn/aHwcCtVYnDbSbTXMQEPLW3VP5W4JfFIuLBocmBis6YUosly2uX0pB35ZAAfmpgbMIB7rOE6/Cgl3ctiTEn6ncIY47fJ/zOGPziTUGxJnrvpAQpXRDiB5mR1MQS+hENwzQO5UYZc2Sdz0vT+qzGde2gWb1Tjb70/Q1gY+wIlv9TKcZ0mjN+2tJ1A80rwBeoSrTnKaEzmsYeLD9FDgrfb7GBXnxMnLzOIIq110cg/OBheYRAyLYg78UhlKJVQCJtd8dM/g==~-1~-1~-1~-1~-1; Domain=.kleinanzeigen.de; Path=/; Expires=Tue, 04 May 2027 16:29:26 GMT; Max-Age=31536000; Secure
+  set-cookie: bm_sz=FF0CACF4CDDCC869B4E8DE4C193D2EE8~YAAQijQWAuXfDd2dAQAA7bfS8x8ijVKxfvTI3yJYgLfB+d6p6Hb7+qx1j9Ux2TAcq/++qqsIngYUGocKhY8UhfGy0/qt2QqX45hwsPR1hZydNTh8DjRitJg+News7ip4ZoWhJkyuWwf0yWOHe+cq6W3PjtrlRfvy9gFhOPo7LR+wbGxBDXj8dh2xBRLxeZBBKR/BpwxWGqHyQGd0NcnFOjaGPigpYPoI05Qei6vzKSZmTyOEnf0dKmOwntkPmXC8KO41iv7JHo78Rl7YKmaHucjR1t6u49Ko8ckPQFzafRA7W0lWRsLryXFCHJ0b5GJzJOKPw4OL5CrMIig2it/uRbXaFSWecwv+aZnOEhIi3+16L2I6Wfu4Pg9vyGOwyfsZZJFDwyWtEKVy~3553347~3421238; Domain=.kleinanzeigen.de; Path=/; Expires=Mon, 04 May 2026 20:29:26 GMT; Max-Age=14400
+
+
     fun fetchWithLogging(url: String): String {
     
             val logging = HttpLoggingInterceptor { message -> println(message) }
@@ -404,24 +404,29 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
                 response.body.string()
             }
             return body
+- [x] how about adding a header or title in front of every report?
 
-### Questions/Open Topics
-
-- [] how about adding a header or title in front of every report?
-
-- [] Before all the reports, print a status of the data that was used, such as:
+- [x] Before all the reports, print a status of the data that was used, such as:
     - [x] total scraping interval (very first and very last complete scrape)
     - [x] number of scrapes
-    - [] minimal scrapes per day
-  
-id	scrape_count
-3380017449	479
-2313276847	15  <-- oldest item with three years, Claude: if an item gets pushed down by newer listings and falls off the results page, it won't be scraped that run, even if it's still active.
+    - [x] minimal scrapes per day
 
----- number of scrapes: Can't be calculated in a direct way, would have to be constructed from the data. and:
-A log file would work too but then you'd have to parse it later. A table is queryable immediately.
+  id	scrape_count
+  3380017449	479
+  2313276847	15  <-- oldest item with three years, Claude: if an item gets pushed down by newer listings and falls off the results page, it won't be scraped that run, even if it's still active.
+
+    - [x] add 350 log entries from railway to scrape
+    - [x] add 155 evenly spaced entries to scrape
+
+          ---- number of scrapes: Can't be calculated in a direct way, would have to be constructed from the data. and:
+          A log file would work too but then you'd have to parse it later. A table is queryable immediately.
 
 - [x] --> add a new table with flyway, once it is running. there were 479 scrapes from 17/4 up to 5/5/26 10 am, the log records 495 scrapes (scraper was offline temporarily). Hourly scraping started 23/4/26 2pm with minimal downtime.
+    - [x] fill table with log entries so most scrapes are recorded with the correct time (approx 350), for the remaining 200 fill in entries at the exact miniute of :00 and :15
+
+
+
+### Questions/Open Topics
 
 - [] grafik - website -> nebensaechlich, terraform ist sinnvoller
 
@@ -435,6 +440,8 @@ A log file would work too but then you'd have to parse it later. A table is quer
 -------------------------------------------------
 
 ## TODO
+
+- ongoing problems with git history and pull requests from dev into main~~~~
 
 - u. U. zu advanced: sicherheit von postgres verbessern, manuell zugriff bauen ueber eigenen proxy
 
