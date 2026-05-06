@@ -1,13 +1,17 @@
+
 # Classifieds Analyser
 
 ## Purpose
 
 Track how listings for specific search terms change over time. The scraper periodically collects listings and stores them in a database. The analyser then provides statistics on pricing, discounts, listing lifespan, and online/offline distribution.
+=======
+
 
 ## Constraints
 
 - No official API is available; the site is scraped directly using HTTP requests and HTML parsing
 - Requests are minimized to avoid overloading the site's resources
+
 
 ---
 
@@ -15,7 +19,9 @@ Track how listings for specific search terms change over time. The scraper perio
 
 The project is a Gradle multi-module Kotlin/Spring Boot project with the following modules:
 
+
 - **scraper** — fetches listings and writes them to the database
+
 - **analyser** — reads the database and prints statistical reports
 - **shared** — common data model and database access, used by both scraper and analyser
 
