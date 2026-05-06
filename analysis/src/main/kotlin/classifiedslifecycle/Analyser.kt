@@ -21,6 +21,8 @@ class Analyser(
 
     val lastGlobalScrape: Instant? = listingRepository.queryGlobalLastScrape()
 
+    val firstGlobalScrape: Instant? = listingRepository.queryFirstLastScrape()
+
     val aggregatedItems =
         listingRepository.queryAggregateItems()
             .sortedBy { it.ageDays }
@@ -39,6 +41,7 @@ class Analyser(
 
     fun printStats() {
 
+
         val numberOfScrapedDays = Duration.between(firstGlobalScrape, lastGlobalScrape).toDays()
         val numberOfMinimumScrapes = scrapeRepository.findDayWithMinScrapes()[0][1]
 
@@ -50,6 +53,7 @@ class Analyser(
                     "total number of scrapes: ${scrapeRepository.count()} \n" +
                     "average scrapes per day: ${scrapeRepository.count() / numberOfScrapedDays}\n" +
                     "minimum scrapes per day: $numberOfMinimumScrapes"
+
         )
     }
 
