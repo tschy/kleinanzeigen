@@ -16,9 +16,12 @@ interface ScrapeRepository : JpaRepository<Scrape, Int> {
 //GROUP BY DATE(scrape_time)
 //ORDER BY scrape_count ASC
 //LIMIT 1;
-    @Query("SELECT CAST(s.scrapeTime AS LocalDate) AS day, " +
-            "COUNT(s) AS qqscrapeCount FROM Scrape s " +
-            "GROUP BY CAST(s.scrapeTime AS LocalDate) " +
-            "ORDER BY scrapeCount ASC LIMIT 1")
+    @Query(
+        "SELECT DATE(s.scrape_time) AS day, COUNT(*) AS scrape_count " +
+                "FROM scrape s " +
+                "GROUP BY DATE(s.scrape_time) " +
+                "ORDER BY scrape_count ASC " +
+                "LIMIT 1", nativeQuery = true
+    )
     fun findDayWithMinScrapes(): List<Array<Any>>
 }
