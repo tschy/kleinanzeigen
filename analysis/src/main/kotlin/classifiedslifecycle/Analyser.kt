@@ -12,13 +12,14 @@ import kotlin.collections.component2
 @Service
 class Analyser(
     val listingRepository: ListingRepository,
+    val scrapeRepository: ScrapeRepository
 ) {
 
     private val logger = KotlinLogging.logger {}
 
-    val lastGlobalScrape: Instant? = listingRepository.queryGlobalLastScrape()
-
     val firstGlobalScrape: Instant? = listingRepository.queryFirstLastScrape()
+
+    val lastGlobalScrape: Instant? = listingRepository.queryGlobalLastScrape()
 
     val aggregatedItems =
         listingRepository.queryAggregateItems()
@@ -37,11 +38,18 @@ class Analyser(
 
 
     fun printStats() {
+
+        val numberOfScrapedDays = Duration.between(firstGlobalScrape, lastGlobalScrape).toDays()
+        val numberOfMinimumScrapes = scrapeRepository.findDayWithMinScrapes()[0][1]
+
         println()
         println(
-            "start scraping $firstGlobalScrape \n" +
-                    "last scrape    $lastGlobalScrape \n" +
-                    "scarping interval of ${Duration.between(firstGlobalScrape, lastGlobalScrape).toDays()} days"
+            "start scraping           $firstGlobalScrape \n" +
+                    "last scrape              $lastGlobalScrape \n" +
+                    "scarping interval of     $numberOfScrapedDays days \n" +
+                    "total number of scrapes: ${scrapeRepository.count()} \n" +
+                    "average scrapes per day: ${scrapeRepository.count() / numberOfScrapedDays}\n" +
+                    "minimum scrapes per day: $numberOfMinimumScrapes"
         )
     }
 
