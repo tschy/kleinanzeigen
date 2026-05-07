@@ -93,15 +93,15 @@ interface ListingRepository : JpaRepository<Item, ListingId> {
     SELECT NEW classifiedslifecycle.AggregatedItem(
         i.id.id,
         MIN(i.id.firstScrape), 
-        MAX(i.lastScrape), 
+        MAX(i.lastScrape),
         SUM(i.scrapeCount), 
         MIN(i.created),
         (SELECT i2.price FROM Item i2 WHERE i2.id.id = i.id.id AND i2.id.firstScrape  = 
-        (SELECT MIN(i3.id.firstScrape) FROM Item i3 WHERE i3.id.id = i.id.id)),
+           (SELECT MIN(i3.id.firstScrape) FROM Item i3 WHERE i3.id.id = i.id.id)),
         (SELECT i4.price FROM Item i4 WHERE i4.id.id = i.id.id AND i4.id.firstScrape = 
-        (SELECT MAX(i5.id.firstScrape) FROM Item i5 WHERE i5.id.id = i.id.id)),
+           (SELECT MAX(i5.id.firstScrape) FROM Item i5 WHERE i5.id.id = i.id.id)),
         (SELECT i6.oldPrice FROM Item i6 WHERE i6.id.id = i.id.id AND i6.id.firstScrape = 
-        (SELECT MIN(i7.id.firstScrape) FROM Item i7 WHERE i7.id.id = i.id.id))
+           (SELECT MIN(i7.id.firstScrape) FROM Item i7 WHERE i7.id.id = i.id.id))
 
     )
     FROM Item i
