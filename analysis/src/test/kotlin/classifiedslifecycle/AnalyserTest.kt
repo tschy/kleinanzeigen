@@ -14,11 +14,17 @@ class AnalyserTest {
 
     @Autowired
     lateinit var listingRepository: ListingRepository
+    lateinit var scrapeRepository: ScrapeRepository
+
 
 
     @Test
     fun analyseTest() {
-        val analyser = Analyser(listingRepository)
-        analyser.analyse()
+        val analyser = Analyser(listingRepository, scrapeRepository)
+        analyser.printStats()
+        analyser.debugPrintAggregatedItems()
+        analyser.printTableDiscountsOnlineAndOffline()
+        analyser.debugPrintChangedItems()
+        analyser.debugPrintAgeGroupDistribution()
     }
 }

@@ -6,8 +6,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ItemService(
-    val listingRepository: ListingRepository,
-    val searchConfigRepository: SearchConfigRepository
+    val listingRepository: ListingRepository
 ) {
     private val logger = KotlinLogging.logger {}
 
@@ -21,11 +20,6 @@ class ItemService(
             .sortedByDescending { it.created } // null ends up at the end of the list
             .distinctBy { it.id } // removes duplicates based on the id property, relevant for TOP ads
 
-        val existing = searchConfigRepository.findByCategoryAndArtAndPlzAndSearchTermAndRadius(
-            config.category, config.art, config.plz, config.searchTerm, config.radius
-        )
-
-        existing ?: searchConfigRepository.save(config)
 
         sortedItems.forEach { scrapeItem ->
 
@@ -40,7 +34,8 @@ class ItemService(
                 if (itemSaved.matches(scrapeItem)) {
 
 //                    logger.info { "updateScrapeCount: "  }
-                    logger.debug { "Item already exists" + itemSaved.toDebugString() }
+                    logger.debug { "Item already exists" +
+                            itemSaved.toDebugString() }
 
                     listingRepository
                         .updateScrapeCount(

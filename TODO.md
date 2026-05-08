@@ -443,7 +443,7 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
             - [x] 11.8 Partial Indexes — very practical, e.g. indexing only active listings https://www.postgresql.org/docs/current/indexes-partial.html
             - [x] 11.12 Examining Index Usage — essential, teaches you how to check if your indexes are actually being used with https://www.postgresql.org/docs/current/indexes-examine.html
               - So you should time your query with and without indexes. The EXPLAIN ANALYZE command can be useful here.
-            - [] https://www.postgresql.org/docs/current/sql-explain.html
+            - [x] https://www.postgresql.org/docs/current/sql-explain.html
 
             - B-Tree
 
@@ -463,10 +463,6 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 
 
 ---------------------------------------------------------------
-
-    - [x] ssystems anrufen -> warte auf Rueckruf
-    - [x] reos anrufen -> email schreiben an info@...
-        - Stelle noch zu besetzen, an wen die Bewerbung richten (was noch/anders?)
 
 ================================================================
 
@@ -515,6 +511,8 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 - [] json datei erzeugen, einlesen: noch keine id, eigene data class ohne id um das einzulesen oder jackson magie -> claude beraten lassen
 
 - [] comment out legacy initialising in V5 flyway migrations after produ data has been altered
+
+- [] Übrigens, da Du schon die sehr schöne "Scrapes" Tabelle hast, würde ich dort auch ein Feld SearchConfigId einfügen und für jede gescrapte SearchConfig einen Eintrag dort machen.
 --------------------------
 
 # ONGOING
@@ -534,3 +532,20 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 
 
 
+Ansonsten ist die Spezifikation: der Name wird ja vom Nutzer vergeben und zeigt an, dass eine Konfiguration trotz geänderter Such-Felder noch dieselbe Absicht widerspiegelt. Ich merke gerade, dass wir die Parent-ID dann auch gar nicht brauchen, weil man ja jederzeit alle SearchConfigs mit demselben Namen finden kann.
+
+Übrigens, da Du schon die sehr schöne "Scrapes" Tabelle hast, würde ich dort auch ein Feld SearchConfigId einfügen und für jede gescrapte SearchConfig einen Eintrag dort machen.
+
+
+
+den k0 Teil kann man vorerst auch gern manuell bestimmen.
+
+ich spiele sowieso immer erst ein bisschen manuell mit den Suchkriterien, um zu checken, dass die Ergebnisse meinen Erwartungen entsprechen.
+
+
+ja, der Scraper sollte auch schon bei der kleinsten Änderung eine neue Config in der Datenbank schreiben, damit man zu jedem alten "run" genau sehen kann, welche Config verwendet wurde. Also Configs in der Datenbank sollten "immutable" sein!
+
+
+(Ich hatte dieses Konzept die ganze Zeit im Hinterkopf, aber erst eben fiel mir ein, das man es so klar ausdrücken kann.)
+
+Und damit der Analysierende die Parameter der alten Suche sehen kann, muss bei jeder Änderung der Config die neue ID generiert werden und die neuen Parameter in die DB, damit sie die alten nicht überschreiben.

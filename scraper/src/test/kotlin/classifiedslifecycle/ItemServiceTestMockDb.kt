@@ -74,7 +74,7 @@ class ItemServiceTestMockDb {
 
         val itemService = ItemService(mockRepository)
 
-        itemService.process(setOf(newItem2))
+        itemService.process(setOf(newItem2), config)
 
         verify(exactly = 1) { mockRepository.findByIdId(any()) }
 
@@ -94,7 +94,7 @@ class ItemServiceTestMockDb {
 
         val itemService = ItemService(mockRepository)
 
-        itemService.process(setOf(newItem1))
+        itemService.process(setOf(newItem1), config)
 
         verify(exactly = 1) { mockRepository.save(any()) }
         verify(exactly = 1) { mockRepository.findByIdId(any()) }

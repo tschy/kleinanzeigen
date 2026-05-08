@@ -53,8 +53,18 @@ class ItemServiceTestSpringBoot {
         }
 
 
+        val config = SearchConfig(
+            id = 0,
+            name = "test",
+            category = "fahrraeder",
+            art = "herren",
+            plz = "12309",
+            searchTerm = "rennrad",
+            radius = 10
+        )
+
         // act
-        itemService.process(results)
+        itemService.process(results, config)
 
         val dedupedResults = results.sortedByDescending { it.created }.distinctBy { it.id }
         // assert

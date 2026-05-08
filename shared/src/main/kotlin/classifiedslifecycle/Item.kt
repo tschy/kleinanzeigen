@@ -31,7 +31,7 @@ open class Item(
 
     @ManyToOne
     @JoinColumn(name = "search_config_id")
-    val searchConfig: SearchConfig
+    val searchConfig: SearchConfig,
 ) {
 
     fun toDebugString() =

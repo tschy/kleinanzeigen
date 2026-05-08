@@ -34,10 +34,13 @@ dependencies {
     implementation("io.github.oshai:kotlin-logging-jvm:5.1.0")
     implementation("org.springframework:spring-tx")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-   implementation("com.squareup.okhttp3:logging-interceptor:5.3.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.3.0")
     implementation("org.flywaydb:flyway-core:11.8.2")
     implementation("org.flywaydb:flyway-database-postgresql:11.8.2")
     implementation("org.postgresql:postgresql:42.7.3")
+    implementation("com.fasterxml.jackson.core:jackson-core")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("org.seleniumhq.selenium:selenium-java:4.21.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.mockk:mockk:1.14.9")
@@ -58,3 +61,5 @@ flyway {
     schemas = arrayOf("public")
     configurations = arrayOf("runtimeClasspath")
 }
+
+// TODO

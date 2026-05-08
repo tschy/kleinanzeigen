@@ -25,7 +25,7 @@ class Paginator(
                     "${config.searchTerm}/k0c217l3411r" +
                     "${config.radius}+" +
                     "${config.category}.art_s:" +
-                    "${config.art}"
+                    config.art
             println("paginator ${url}")
 
 

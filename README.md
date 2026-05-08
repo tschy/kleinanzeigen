@@ -121,4 +121,4 @@ The analyser reports the following per age group:
 
 ## Acknowledgements
 
-Developed with the help of [matey-jack](https://github.com/matey-jack) and Claude AI.
+Developed by Tamara Schymura, with mentoring by matey-jack and AI-assisted development.

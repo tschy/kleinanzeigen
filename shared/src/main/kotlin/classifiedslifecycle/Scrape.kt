@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Table
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import java.time.Instant
 
 @Entity
@@ -14,7 +16,12 @@ open class Scrape(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,
     val scrapeTime: Instant,
+
+    @ManyToOne
+    @JoinColumn(name = "search_config_id")
+    val searchConfig: SearchConfig,
+
 ) {
     fun toDebugString() =
-        "'$id' : '$scrapeTime' "
+        "'$id' : '$scrapeTime' : '$searchConfig"
 }
