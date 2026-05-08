@@ -16,7 +16,7 @@ class Paginator(
         var n = 1
         val allItems = mutableSetOf<ScrapeItem>()
 
-        do {
+        do { // TODO Funktion url die in der search config lebt und nur als parameter die seitenzahl bekommt
             val url = "https://www.kleinanzeigen.de/s-" +
                     "${config.category}/" +
                     "${config.art}/" +
@@ -46,8 +46,8 @@ class Paginator(
                 Thread.sleep(1000)
             }
 
-        } while (soup.select(".pagination-next").isNotEmpty())
-//        } while (n < 2)
+//        } while (soup.select(".pagination-next").isNotEmpty())
+        } while (n < 2)
         return allItems
     }
 }

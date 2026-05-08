@@ -26,7 +26,7 @@ class ScraperRunner(
         )
         val scrapeItems = paginator.run(config)
         logger.info { "found ${scrapeItems.size} items" }
-        itemService.process(scrapeItems)
+        itemService.process(scrapeItems, config)
 
         if (!scrapeItems.isEmpty()) {
             scrapeRepository.save(Scrape(0,scrapeItems.first().scrapeTime))

@@ -3,6 +3,8 @@ package classifiedslifecycle
 import jakarta.persistence.Column
 import jakarta.persistence.EmbeddedId
 import jakarta.persistence.Entity
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import java.time.Instant
 import java.time.LocalDate
@@ -26,6 +28,10 @@ open class Item(
 
     val negotiable: Boolean,
     val created: LocalDate?,
+
+    @ManyToOne
+    @JoinColumn(name = "search_config_id")
+    val searchConfig: SearchConfig
 ) {
 
     fun toDebugString() =
@@ -37,6 +43,8 @@ open class Item(
                 ": '${price}' " +
                 ": '${oldPrice}' " +
                 ": '${negotiable}' " +
-                ": '${created}' "
+                ": '${created}' " +
+                ": '${searchConfig}' "
+
 
 }

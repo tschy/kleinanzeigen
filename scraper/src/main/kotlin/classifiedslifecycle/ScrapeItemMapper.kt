@@ -2,7 +2,8 @@ package classifiedslifecycle
 
 import java.time.Instant
 
-fun toItem(scrapeItem: ScrapeItem): Item {
+// TODO searchConfig uebergeben
+fun toItem(scrapeItem: ScrapeItem, searchConfig: SearchConfig): Item {
     val instant = Instant.now()
     return Item(
         ListingId(scrapeItem.id, instant),
@@ -12,7 +13,8 @@ fun toItem(scrapeItem: ScrapeItem): Item {
         scrapeItem.price,
         scrapeItem.oldPrice,
         scrapeItem.negotiable,
-        scrapeItem.created
+        scrapeItem.created,
+        searchConfig,
     )
 }
 //
@@ -22,6 +24,7 @@ fun toItem(scrapeItem: ScrapeItem): Item {
 //            price == scrapeItem.price &&
 //            negotiable == scrapeItem.negotiable &&
 //            created == scrapeItem.created
+
 
 fun Item.matches(scrapeItem: ScrapeItem): Boolean {
     val idMatch = id.id == scrapeItem.id

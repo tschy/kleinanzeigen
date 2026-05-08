@@ -6,21 +6,26 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ItemService(
-    val listingRepository: ListingRepository
+    val listingRepository: ListingRepository,
+    val searchConfigRepository: SearchConfigRepository
 ) {
     private val logger = KotlinLogging.logger {}
 
 
     // TODO is that a good place for Transactional, we don't want to roll back 10000 items
     @Transactional
-    fun process(scrapeItems: Set<ScrapeItem>) {
+    fun process(scrapeItems: Set<ScrapeItem>, config: SearchConfig) {
 
         // sort list so the most recent listing is the first entry
         val sortedItems = scrapeItems
             .sortedByDescending { it.created } // null ends up at the end of the list
             .distinctBy { it.id } // removes duplicates based on the id property, relevant for TOP ads
 
+        val existing = searchConfigRepository.findByCategoryAndArtAndPlzAndSearchTermAndRadius(
+            config.category, config.art, config.plz, config.searchTerm, config.radius
+        )
 
+        existing ?: searchConfigRepository.save(config)
 
         sortedItems.forEach { scrapeItem ->
 
@@ -28,7 +33,7 @@ class ItemService(
             val itemSaved = listingRepository
                 .findByIdId(scrapeItem.id).maxByOrNull { it.id.firstScrape }
 
-            val newItem = toItem(scrapeItem)
+            val newItem = toItem(scrapeItem, config)
 
             if (itemSaved != null) {
 

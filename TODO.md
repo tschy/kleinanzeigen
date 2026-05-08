@@ -427,6 +427,29 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 - [x] --> add a new table with flyway, once it is running. there were 479 scrapes from 17/4 up to 5/5/26 10 am, the log records 495 scrapes (scraper was offline temporarily). Hourly scraping started 23/4/26 2pm with minimal downtime.
     - [x] fill table with log entries so most scrapes are recorded with the correct time (approx 350), for the remaining 200 fill in entries at the exact miniute of :00 and :15
 
+
+- [x] Index definieren (s. TODO/log 30/4/26)
+    - [x] reading https://www.geeksforgeeks.org/dbms/indexing-in-databases-set-1/
+        - [x] https://www.postgresql.org/docs/current/indexes-intro.html
+            - Just as it is the task of the author to anticipate the items that readers are likely to look up, it is the task of the database programmer to foresee which indexes will be useful.
+
+            - [x] 11.2.1 B-Tree — the default, covers 95% of use caseshttps://www.postgresql.org/docs/current/indexes-types.html#INDEXES-TYPES-BTREE
+                - However, if your database does not use the C locale you will need to create the index with a special operator class to support indexing of pattern-matching queries
+                    - Your database is almost certainly using a German or UTF-8 locale (relevant since you're scraping German listings), which has more complex sorting rules. In that case you need to create the index with text_pattern_ops:
+                      CREATE INDEX ON listing (title text_pattern_ops);
+                      This tells PostgreSQL to use pattern-matching friendly sorting for that index regardless of your locale.
+            - [x] 11.3 Multicolumn Indexes — relevant since your listing table has a composite primary key https://www.postgresql.org/docs/current/indexes-multicolumn.html
+            - [x]  11.6 Unique Indexes — simple and important to understand https://www.postgresql.org/docs/current/indexes-unique.html
+            - [x] 11.8 Partial Indexes — very practical, e.g. indexing only active listings https://www.postgresql.org/docs/current/indexes-partial.html
+            - [x] 11.12 Examining Index Usage — essential, teaches you how to check if your indexes are actually being used with https://www.postgresql.org/docs/current/indexes-examine.html
+              - So you should time your query with and without indexes. The EXPLAIN ANALYZE command can be useful here.
+            - [] https://www.postgresql.org/docs/current/sql-explain.html
+
+            - B-Tree
+
+
+
+
 ----------------------
 
 - [x] rebase - videos angucken, ist wichtig oder lesen, nicht jeder erklaert es auf die gleiche weise die zum eigenen passt
@@ -434,29 +457,9 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
     - [x] https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging#_basic_merging
     - [x] https://git-scm.com/book/en/v2/Git-Tools-Stashing-and-Cleaning#_git_stashing
 
-===================================================================
 
-- [x] Index definieren (s. TODO/log 30/4/26)
-    - [x] reading https://www.geeksforgeeks.org/dbms/indexing-in-databases-set-1/
-        - [x] https://www.postgresql.org/docs/current/indexes-intro.html
-            - Just as it is the task of the author to anticipate the items that readers are likely to look up, it is the task of the database programmer to foresee which indexes will be useful.
-          
-          - [x] 11.2.1 B-Tree — the default, covers 95% of use caseshttps://www.postgresql.org/docs/current/indexes-types.html#INDEXES-TYPES-BTREE
-            - However, if your database does not use the C locale you will need to create the index with a special operator class to support indexing of pattern-matching queries
-                - Your database is almost certainly using a German or UTF-8 locale (relevant since you're scraping German listings), which has more complex sorting rules. In that case you need to create the index with text_pattern_ops:
-                  CREATE INDEX ON listing (title text_pattern_ops);
-                  This tells PostgreSQL to use pattern-matching friendly sorting for that index regardless of your locale.
-          - [x] 11.3 Multicolumn Indexes — relevant since your listing table has a composite primary key https://www.postgresql.org/docs/current/indexes-multicolumn.html
-          - [x]  11.6 Unique Indexes — simple and important to understand https://www.postgresql.org/docs/current/indexes-unique.html
-          - [x] 11.8 Partial Indexes — very practical, e.g. indexing only active listings https://www.postgresql.org/docs/current/indexes-partial.html
-          - [x] 11.12 Examining Index Usage — essential, teaches you how to check if your indexes are actually being used with https://www.postgresql.org/docs/current/indexes-examine.html
-                - So you should time your query with and without indexes. The EXPLAIN ANALYZE command can be useful here.
-          - [] https://www.postgresql.org/docs/current/sql-explain.html
-          
-          - B-Tree 
-          
-        
-    
+- [x] ongoing problems with git history and pull requests from dev into main?
+===================================================================
 
 
 ---------------------------------------------------------------
@@ -464,6 +467,9 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
     - [x] ssystems anrufen -> warte auf Rueckruf
     - [x] reos anrufen -> email schreiben an info@...
         - Stelle noch zu besetzen, an wen die Bewerbung richten (was noch/anders?)
+
+================================================================
+
 
 ================================================================
 
@@ -482,8 +488,6 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 
 ## TODO
 
-- [] ongoing problems with git history and pull requests from dev into main?
-
 - u. U. zu advanced: sicherheit von postgres verbessern, manuell zugriff bauen ueber eigenen proxy
 
 - [] abschaetzen wieviel byte ist ein datensatz, wieviele datensaetze.
@@ -492,13 +496,34 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 
 - observability (s. TODO/log 30/4/26)
 
+- [] SearchConfig Aenderungen Produktionsdatenbank mit
+- 
+- [] Test if terraform is set up correctly by deploying it again
 
+- [] initialiserung der scrape datenbank mit flyway s. TODO/Log 7/5/26
+
+- [] ueberpruefen ob scrapes von der ersten woche in der listing tabelle
+
+- [] Unittests fuer das gesamte Projekt ausfuehren mit github actions bei jedem push
+
+- [] massnahmen festlegen, damit fehler in der produktion nicht wieder passieren (loggen welche fehler passieren und wie sie behoben werden -> "postMortem")
+
+- [] operations thema ueberlegen: recherchiere railway metriken -> weitere themenbesprechung beim naechsten mal zs entscheiden
+
+- [] neue, verschwundene, gefundene items irgendwohin reporten - an dem graph gleich sehen, ob alles in ordnung ist oder rollback machen automatisch wenn nicht alles in ordnung ist
+
+- [] json datei erzeugen, einlesen: noch keine id, eigene data class ohne id um das einzulesen oder jackson magie -> claude beraten lassen
+
+- [] comment out legacy initialising in V5 flyway migrations after produ data has been altered
 --------------------------
 
 # ONGOING
 
 - [/] terraform!
 
+# Analysis/SearchConfigs
+
+- [] Search Configs fuer split keyboards, existierende, liegeraeder
 
 
 # Analysis
@@ -507,12 +532,5 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
     - Further analysis — think of other meaningful insights from the data
     - [] check for a correlation between discount and time online,
 
-# Scraper
-
-    - ich überlege gerade, wie man geschickt das Datenmodell ergänzen kann, damit an den Einträgen ersichtlich ist, zu welcher SearchConfig sie gehören.
-￼ - vielleicht in der SearchConfig Klasse noch ein Feld "key" hinzufügen und dieses dann in jedem ScrapeItem hinzufügen.
 
 
-TODO
-initialiserung der scrape datenbank mit flyway
-ueberpruefen ob scrapes von der erstesn woche in der listing tabllee
