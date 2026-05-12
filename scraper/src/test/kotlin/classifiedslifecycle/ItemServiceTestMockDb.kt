@@ -19,6 +19,16 @@ class ItemServiceTestMockDb {
 
     val mockRepository = mockk<ListingRepository>()
 
+    val config = SearchConfig(
+        id = 0,
+        name = "test",
+        category = "fahrraeder",
+        art = "herren",
+        plz = "12309",
+        searchTerm = "rennrad",
+        radius = 10
+    )
+
     @OptIn(ExperimentalTime::class)
     val exampleInstant = parse("2020-01-01T00:00:00.00Z").toJavaInstant()
     val itemId = "123"
@@ -32,6 +42,7 @@ class ItemServiceTestMockDb {
         null,
         false,
         LocalDate.of(2026, Month.MARCH, 19),
+        config,
     )
 
     val oldItemDb2 = Item(
@@ -44,6 +55,7 @@ class ItemServiceTestMockDb {
         null,
         false,
         LocalDate.of(2026, Month.MARCH, 19),
+        config,
     )
 
     // ein neues

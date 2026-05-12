@@ -7,7 +7,15 @@ import java.io.File
 class ItemExtractorTest {
 
     val itemExtractor = ItemExtractor()
-
+    val config = SearchConfig(
+        id = 0,
+        name = "test",
+        category = "fahrraeder",
+        art = "herren",
+        plz = "12309",
+        searchTerm = "rennrad",
+        radius = 10
+    )
     @Test
     fun `extracts items from htm and creates item objects`() {
 
@@ -22,7 +30,7 @@ class ItemExtractorTest {
         val items = mutableListOf<Item>()
 
         for (scrapeItem in itemsScraped) {
-            items.add(toItem(scrapeItem))
+            items.add(toItem(scrapeItem, config))
         }
 
         assertThat(items).hasSize(27)

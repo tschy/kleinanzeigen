@@ -39,11 +39,10 @@ UPDATE scrape
 SET search_config_id = 1;
 
 
--- one time migration, comment out
+
 ALTER TABLE listing
     ALTER COLUMN search_config_id SET NOT NULL;
 
--- one time migration, comment out
 ALTER TABLE scrape
     ALTER COLUMN search_config_id SET NOT NULL;
 

@@ -61,5 +61,3 @@ flyway {
     schemas = arrayOf("public")
     configurations = arrayOf("runtimeClasspath")
 }
-
-// TODO

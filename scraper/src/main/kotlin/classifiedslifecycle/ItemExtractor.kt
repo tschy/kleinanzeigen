@@ -1,4 +1,5 @@
 package classifiedslifecycle
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.springframework.stereotype.Component
@@ -37,8 +38,9 @@ class ItemExtractor(
 
         val soup = Jsoup.parse(body)
         val articles = soup.select("article.aditem")
-        println("Found ${articles.size} articles")
 
+        KotlinLogging.logger {}.info { "Found ${articles.size} articles" }
+        
         return articles.map { article: Element ->
             val id = article.attr("data-adid")
             val scrapeTime = Instant.now()

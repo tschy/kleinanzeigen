@@ -3,6 +3,7 @@ package classifiedslifecycle
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.core.io.ClassPathResource
 import com.fasterxml.jackson.module.kotlin.readValue
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
 
 @Service
@@ -18,29 +19,19 @@ class SearchConfigService(
         val configs = mutableListOf<SearchConfig>()
 
         files?.forEach { f ->
-
-            println("${f.name} ")
             val resource = ClassPathResource("search-configs/${f.name}")
-
-            println("RAW CONTENT: ${resource.inputStream.bufferedReader().readText()}")
 
             val mapper = ObjectMapper()
             val configRead = mapper
                 .readValue<SearchConfig>(resource.inputStream)
 
-            println("READING FILE: ${resource.uri}")
-
-            println(configRead.name)
-
             val existing = searchConfigRepository
                 .findByName(configRead.name)
 
-            println(existing?.toDebugString())
+            KotlinLogging.logger {}.info { existing?.toDebugString() }
 
             val config = existing ?: searchConfigRepository
                 .save(configRead)
-
-            println(config.toDebugString())
 
             configs.add(config)
         }

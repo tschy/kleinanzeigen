@@ -1,5 +1,6 @@
 package classifiedslifecycle
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.jsoup.Jsoup
 import org.springframework.stereotype.Component
 import java.io.File
@@ -26,8 +27,8 @@ class Paginator(
                     "${config.radius}+" +
                     "${config.category}.art_s:" +
                     config.art
-            println("paginator ${url}")
 
+            KotlinLogging.logger {}.info { url }
 
             // get HTML content for this page
             val body = fetcherService.fetch(url)

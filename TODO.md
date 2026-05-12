@@ -496,32 +496,45 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 - 
 - [] Test if terraform is set up correctly by deploying it again
 
-- [] initialiserung der scrape datenbank mit flyway s. TODO/Log 7/5/26
+QUESTION ------> - [] initialiserung der scrape datenbank mit flyway s. TODO/Log 7/5/26 -> zu aufwendig, es laesst sich nicht mehr rekonstruieren welche Zeilen wie gesetzt werden muessen, da neue Eintraege hinzugekommen sind. Die Initialisierung der Datenbank ist in v5 ausgefuehrt werden, nach einem aehnlichen Muster wuerde auch die scrape-Datenbank initialisiert. Bei neuen Daten braeuchte es keine Analyse und die Situation, dass genau diese Migration durchgefuehrt werden muss wird nicht wieder auftreten.
 
-- [] ueberpruefen ob scrapes von der ersten woche in der listing tabelle
+QUESTION ------> - [] ueberpruefen ob scrapes von der ersten woche in der listing tabelle sind - ja, sind sie, aber die Datenqualitaet ist gut genug, oder lohnt sich der Aufwand, die exacten scrape daten zu generieren zur initialisierung?
+
+QUESTION ------> - [] fehlgeschlagene Initialisierung als Beispiel eines post mortems? eher nicht? 
+INSERT INTO search_config (name, category, art, plz, search_term, radius)
+VALUES ('rennraeder-berlin-lichtenrade',  <---------------- hier war rennraeder-berlin eingetragen -> neue config wurde nicht eingelesen, weil es ja schon eine mit dem namen gab
+        'fahrraeder',
+        'herren',
+        '12309',
+        'rennrad',
+        10)
+RETURNING id;
+
 
 - [] Unittests fuer das gesamte Projekt ausfuehren mit github actions bei jedem push
-
-- [] massnahmen festlegen, damit fehler in der produktion nicht wieder passieren (loggen welche fehler passieren und wie sie behoben werden -> "postMortem")
 
 - [] operations thema ueberlegen: recherchiere railway metriken -> weitere themenbesprechung beim naechsten mal zs entscheiden
 
 - [] neue, verschwundene, gefundene items irgendwohin reporten - an dem graph gleich sehen, ob alles in ordnung ist oder rollback machen automatisch wenn nicht alles in ordnung ist
 
-- [] json datei erzeugen, einlesen: noch keine id, eigene data class ohne id um das einzulesen oder jackson magie -> claude beraten lassen
+- [x] json datei erzeugen, einlesen: noch keine id, eigene data class ohne id um das einzulesen oder jackson magie -> claude beraten lassen
 
-- [] comment out legacy initialising in V5 flyway migrations after produ data has been altered
+- [x] Übrigens, da Du schon die sehr schöne "Scrapes" Tabelle hast, würde ich dort auch ein Feld SearchConfigId einfügen und für jede gescrapte SearchConfig einen Eintrag dort machen.
 
-- [] Übrigens, da Du schon die sehr schöne "Scrapes" Tabelle hast, würde ich dort auch ein Feld SearchConfigId einfügen und für jede gescrapte SearchConfig einen Eintrag dort machen.
+- [] add Search Config to ReadMe
+
+- [] programmatisch erzwingen, dass eine SearchConfig nicht geandert werden kann
 --------------------------
 
 # ONGOING
 
 - [/] terraform!
 
+- [] massnahmen festlegen, damit fehler in der produktion nicht wieder passieren (loggen welche fehler passieren und wie sie behoben werden -> "postMortem")
+
 # Analysis/SearchConfigs
 
-- [] Search Configs fuer split keyboards, existierende, liegeraeder
+-----------------> TASK FOR ROBERT - [] Search Configs fuer split keyboards, existierende, liegeraeder
 
 
 # Analysis
