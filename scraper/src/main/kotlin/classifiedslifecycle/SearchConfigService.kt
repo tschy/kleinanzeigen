@@ -26,7 +26,14 @@ class SearchConfigService(
                 .readValue<SearchConfig>(resource.inputStream)
 
             val existing = searchConfigRepository
-                .findByName(configRead.name)
+                .findByNameAndCategoryAndArtAndPlzAndSearchTermAndRadius(
+                    configRead.name,
+                    configRead.category,
+                    configRead.art,
+                    configRead.plz,
+                    configRead.searchTerm,
+                    configRead.radius
+                )
 
             KotlinLogging.logger {}.info { existing?.toDebugString() }
 

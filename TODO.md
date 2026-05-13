@@ -493,8 +493,14 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 - observability (s. TODO/log 30/4/26)
 
 - [] SearchConfig Aenderungen Produktionsdatenbank mit
-- 
+
 - [] Test if terraform is set up correctly by deploying it again
+
+- [x] json datei erzeugen, einlesen: noch keine id, eigene data class ohne id um das einzulesen oder jackson magie -> claude beraten lassen
+
+- [x] Übrigens, da Du schon die sehr schöne "Scrapes" Tabelle hast, würde ich dort auch ein Feld SearchConfigId einfügen und für jede gescrapte SearchConfig einen Eintrag dort machen.
+
+- [x] add Search Config to ReadMe
 
 QUESTION ------> - [] initialiserung der scrape datenbank mit flyway s. TODO/Log 7/5/26 -> zu aufwendig, es laesst sich nicht mehr rekonstruieren welche Zeilen wie gesetzt werden muessen, da neue Eintraege hinzugekommen sind. Die Initialisierung der Datenbank ist in v5 ausgefuehrt werden, nach einem aehnlichen Muster wuerde auch die scrape-Datenbank initialisiert. Bei neuen Daten braeuchte es keine Analyse und die Situation, dass genau diese Migration durchgefuehrt werden muss wird nicht wieder auftreten.
 
@@ -511,17 +517,17 @@ VALUES ('rennraeder-berlin-lichtenrade',  <---------------- hier war rennraeder-
 RETURNING id;
 
 
-- [] Unittests fuer das gesamte Projekt ausfuehren mit github actions bei jedem push
+====================> LINKED IN und XING Profil erstellen
+
+=========================> UNKLAR wofuer es sich lohnt, Unittests zu machen- [] Unittests fuer das gesamte Projekt ausfuehren mit github actions bei jedem push
 
 - [] operations thema ueberlegen: recherchiere railway metriken -> weitere themenbesprechung beim naechsten mal zs entscheiden
+  - Push und pull metrics
+  - wieviele Items gefunden
+  - https://docs.railway.com/guides/third-party-observability Connect a Third-Party Observability Tool
 
-- [] neue, verschwundene, gefundene items irgendwohin reporten - an dem graph gleich sehen, ob alles in ordnung ist oder rollback machen automatisch wenn nicht alles in ordnung ist
-
-- [x] json datei erzeugen, einlesen: noch keine id, eigene data class ohne id um das einzulesen oder jackson magie -> claude beraten lassen
-
-- [x] Übrigens, da Du schon die sehr schöne "Scrapes" Tabelle hast, würde ich dort auch ein Feld SearchConfigId einfügen und für jede gescrapte SearchConfig einen Eintrag dort machen.
-
-- [] add Search Config to ReadMe
+---------------> QUESTION  [] neue, verschwundene, gefundene items irgendwohin reporten - an dem graph gleich sehen, ob alles in ordnung ist oder rollback machen automatisch wenn nicht alles in ordnung ist
+    - verschwundene Items -> koennen auch von anderen aus der Liste gepusht worden sein
 
 - [] programmatisch erzwingen, dass eine SearchConfig nicht geandert werden kann
 --------------------------
