@@ -34,21 +34,19 @@ class Paginator(
             val body = fetcherService.fetch(url)
             val soup = Jsoup.parse(body)
 
-            File("../misc/html-debug/${url.replace("/", "_")}_${Instant.now()}.htm")
+            File("misc/html-debug/${url.replace("/", "_")}_${Instant.now()}.htm")
                 .also { it.parentFile.mkdirs() }
                 .writeText(body)
 
+            allItems.addAll(itemExtractor.extract(body))
 
             // test if pagination-next marker is present
             if (soup.select(".pagination-next").isNotEmpty()) {
-                n += 1
-                allItems.addAll(itemExtractor.extract(body))
-
                 Thread.sleep(1000)
             }
-
-//        } while (soup.select(".pagination-next").isNotEmpty())
-        } while (n < 2)
+            n += 1
+        } while (soup.select(".pagination-next").isNotEmpty())
+//        } while (n < 2)
         return allItems
     }
 }

@@ -484,7 +484,7 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 - [x] Übrigens, da Du schon die sehr schöne "Scrapes" Tabelle hast, würde ich dort auch ein Feld SearchConfigId einfügen und für jede gescrapte SearchConfig einen Eintrag dort machen.
 
 - [x] add Search Config to ReadMe
-- 
+
 - [x] programmatisch erzwingen, dass eine SearchConfig nicht geandert werden kann
 
 ## TODO
@@ -521,15 +521,26 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
     2   10115  30      2026-04-21 15:00     still active
     Step 4 — User picks versions
     User enters one or more IDs (e.g. 1,2) to include in the analysis.
+  - 
     Step 5 — Run analysis
     Filter all queries by the selected search_config_id values.
+  - 
     Step 6 — Print results
     Existing analysis output, scoped to the selected configs.
 
+explorativ zusammen mit dem user zusammensetzen 
+alle versionen einer config anzeigen und dann mit x auswaehlen, haekchen setzen
+
+nachfolger in screen, oben configs, unten analyse, configs auswaehlen, etc. alles dynamisch.
+
+wieviele scrapes mit der config, wann war der erste, wann der letzte? joins beider tabellen, wenn das zu schwierig ist in die scrape tabelle ein paar daten hinzufuegen -> trade off speed und reliability
+
 
 QUESTION ------> - [] initialiserung der scrape datenbank mit flyway s. TODO/Log 7/5/26 -> zu aufwendig, es laesst sich nicht mehr rekonstruieren welche Zeilen wie gesetzt werden muessen, da neue Eintraege hinzugekommen sind. Die Initialisierung der Datenbank ist in v5 ausgefuehrt werden, nach einem aehnlichen Muster wuerde auch die scrape-Datenbank initialisiert. Bei neuen Daten braeuchte es keine Analyse und die Situation, dass genau diese Migration durchgefuehrt werden muss wird nicht wieder auftreten.
+- okay
 
 QUESTION ------> - [] ueberpruefen ob scrapes von der ersten woche in der listing tabelle sind - ja, sind sie, aber die Datenqualitaet ist gut genug, oder lohnt sich der Aufwand, die exacten scrape daten zu generieren zur initialisierung?
+- okay
 
 QUESTION ------> - [] fehlgeschlagene Initialisierung als Beispiel eines post mortems? eher nicht? 
 INSERT INTO search_config (name, category, art, plz, search_term, radius)
@@ -539,32 +550,62 @@ VALUES ('rennraeder-berlin-lichtenrade',  <---------------- hier war rennraeder-
         '12309',
         'rennrad',
         10)
-RETURNING id;
+RETURNING id;  ---> nur fuer fehler aus denen man etwas lernt und die nicht auf nutzer fehler beruhen, hoechstens als dok verbesserung einfuegen, oder wo was schlimmes kaputt gegangen
 
 ---------------> QUESTION  [] neue, verschwundene, gefundene items irgendwohin reporten - an dem graph gleich sehen, ob alles in ordnung ist oder rollback machen automatisch wenn nicht alles in ordnung ist
     - verschwundene Items -> koennen auch von anderen aus der Liste gepusht worden sein
     - schon unsicher bei debugPrintChangedItems
     - kleinanzeigen-agent.de, wie machen die das? aufwendiger, mehr suchen?
+Nutzer ist dafuer verantwortlich, dass weniger als 500 Elemente in der Suche sind, suche so einstesllen, dass niht mehr ergebnisse zurueckgeliefert werden, 
+weil ebay nicht mehr darstellt, und nicht mehr zurueckliefert
 
 --------------> QUESTION zusammen debuggen, bitte.
+
+- [] VPN  passwort - netzwerk verbindung herstellen. erst wenn mit dem vpn verbunden soll man sehen dass es einen db server gibt, in den man sich einloggen kann - alle auf railway gehosteten services/db. db hoert ja den port ab
+- man muss immer zwei schichten haben an sicherheit, der login der in der variable in railway gesetzt ist ist nicht genug
+
+- graphana gui 
 
 ====================> LINKED IN und XING Profil erstellen
 
 ===> neue SearchConfigs erstellen, Prod danach anpassen
 
 =========================> UNKLAR wofuer es sich lohnt, Unittests zu machen- [] Unittests fuer das gesamte Projekt ausfuehren mit github actions bei jedem push
+    - ganz wenig logik in diesem projekt. 
+    - erstmal die vorhandenen in github actions laufen lassn
+    - junit tags/groups - db tests nicht auf github ausfuehren weil da ist ja keine db, neue andere aufgabe: datenbank da starten in github, muesste erstmal recherciert werden ob das ueberhaupt geht
 
+- ## Metriken
 - [] operations thema ueberlegen: recherchiere railway metriken -> weitere themenbesprechung beim naechsten mal zs entscheiden
     - Push und pull metrics
     - wieviele Items gefunden
-      - vergleich mit letzter zahl, wenn sich die zahl stark aendert, hinweis auf Fehler?
+      - vergleich mit letzter zahl, wenn sich die zahl stark aendert, hinweis auf Fehler? -> will man das trennen? scraper scrapt nur, prometheus alarm einrichten wenn sich die zahlen stark veraendern.
+      - zeit loggen, wie lange der gedauert hat (selbst messen auf jeden Fall mal) - wenn die scrape zeit ploetzlich viel geringer ist, dann ist das ein hinweis auf fehler
     - https://docs.railway.com/guides/third-party-observability Connect a Third-Party Observability Tool
     - last cron job within the last 65? min  detect down times/errors 
     - log errors (happens already automatically)
     - https://docs.spring.io/spring-boot/reference/actuator/metrics.html) Micrometer and Prometheus?
-    - https://docs.railway.com/guides/deploy-an-otel-collector-stack
+      - prom braucht eigene db/ist die db
+        - https://docs.railway.com/guides/deploy-an-otel-collector-stack
+    
+- ## Logs
+    bsp exception provozieren:
+      - falsche scrape url konfiguriert, testen, dass die anderen scrapes noch funktionieren -> robustheit sicherstellen (lokal)
+    - wenn die metriken irgendwo hingesendet werden muessen sie nicht mehr geloggt werden
+    - alles loggen was man braucht um auftretende probleme zu beheben.
+    -  try catch und errors loggen
 
+- [] verschwinden Anzeigen tatsaechlich aus der Scrape Liste/von der Kleinanzeigen website
 
+- [] unit test/post mortem letzte seite wurde nicht gescraped
+----------------------------
+- [] Anzahl der gescrapten items in die scrape tabelle schreiben
+
+- [] operative metriken in die db schreiben? eigentl produ daten von operativ daten trennen
+
+- [] config ausstellen temporaer
+
+- [] zahl von der website wieviele gesamt treffer es gab rausloggen / holen mit jsoup und loggen und dann abgleichen mit der im programm festgestellten zahl und abgleichen und wenn sie nicht uebereinstimmen error log schreiben 
 --------------------------
 
 # ONGOING
