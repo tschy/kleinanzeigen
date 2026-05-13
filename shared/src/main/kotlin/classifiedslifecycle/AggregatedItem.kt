@@ -17,7 +17,7 @@ class AggregatedItem(
     val originalPrice: Double?
 ) {
 
-    val ageDays = ChronoUnit.DAYS.between(
+    val ageDays = if (firstCreated == null) null else ChronoUnit.DAYS.between(
         firstCreated,
         lastScrape
             .atZone(
@@ -26,7 +26,8 @@ class AggregatedItem(
             .toLocalDate()
     )
 
-    val ageGroup = if (ageDays <= 13) "$ageDays days"
+    val ageGroup = if (ageDays == null) "unknown"
+    else if (ageDays <= 13) "$ageDays days"
     else if (ageDays <= 13 * 7) "${ageDays / 7} weeks"
     else if (ageDays <= 30 * 12 * 2) "${ageDays / 30} months"
         else "${ageDays / 365} years"

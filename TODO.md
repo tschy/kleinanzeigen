@@ -447,9 +447,6 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 
             - B-Tree
 
-
-
-
 ----------------------
 
 - [x] rebase - videos angucken, ist wichtig oder lesen, nicht jeder erklaert es auf die gleiche weise die zum eigenen passt
@@ -482,6 +479,14 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 
 -------------------------------------------------
 
+- [x] json datei erzeugen, einlesen: noch keine id, eigene data class ohne id um das einzulesen oder jackson magie -> claude beraten lassen
+
+- [x] Übrigens, da Du schon die sehr schöne "Scrapes" Tabelle hast, würde ich dort auch ein Feld SearchConfigId einfügen und für jede gescrapte SearchConfig einen Eintrag dort machen.
+
+- [x] add Search Config to ReadMe
+- 
+- [x] programmatisch erzwingen, dass eine SearchConfig nicht geandert werden kann
+
 ## TODO
 
 - u. U. zu advanced: sicherheit von postgres verbessern, manuell zugriff bauen ueber eigenen proxy
@@ -490,17 +495,37 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 
 - zero down deployment (s. TODO/log 28/4/26)
 
-- observability (s. TODO/log 30/4/26)
-
 - [] SearchConfig Aenderungen Produktionsdatenbank mit
 
 - [] Test if terraform is set up correctly by deploying it again
 
-- [x] json datei erzeugen, einlesen: noch keine id, eigene data class ohne id um das einzulesen oder jackson magie -> claude beraten lassen
+- [] one place where the scraping interval is hardcoded only 
 
-- [x] Übrigens, da Du schon die sehr schöne "Scrapes" Tabelle hast, würde ich dort auch ein Feld SearchConfigId einfügen und für jede gescrapte SearchConfig einen Eintrag dort machen.
+-------------> QUESTION [] Analyse vorbereiten: 
 
-- [x] add Search Config to ReadMe
+  - Step 1 — Query available configs
+    Load all distinct config names from the search_config table.
+
+    Step 2 — User picks a name
+    Print the list of names to the console, user types one.
+
+    Step 3 — Show versions of that name
+    Query all search_config rows with that name. For each, join with scrape to get:
+
+    First scrape timestamp (active from)
+    Last scrape timestamp (active until, or "still active" if within last 2 hours)
+
+    Display as a table like:
+    ID  PLZ    Radius  Active from          Active until
+    1   12309  10      2026-04-01 08:00     2026-04-21 14:30
+    2   10115  30      2026-04-21 15:00     still active
+    Step 4 — User picks versions
+    User enters one or more IDs (e.g. 1,2) to include in the analysis.
+    Step 5 — Run analysis
+    Filter all queries by the selected search_config_id values.
+    Step 6 — Print results
+    Existing analysis output, scoped to the selected configs.
+
 
 QUESTION ------> - [] initialiserung der scrape datenbank mit flyway s. TODO/Log 7/5/26 -> zu aufwendig, es laesst sich nicht mehr rekonstruieren welche Zeilen wie gesetzt werden muessen, da neue Eintraege hinzugekommen sind. Die Initialisierung der Datenbank ist in v5 ausgefuehrt werden, nach einem aehnlichen Muster wuerde auch die scrape-Datenbank initialisiert. Bei neuen Daten braeuchte es keine Analyse und die Situation, dass genau diese Migration durchgefuehrt werden muss wird nicht wieder auftreten.
 
@@ -516,27 +541,37 @@ VALUES ('rennraeder-berlin-lichtenrade',  <---------------- hier war rennraeder-
         10)
 RETURNING id;
 
+---------------> QUESTION  [] neue, verschwundene, gefundene items irgendwohin reporten - an dem graph gleich sehen, ob alles in ordnung ist oder rollback machen automatisch wenn nicht alles in ordnung ist
+    - verschwundene Items -> koennen auch von anderen aus der Liste gepusht worden sein
+    - schon unsicher bei debugPrintChangedItems
+    - kleinanzeigen-agent.de, wie machen die das? aufwendiger, mehr suchen?
+
+--------------> QUESTION zusammen debuggen, bitte.
 
 ====================> LINKED IN und XING Profil erstellen
+
+===> neue SearchConfigs erstellen, Prod danach anpassen
 
 =========================> UNKLAR wofuer es sich lohnt, Unittests zu machen- [] Unittests fuer das gesamte Projekt ausfuehren mit github actions bei jedem push
 
 - [] operations thema ueberlegen: recherchiere railway metriken -> weitere themenbesprechung beim naechsten mal zs entscheiden
-  - Push und pull metrics
-  - wieviele Items gefunden
-  - https://docs.railway.com/guides/third-party-observability Connect a Third-Party Observability Tool
+    - Push und pull metrics
+    - wieviele Items gefunden
+      - vergleich mit letzter zahl, wenn sich die zahl stark aendert, hinweis auf Fehler?
+    - https://docs.railway.com/guides/third-party-observability Connect a Third-Party Observability Tool
+    - last cron job within the last 65? min  detect down times/errors 
+    - log errors (happens already automatically)
+    - https://docs.spring.io/spring-boot/reference/actuator/metrics.html) Micrometer and Prometheus?
+    - https://docs.railway.com/guides/deploy-an-otel-collector-stack
 
----------------> QUESTION  [] neue, verschwundene, gefundene items irgendwohin reporten - an dem graph gleich sehen, ob alles in ordnung ist oder rollback machen automatisch wenn nicht alles in ordnung ist
-    - verschwundene Items -> koennen auch von anderen aus der Liste gepusht worden sein
 
-- [] programmatisch erzwingen, dass eine SearchConfig nicht geandert werden kann
 --------------------------
 
 # ONGOING
 
 - [/] terraform!
 
-- [] massnahmen festlegen, damit fehler in der produktion nicht wieder passieren (loggen welche fehler passieren und wie sie behoben werden -> "postMortem")
+- [] massnahmen festlegen, damit fehler in der produktion nicht wieder passieren (loggen welche fehler passieren und wie sie behoben werden -> post mortem)
 
 # Analysis/SearchConfigs
 
@@ -548,23 +583,3 @@ RETURNING id;
     - Correlation skipped — average discount vs age group correlation requires CSV/data science tooling, out of scope for now -> Kotlin Data Frame out of scope as well
     - Further analysis — think of other meaningful insights from the data
     - [] check for a correlation between discount and time online,
-
-
-
-Ansonsten ist die Spezifikation: der Name wird ja vom Nutzer vergeben und zeigt an, dass eine Konfiguration trotz geänderter Such-Felder noch dieselbe Absicht widerspiegelt. Ich merke gerade, dass wir die Parent-ID dann auch gar nicht brauchen, weil man ja jederzeit alle SearchConfigs mit demselben Namen finden kann.
-
-Übrigens, da Du schon die sehr schöne "Scrapes" Tabelle hast, würde ich dort auch ein Feld SearchConfigId einfügen und für jede gescrapte SearchConfig einen Eintrag dort machen.
-
-
-
-den k0 Teil kann man vorerst auch gern manuell bestimmen.
-
-ich spiele sowieso immer erst ein bisschen manuell mit den Suchkriterien, um zu checken, dass die Ergebnisse meinen Erwartungen entsprechen.
-
-
-ja, der Scraper sollte auch schon bei der kleinsten Änderung eine neue Config in der Datenbank schreiben, damit man zu jedem alten "run" genau sehen kann, welche Config verwendet wurde. Also Configs in der Datenbank sollten "immutable" sein!
-
-
-(Ich hatte dieses Konzept die ganze Zeit im Hinterkopf, aber erst eben fiel mir ein, das man es so klar ausdrücken kann.)
-
-Und damit der Analysierende die Parameter der alten Suche sehen kann, muss bei jeder Änderung der Config die neue ID generiert werden und die neuen Parameter in die DB, damit sie die alten nicht überschreiben.

@@ -14,7 +14,6 @@ class Analyser(
     val listingRepository: ListingRepository,
     val scrapeRepository: ScrapeRepository
 ) {
-
     private val logger = KotlinLogging.logger {}
 
     val firstGlobalScrape: Instant? = listingRepository.queryFirstLastScrape()
@@ -29,13 +28,6 @@ class Analyser(
         .groupBy { it.ageGroup }
 
     val listAgeGroupStats = mutableListOf<AgeGroupStats>()
-
-
-//- [] Before all the reports, print a status of the data that was used, such as:
-//    - total scraping interval (very first and very last complete scrape)
-//    - number of scrapes
-//    - minimal scrapes per day
-
 
     fun printStats() {
 

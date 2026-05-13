@@ -8,8 +8,6 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 @Component
 class AnalysisRunner(
     private val analyser: Analyser,
-
-
 ) : ApplicationRunner {
     private val logger = KotlinLogging.logger {}
 

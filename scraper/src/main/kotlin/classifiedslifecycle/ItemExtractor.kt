@@ -25,7 +25,7 @@ class ItemExtractor(
 
             try {
                 return LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("dd.MM.yyyy"))
-                // add DateTimeFormatter.ofPattern("dd.MM.yyyy")
+
             } catch (ex: Exception) {
                 return null
             }
@@ -41,8 +41,10 @@ class ItemExtractor(
 
         KotlinLogging.logger {}.info { "Found ${articles.size} articles" }
         
-        return articles.map { article: Element ->
+        return articles.mapNotNull { article: Element ->
+
             val id = article.attr("data-adid")
+
             val scrapeTime = Instant.now()
             val title = article.select("h2").text()
             val priceString = article.select(
@@ -63,8 +65,8 @@ class ItemExtractor(
             val created = parseDate(article.select(
                 ".aditem-main--top--right")
                 .text())
-
-            ScrapeItem(id, scrapeTime, title, price, oldPrice, negotiable, created)
+            // if (created == null) null else ...
+            created?.let { ScrapeItem(id, scrapeTime, title, price, oldPrice, negotiable, created) }
         }
     }
 }
