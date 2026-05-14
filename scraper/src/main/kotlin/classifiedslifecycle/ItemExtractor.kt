@@ -34,12 +34,12 @@ class ItemExtractor(
 
     val priceRegex = Regex("[\\d.,]+")
 
-    fun extract(body: String): List<ScrapeItem> {
+    fun extract(body: String, n: Int): List<ScrapeItem> {
 
         val soup = Jsoup.parse(body)
         val articles = soup.select("article.aditem")
 
-        KotlinLogging.logger {}.info { "Found ${articles.size} articles" }
+        KotlinLogging.logger {}.info { "Found ${articles.size} articles on page $n" }
         
         return articles.mapNotNull { article: Element ->
 
@@ -65,6 +65,8 @@ class ItemExtractor(
             val created = parseDate(article.select(
                 ".aditem-main--top--right")
                 .text())
+
+            // removes ads without created date, which filters the duplicate top ads
             // if (created == null) null else ...
             created?.let { ScrapeItem(id, scrapeTime, title, price, oldPrice, negotiable, created) }
         }

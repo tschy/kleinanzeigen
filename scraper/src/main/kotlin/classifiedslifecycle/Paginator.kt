@@ -38,7 +38,7 @@ class Paginator(
                 .also { it.parentFile.mkdirs() }
                 .writeText(body)
 
-            allItems.addAll(itemExtractor.extract(body))
+            allItems.addAll(itemExtractor.extract(body, n))
 
             // test if pagination-next marker is present
             if (soup.select(".pagination-next").isNotEmpty()) {
@@ -46,7 +46,7 @@ class Paginator(
             }
             n += 1
         } while (soup.select(".pagination-next").isNotEmpty())
-//        } while (n < 2)
+//        } while (n < 5)
         return allItems
     }
 }

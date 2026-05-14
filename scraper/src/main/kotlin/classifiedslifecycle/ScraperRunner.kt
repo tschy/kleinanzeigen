@@ -26,7 +26,7 @@ class ScraperRunner(
         configs.forEach { config ->
 
             val scrapeItems = paginator.run(config)
-            logger.info { "found ${scrapeItems.size} items" }
+            logger.info { "Found ${scrapeItems.size} items in total (top ads are disregarded)" }
             itemService.process(scrapeItems, config)
 
             if (!scrapeItems.isEmpty()) {
@@ -34,6 +34,7 @@ class ScraperRunner(
                     .save(Scrape(
                         0,
                         scrapeItems.first().scrapeTime,
+                        scrapeItems.size,
                         config)
                     )
             }

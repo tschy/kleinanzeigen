@@ -495,7 +495,7 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 
 - zero down deployment (s. TODO/log 28/4/26)
 
-- [] SearchConfig Aenderungen Produktionsdatenbank mit
+- [x] SearchConfig Aenderungen Produktionsdatenbank mit
 
 - [] Test if terraform is set up correctly by deploying it again
 
@@ -604,6 +604,8 @@ weil ebay nicht mehr darstellt, und nicht mehr zurueckliefert
 - [] operative metriken in die db schreiben? eigentl produ daten von operativ daten trennen
 
 - [] config ausstellen temporaer
+
+- [x] README Benutzer muss sicherstellen, dass die Sucheergebnisse < 1250 sind - mehr werden von kleinanzeigen nicht dargestellt max. 50 Seiten, 25 Treffer je Seite
 
 - [] zahl von der website wieviele gesamt treffer es gab rausloggen / holen mit jsoup und loggen und dann abgleichen mit der im programm festgestellten zahl und abgleichen und wenn sie nicht uebereinstimmen error log schreiben 
 --------------------------

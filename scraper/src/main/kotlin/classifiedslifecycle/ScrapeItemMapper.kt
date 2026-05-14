@@ -1,5 +1,6 @@
 package classifiedslifecycle
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.time.Instant
 
 fun toItem(scrapeItem: ScrapeItem, searchConfig: SearchConfig): Item {
@@ -24,9 +25,8 @@ fun Item.matches(scrapeItem: ScrapeItem): Boolean {
     val negotiableMatch = negotiable == scrapeItem.negotiable
     val createdMatch = created == scrapeItem.created
     if (!idMatch || !titleMatch || !priceMatch || !negotiableMatch || !createdMatch) {
-        println("matches failed: id=$idMatch title=$titleMatch price=$priceMatch negotiable=$negotiableMatch created=$createdMatch")
-        println("  db:      $this")
-        println("  scraped: $scrapeItem")
+        KotlinLogging.logger {}.info { "matches failed: id=$idMatch title=$titleMatch price=$priceMatch negotiable=$negotiableMatch created=$createdMatch" }
+        KotlinLogging.logger {}.info { "  scraped: $scrapeItem" }
     }
     return idMatch && titleMatch && priceMatch && negotiableMatch && createdMatch
 }

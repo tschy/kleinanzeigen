@@ -6,6 +6,7 @@ Track how listings for specific search terms change over time. The scraper perio
 ## Constraints
 - No official API is available; the site is scraped directly using HTTP requests and HTML parsing
 - Requests are minimized to avoid overloading the site's resources
+- Searches which are specified over json-files need to result in less than 1250 results, otherwise data will be incomplete: the maximum number of pages which are displayed is 50, with 25 results on each page
 
 ---
 

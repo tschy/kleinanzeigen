@@ -1,5 +1,6 @@
 package classifiedslifecycle
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -9,6 +10,5 @@ import kotlin.system.exitProcess
 class ScraperApplication
 
 fun main(args: Array<String>) {
-
-    val context = runApplication<ScraperApplication>(*args)
+    runApplication<ScraperApplication>(*args)
 }

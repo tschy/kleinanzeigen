@@ -1,8 +1,6 @@
 package classifiedslifecycle
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.springframework.core.io.ClassPathResource
 import com.fasterxml.jackson.module.kotlin.readValue
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
@@ -36,7 +34,7 @@ class SearchConfigService(
                     configRead.radius
                 )
 
-            KotlinLogging.logger {}.info { existing?.toDebugString() }
+            KotlinLogging.logger {}.info { " using config ${existing?.toDebugString()}" }
 
             val config = existing ?: searchConfigRepository
                 .save(configRead)

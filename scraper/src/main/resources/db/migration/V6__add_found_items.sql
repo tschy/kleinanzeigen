@@ -1,0 +1,1 @@
+ALTER TABLE scrape ADD COLUMN found_items INTEGER;
