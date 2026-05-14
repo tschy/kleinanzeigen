@@ -1,9 +1,11 @@
 package classifiedslifecycle
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.springframework.core.io.ClassPathResource
 import com.fasterxml.jackson.module.kotlin.readValue
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.stereotype.Service
 
 @Service
@@ -12,16 +14,15 @@ class SearchConfigService(
 ) {
 
     fun readConfigs(): List<SearchConfig> {
-        val files = ClassPathResource("search-configs")
-            .file
-            .listFiles { f -> f.extension == "json" }
+        val resolver = PathMatchingResourcePatternResolver()
+        val resources = resolver.getResources(
+            "classpath:search-configs/*.json")
 
         val configs = mutableListOf<SearchConfig>()
 
-        files?.forEach { f ->
-            val resource = ClassPathResource("search-configs/${f.name}")
+        resources.forEach { resource ->
 
-            val mapper = ObjectMapper()
+            val mapper = jacksonObjectMapper()
             val configRead = mapper
                 .readValue<SearchConfig>(resource.inputStream)
 
