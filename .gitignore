@@ -11,6 +11,7 @@ ops/logs
 src/test/resources/data
 misc
 analysis/src/main/resources/application-railway-test.properties
+scraper/src/main/resources/application.properties
 
 secrets.txt
 

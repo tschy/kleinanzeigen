@@ -4,11 +4,14 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.springframework.stereotype.Service
 import okhttp3.logging.HttpLoggingInterceptor
+import org.springframework.beans.factory.annotation.Value
 
 @Service
 class FetcherService(
 
-) {
+    @Value("\${github.token}")
+    private var githubToken: String)
+{
     val client = OkHttpClient()
 
     fun fetch(url: String): String {
@@ -20,7 +23,7 @@ class FetcherService(
         return body
     }
 
-    fun fetchWithLogging(url: String): String {
+    fun fetchWithGitHubHeader(url: String): String {
 
         val logging = HttpLoggingInterceptor { message -> println(message) }
         logging.level = HttpLoggingInterceptor.Level.BODY
@@ -31,11 +34,19 @@ class FetcherService(
         val request = Request.Builder()
             .url(url)
             .header(
-                "User-Agent",
-                "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (HTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+                "Accept",
+                "application/vnd.github.raw+json"
+            )            .header(
+                "Authorization",
+                "Bearer $githubToken"
+            )
+            .header(
+                "X-GitHub-Api-Version",
+                "2026-03-10"
             )
             .build();
 
+        // TODO 200 is success
         val body = client.newCall(request).execute().use { response ->
             response.body.string()
         }

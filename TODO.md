@@ -595,7 +595,7 @@ weil ebay nicht mehr darstellt, und nicht mehr zurueckliefert
     - alles loggen was man braucht um auftretende probleme zu beheben.
     -  try catch und errors loggen
 
-- [] verschwinden Anzeigen tatsaechlich aus der Scrape Liste/von der Kleinanzeigen website
+- [] verschwinden Anzeigen tatsaechlich aus der Scrape Liste/von der Kleinanzeigen website. Nein. Fix: 14.5.2026, alte Daten davor fehlen faelschlicherweise
 
 - [] unit test/post mortem letzte seite wurde nicht gescraped
 ----------------------------
@@ -609,6 +609,8 @@ weil ebay nicht mehr darstellt, und nicht mehr zurueckliefert
 
 - [] zahl von der website wieviele gesamt treffer es gab rausloggen / holen mit jsoup und loggen und dann abgleichen mit der im programm festgestellten zahl und abgleichen und wenn sie nicht uebereinstimmen error log schreiben 
 --------------------------
+
+- [] Fetch search configs from GitHub API instead of classpath in production (with GitHub access token via file)
 
 # ONGOING
 

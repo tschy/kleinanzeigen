@@ -40,7 +40,7 @@ dependencies {
     implementation("org.postgresql:postgresql:42.7.3")
     implementation("com.fasterxml.jackson.core:jackson-core")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.seleniumhq.selenium:selenium-java:4.21.0")
+
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.mockk:mockk:1.14.9")

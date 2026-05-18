@@ -45,8 +45,8 @@ class Paginator(
                 Thread.sleep(1000)
             }
             n += 1
-        } while (soup.select(".pagination-next").isNotEmpty())
-//        } while (n < 5)
+//        } while (soup.select(".pagination-next").isNotEmpty())
+        } while (n < 2)
         return allItems
     }
 }
