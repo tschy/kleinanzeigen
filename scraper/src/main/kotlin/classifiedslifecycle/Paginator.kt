@@ -38,8 +38,8 @@ class Paginator(
                 Thread.sleep(1000)
             }
             page += 1
-//        } while (soup.select(".pagination-next").isNotEmpty())
-        } while (page < 2)
+        } while (soup.select(".pagination-next").isNotEmpty())
+//        } while (page < 2)
         return allItems
     }
 
