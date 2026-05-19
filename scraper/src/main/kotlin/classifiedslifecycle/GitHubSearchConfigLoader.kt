@@ -12,33 +12,44 @@ class GitHubSearchConfigLoader(
     val fetcherService: FetcherService
 ) : SearchConfigLoader {
 
+    val mapper = jacksonObjectMapper()
+
     override fun getJsonStrings(): List<String> {
 
         val jsonString = fetcherService.fetchSearchConfigsFromGitHub(
             "https://api.github.com" +
                     "/repos" +
                     "/tschy" +
-                    "/kleinanzeigen" +
-                    "/contents" +
-                    "/shared/src/main/resources/search-configs"
+                    "/kleinanzeigen-configs" +
+                    "/contents/"
         )
-
-        val mapper = jacksonObjectMapper()
 
         val metadataList: List<Map<String, Any>> =
             mapper.readValue(jsonString)
 
-        val urlList = metadataList.mapNotNull { it["download_url"] as? String }
+        return metadataList
+            .filter { it["name"] != "active-configs.json" }
+            .mapNotNull { it["download_url"] as? String }
+            .map { fetcherService.fetch(it) }
+//            .mapNotNull { it["download_url"] as? String }
 
-        val body = ArrayList<String>()
-
-        urlList.forEach { url: String ->
-            body.add(fetcherService.fetch(url))
-        }
-       return body
+//        val body = ArrayList<String>()
+//
+//        urlList.forEach { url: String ->
+//            body.add(fetcherService.fetch(jsonString))
+//        }
+//        return body
     }
 
     override fun getActiveConfigsString(): String {
-        TODO("Not yet implemented")
+        return fetcherService.fetchSearchConfigsFromGitHub(
+            "https://api.github.com" +
+                    "/repos" +
+                    "/tschy" +
+                    "/kleinanzeigen-configs" +
+                    "/contents" +
+                    "/active-configs.json"
+        )
+
     }
 }
