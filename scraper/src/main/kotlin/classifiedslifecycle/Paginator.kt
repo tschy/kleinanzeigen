@@ -49,7 +49,7 @@ class Paginator(
                 "${config.art}/" +
                 "${config.plz}/seite:" +
                 "${page}/" +
-                "${config.searchTerm}/k0c217l3411r" +
+                "${config.searchTerm}/" +
                 "${config.radius}+" +
                 "${config.category}.art_s:" +
                 config.art
