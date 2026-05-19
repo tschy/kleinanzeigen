@@ -8,13 +8,24 @@ import org.springframework.stereotype.Component
 @Profile("test")
 class LocalSearchConfigLoader(
     override val searchConfigRepository: SearchConfigRepository
-) : SearchConfigService {
+) : SearchConfigLoader {
 
-    override fun getConfigsAsJsonStrings() : List<String> {
-        val resolver = PathMatchingResourcePatternResolver()
-        return resolver.getResources(
-            "classpath:search-configs/*.json"
-        ).map { it.inputStream.bufferedReader().readText() }
+
+    val resolver = PathMatchingResourcePatternResolver()
+
+    override fun getActiveConfigsString(): String {
+        return resolver
+            .getResource("classpath:search-configs/active-configs.json")
+            .inputStream
+            .bufferedReader()
+            .readText()
     }
 
+    override fun getJsonStrings(): List<String> {
+        return resolver.getResources(
+            "classpath:search-configs/*.json"
+        )
+            .filter { it.filename != "active-configs.json" }
+            .map { it.inputStream.bufferedReader().readText() }
+    }
 }

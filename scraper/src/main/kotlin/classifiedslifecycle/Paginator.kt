@@ -14,19 +14,12 @@ class Paginator(
 
     fun run(config: SearchConfig): Set<ScrapeItem> {
 
-        var n = 1
+        var page = 1
         val allItems = mutableSetOf<ScrapeItem>()
 
-        do { // TODO Funktion url die in der search config lebt und nur als parameter die seitenzahl bekommt
-            val url = "https://www.kleinanzeigen.de/s-" +
-                    "${config.category}/" +
-                    "${config.art}/" +
-                    "${config.plz}/seite:" +
-                    "${n}/" +
-                    "${config.searchTerm}/k0c217l3411r" +
-                    "${config.radius}+" +
-                    "${config.category}.art_s:" +
-                    config.art
+        do {
+
+            val url = buildUrl(config, page)
 
             KotlinLogging.logger {}.info { url }
 
@@ -38,15 +31,28 @@ class Paginator(
                 .also { it.parentFile.mkdirs() }
                 .writeText(body)
 
-            allItems.addAll(itemExtractor.extract(body, n))
+            allItems.addAll(itemExtractor.extract(body, page))
 
             // test if pagination-next marker is present
             if (soup.select(".pagination-next").isNotEmpty()) {
                 Thread.sleep(1000)
             }
-            n += 1
+            page += 1
 //        } while (soup.select(".pagination-next").isNotEmpty())
-        } while (n < 2)
+        } while (page < 2)
         return allItems
     }
+
+    private fun buildUrl(config: SearchConfig, page: Int): String {
+        return "https://www.kleinanzeigen.de/s-" +
+                "${config.category}/" +
+                "${config.art}/" +
+                "${config.plz}/seite:" +
+                "${page}/" +
+                "${config.searchTerm}/k0c217l3411r" +
+                "${config.radius}+" +
+                "${config.category}.art_s:" +
+                config.art
+    }
 }
+

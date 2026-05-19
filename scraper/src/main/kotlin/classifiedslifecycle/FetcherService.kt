@@ -23,7 +23,7 @@ class FetcherService(
         return body
     }
 
-    fun fetchWithGitHubHeader(url: String): String {
+    fun fetchSearchConfigsFromGitHub(url: String): String {
 
         val logging = HttpLoggingInterceptor { message -> println(message) }
         logging.level = HttpLoggingInterceptor.Level.BODY
@@ -46,7 +46,8 @@ class FetcherService(
             )
             .build();
 
-        // TODO 200 is success
+        // response 200 is success https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status
+        // https://docs.github.com/en/rest/using-the-rest-api/getting-started-with-the-rest-api?apiVersion=2026-03-10#http-method
         val body = client.newCall(request).execute().use { response ->
             response.body.string()
         }

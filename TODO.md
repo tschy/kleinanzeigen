@@ -40,27 +40,20 @@ TODO:
 
 8.4./9.4.
 
-- [-] 7.4. abends einen scrape machen, mehrmals pro tag, 2 bis 3 mal
+- [x] 7.4. abends einen scrape machen, mehrmals pro tag, 2 bis 3 mal
 - [x] logging
 - [x] dritte db aufsetzen
 - [x] sql queries aus analyser ausfuehren durch spring boot jpa, nach jedem scrape ausfuehren
-  - [ ]und gucken ob alles passt
+  - [x] und gucken ob alles passt
 - [x] Beispieltest fuer die dritte DB
-
-- [ ] Testen echten scrape mit db write,
-- [ ] echter Test: mit verschwindenen Items/ ausfuehren, bis was verschwunden ist - oefter scrapen
-- [ ] funktion die alle anzeigt, die verschwunden sind (als zweites main programm) - (laesst Spring Boot das zu? -
-  ausrobieren, herausfinden)
-
-
-- [ ] konfiguration als yaml datei, und so, dass man mehrere Auftraege aufeinmal eintragen kann.
-
 
 1. aus den Daten, die wir scrapen können, soviel Weisheit wie möglich zu extrahieren
 2. dabei links und rechts Beispiele anschauen, um ein intuitives Bild dafür zu bekommen, wie zuverlässig unsere
    Datenweisheit die echte Welt abbildet.
 
-
+- [x] Testen echten scrape mit db write,
+- [x] echter Test: mit verschwindenen Items/ ausfuehren, bis was verschwunden ist - oefter scrapen
+- 
 - [x] Analyse: Wie lange waren die Items online
     - Buckets Zeit, 1 Tag, 1 Woche, 7 Wochen, 1 Jahr Anzahl Tage, Anzahl Wochen (besser)
     - Definition "Alter" -> group by auf id.id - letztes (juengste) last Scrape datum - aeltestes created
@@ -259,8 +252,6 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
  docker images | grep classifieds-scraper
  docker run --network host classifieds-scraper -> in cron reinschreiben
  docker run --rm --network host classifieds-scraper
-
-
 
 - [x] check all implemented functions are having correct output
 - [x] discount: how do we deal with the oldPrice data. Do we trust it to have been an actual price? -> we do
@@ -495,7 +486,7 @@ ID OLDEST NEWEST ORIGINAL DISCOUNT AGE GROUP ONLINE
 
 - zero down deployment (s. TODO/log 28/4/26)
 
-- [x] SearchConfig Aenderungen Produktionsdatenbank mit
+- [x] SearchConfig Aenderungen Produktionsdatenbank, Update docker image to introduce SearchConfigs
 
 - [] Test if terraform is set up correctly by deploying it again
 
@@ -595,7 +586,7 @@ weil ebay nicht mehr darstellt, und nicht mehr zurueckliefert
     - alles loggen was man braucht um auftretende probleme zu beheben.
     -  try catch und errors loggen
 
-- [] verschwinden Anzeigen tatsaechlich aus der Scrape Liste/von der Kleinanzeigen website. Nein. Fix: 14.5.2026, alte Daten davor fehlen faelschlicherweise
+- [x] verschwinden Anzeigen tatsaechlich aus der Scrape Liste/von der Kleinanzeigen website. Nein. Fix: 14.5.2026, alte Daten davor fehlen faelschlicherweise
 
 - [] unit test/post mortem letzte seite wurde nicht gescraped
 ----------------------------
@@ -603,14 +594,31 @@ weil ebay nicht mehr darstellt, und nicht mehr zurueckliefert
 
 - [] operative metriken in die db schreiben? eigentl produ daten von operativ daten trennen
 
-- [] config ausstellen temporaer
+- [x] config ausstellen temporaer
 
 - [x] README Benutzer muss sicherstellen, dass die Sucheergebnisse < 1250 sind - mehr werden von kleinanzeigen nicht dargestellt max. 50 Seiten, 25 Treffer je Seite
 
 - [] zahl von der website wieviele gesamt treffer es gab rausloggen / holen mit jsoup und loggen und dann abgleichen mit der im programm festgestellten zahl und abgleichen und wenn sie nicht uebereinstimmen error log schreiben 
+
+
+Und ich habe eine Idee, wie wir auch Data Science mit Classifieds machen können. Dazu müssten wir entweder auch die Texte der Anzeigen scrapen oder wir kaufen einfach die Daten von der Scraping-Company, die Du gefunden hast.
+
+Und das GitHub-Token ist in Railway eine Secret-Variable?
+￼
+Und das Docker-Image wird immer auf GitHub gebaut, so dass da nicht durch dummen Zufall Secrets rein kommen können, weil ja keine Secrets im GitHub sind, richtig?
 --------------------------
 
-- [] Fetch search configs from GitHub API instead of classpath in production (with GitHub access token via file)
+- [x] Fetch search configs from GitHub API instead of classpath in production (with GitHub access token via file):
+  - [x] get search configs locally in test db/local db
+  - [x] get search configs from github in prod db 
+        QUESTION: backup and these requests are plain text. 
+
+
+- [] funktion die alle anzeigt, die verschwunden sind (als zweites main programm) - (laesst Spring Boot das zu? -
+  ausprobieren, herausfinden)
+
+
+- [x] konfiguration als yaml datei, und so, dass man mehrere Auftraege aufeinmal eintragen kann. -> folder with individual json files which are being used as
 
 # ONGOING
 

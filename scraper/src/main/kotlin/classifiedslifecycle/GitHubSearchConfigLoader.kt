@@ -10,22 +10,11 @@ import com.fasterxml.jackson.module.kotlin.readValue
 class GitHubSearchConfigLoader(
     override val searchConfigRepository: SearchConfigRepository,
     val fetcherService: FetcherService
-) : SearchConfigService {
+) : SearchConfigLoader {
 
-    override fun getConfigsAsJsonStrings(): List<String> {
+    override fun getJsonStrings(): List<String> {
 
-        println(
-            fetcherService.fetchWithGitHubHeader(
-                "https://api.github.com" +
-                        "/repos" +
-                        "/tschy" +
-                        "/kleinanzeigen" +
-                        "/contents" +
-                        "/shared/src/main/resources/search-configs"
-            )
-        )
-
-        val jsonString = fetcherService.fetchWithGitHubHeader(
+        val jsonString = fetcherService.fetchSearchConfigsFromGitHub(
             "https://api.github.com" +
                     "/repos" +
                     "/tschy" +
@@ -41,14 +30,15 @@ class GitHubSearchConfigLoader(
 
         val urlList = metadataList.mapNotNull { it["download_url"] as? String }
 
-        val b = ArrayList<String>()
+        val body = ArrayList<String>()
 
         urlList.forEach { url: String ->
-            b.add(fetcherService.fetch(url))
+            body.add(fetcherService.fetch(url))
         }
+       return body
+    }
 
-        b.forEach { it -> println(it) }
-
-       return b
+    override fun getActiveConfigsString(): String {
+        TODO("Not yet implemented")
     }
 }

@@ -11,19 +11,19 @@ class ScraperRunner(
     private val itemService: ItemService,
     private val paginator: Paginator,
     private val scrapeRepository: ScrapeRepository,
-    private val searchConfigService: SearchConfigService
+    private val searchConfigLoader: SearchConfigLoader
 ) : ApplicationRunner {
     private val logger = KotlinLogging.logger {}
 
     override fun run(args: ApplicationArguments) {
         logger.info { "---running the scraper" }
-        
-        val configs = searchConfigService.getConfigs()
+
+        val configs = searchConfigLoader.getConfigs()
 
         configs.forEach { config ->
 
             val scrapeItems = paginator.run(config)
-            logger.info { "Found ${scrapeItems.size} items in total (top ads are disregarded)" }
+            logger.info { "Found ${scrapeItems.size} items in total (\"top\" ads are disregarded)" }
             itemService.process(scrapeItems, config)
 
             if (!scrapeItems.isEmpty()) {
