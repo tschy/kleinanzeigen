@@ -18,7 +18,6 @@ class Paginator(
         val allItems = mutableSetOf<ScrapeItem>()
 
         do {
-
             val url = buildUrl(config, page)
 
             KotlinLogging.logger {}.info { url }
@@ -35,7 +34,7 @@ class Paginator(
 
             // test if pagination-next marker is present
             if (soup.select(".pagination-next").isNotEmpty()) {
-                Thread.sleep(1000)
+                Thread.sleep(3000)
             }
             page += 1
         } while (soup.select(".pagination-next").isNotEmpty())
@@ -44,15 +43,36 @@ class Paginator(
     }
 
     private fun buildUrl(config: SearchConfig, page: Int): String {
+//        var s = "https://www.kleinanzeigen.de/"
+//
+//        if (config.category != "") s += "s-${config.category}/"
+//        if (config.art != "") s += "${config.art}/"
+//        if (config.plz != "") s += "${config.plz}/"
+//        s += "seite:${page}/"
+//        s += "${config.searchTerm}/"
+//        if (config.radius.toString() != "") s += "${config.radius}/"
+//        if (config.category != "") s += "${config.category}.art_s:/" + config.art
+//
+//        return s
+//
+//    }
+
+
+
         return "https://www.kleinanzeigen.de/s-" +
                 "${config.category}/" +
                 "${config.art}/" +
-                "${config.plz}/seite:" +
-                "${page}/" +
-                "${config.searchTerm}/" +
+                "${config.plz}/" +
+                "seite:${page}/" +
+                config.searchTerm +
                 "${config.radius}+" +
                 "${config.category}.art_s:" +
                 config.art
     }
+
 }
 
+//https://www.kleinanzeigen.de/s-fahrraeder/s-tern-verge-s8i/k0
+//https://www.kleinanzeigen.de/s-fahrraeder///seite:1/tern-verge-s8i/k0/0+fahrraeder.art_s
+
+//https://www.kleinanzeigen.de/s-fahrraeder/herren/10115/seite:1/rennrad/k0c217l3411r/30+fahrraeder.art_s:herren

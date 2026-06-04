@@ -636,3 +636,6 @@ Und das Docker-Image wird immer auf GitHub gebaut, so dass da nicht durch dummen
     - Correlation skipped — average discount vs age group correlation requires CSV/data science tooling, out of scope for now -> Kotlin Data Frame out of scope as well
     - Further analysis — think of other meaningful insights from the data
     - [] check for a correlation between discount and time online,
+
+
+https://www.kleinanzeigen.de/s-sortierung:empfohlen/preis::1999/tern-verge-s8i/k0

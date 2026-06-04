@@ -10,7 +10,6 @@ class LocalSearchConfigLoader(
     override val searchConfigRepository: SearchConfigRepository
 ) : SearchConfigLoader {
 
-
     val resolver = PathMatchingResourcePatternResolver()
 
     override fun getActiveConfigsString(): String {

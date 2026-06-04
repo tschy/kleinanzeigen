@@ -80,7 +80,7 @@ Example — `rennraeder-berlin.json`:
   "category": "fahrraeder",
   "art": "herren",
   "plz": "10115",
-  "searchTerm": "rennrad",
+  "searchTerm": "rennrad/k0c217l3411r",
   "radius": 30
 }
 ```
@@ -102,7 +102,7 @@ If no configs should run, keep the file as an empty array, do not leave it blank
 ```
 ### URL Construction
 
-The Kleinanzeigen search URL contains a location/category segment (e.g. `k0c217l3411r10`) that must be determined manually by performing the search in a browser and copying the resulting URL. This is intentional — it allows you to verify that the search results match your expectations before committing to a configuration.
+The Kleinanzeigen search URL contains a location/category segment (e.g. `k0c217l3411r10`) that must be determined manually by performing the search in a browser and copying the resulting URL. This is intentional — it allows you to verify that the search results match your expectations before committing to a configuration. It has to be added to the search term in the JSON file, like in this example: "searchTerm": "rennrad/k0c217l3411r"
 
 ---
 

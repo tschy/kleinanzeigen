@@ -17,9 +17,6 @@ interface SearchConfigLoader {
     fun getConfigs(): List<SearchConfig> {
         val configs = mutableListOf<SearchConfig>()
 
-//        val activeConfigsStringList = getActiveConfigsString()
-//            .split(",")
-
         val activeConfigs = jacksonObjectMapper()
             .readValue<List<String>>(getActiveConfigsString())
 
@@ -49,8 +46,6 @@ interface SearchConfigLoader {
 
                 configs.add(config)
             }
-
-
         }
         return configs
     }
