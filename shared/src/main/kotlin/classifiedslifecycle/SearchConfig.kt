@@ -18,7 +18,7 @@ open class SearchConfig(
     val art: String,
     val plz: String,
     val searchTerm: String,
-    val radius: Int
+    val radius: Int?
 ) {
     fun toDebugString() =
     "'${id}' " +

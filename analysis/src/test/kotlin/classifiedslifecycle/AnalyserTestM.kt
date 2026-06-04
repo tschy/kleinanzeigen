@@ -18,6 +18,10 @@ import kotlin.time.toJavaInstant
 @ActiveProfiles("test-m")
 //@Transactional  // rollback changes
 class AnalyserTestM {
+    val searchConfig = SearchConfig(
+        123, "meine Suche", "Fahrraeder",
+        "blabla", "10123", "Rennrad", null
+    )
 
     @Autowired
     lateinit var listingRepository: ListingRepository
@@ -35,6 +39,7 @@ class AnalyserTestM {
         null,
         false,
         LocalDate.of(2026, Month.MARCH, 19),
+        searchConfig,
     )
 
     val item2 = Item(
@@ -47,6 +52,7 @@ class AnalyserTestM {
         null,
         false,
         LocalDate.of(2026, Month.MARCH, 19),
+        searchConfig,
     )
 
     val item3 = Item(
@@ -57,7 +63,8 @@ class AnalyserTestM {
         price = 2.6,
         oldPrice = null,
         negotiable = false,
-        created = LocalDate.of(2026, Month.MARCH, 19)
+        created = LocalDate.of(2026, Month.MARCH, 19),
+        searchConfig,
     )
 
     val item4 = Item(
@@ -68,14 +75,16 @@ class AnalyserTestM {
         price = 2.6,
         oldPrice = null,
         negotiable = true,
-        created = LocalDate.of(2026, Month.MARCH, 19)
+        created = LocalDate.of(2026, Month.MARCH, 19),
+        searchConfig,
     )
+
     @Test
     fun analyseTest() {
 
         listingRepository.saveAll(listOf(item1, item2, item3, item4))
 
         val analyser = Analyser(listingRepository)
-        analyser.analyse()
+        analyser.printTableDiscountsOnlineAndOffline()
     }
 }

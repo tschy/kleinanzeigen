@@ -1,13 +1,19 @@
 package classifiedslifecycle
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.MapperFeature
+import com.fasterxml.jackson.databind.json.JsonMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
 
+val ourObjectMapper = JsonMapper.builder()
+    .configure(MapperFeature.ALLOW_COERCION_OF_SCALARS, false)
+    .configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true)
+    .build()
+
 @Service
 interface SearchConfigLoader {
-
     val searchConfigRepository: SearchConfigRepository
 
     fun getJsonStrings(): List<String>
@@ -17,12 +23,11 @@ interface SearchConfigLoader {
     fun getConfigs(): List<SearchConfig> {
         val configs = mutableListOf<SearchConfig>()
 
-        val activeConfigs = jacksonObjectMapper()
+        val activeConfigs = ourObjectMapper
             .readValue<List<String>>(getActiveConfigsString())
 
         getJsonStrings().forEach() { jsonString ->
-            val mapper = jacksonObjectMapper()
-            val configRead = mapper.readValue<SearchConfig>(
+            val configRead = ourObjectMapper.readValue<SearchConfig>(
                 jsonString
             )
 

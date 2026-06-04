@@ -43,33 +43,34 @@ class Paginator(
     }
 
     private fun buildUrl(config: SearchConfig, page: Int): String {
-//        var s = "https://www.kleinanzeigen.de/"
-//
-//        if (config.category != "") s += "s-${config.category}/"
-//        if (config.art != "") s += "${config.art}/"
-//        if (config.plz != "") s += "${config.plz}/"
-//        s += "seite:${page}/"
-//        s += "${config.searchTerm}/"
-//        if (config.radius.toString() != "") s += "${config.radius}/"
-//        if (config.category != "") s += "${config.category}.art_s:/" + config.art
-//
-//        return s
-//
-//    }
+        var s = "https://www.kleinanzeigen.de/"
 
+        if (config.category != "") s += "s-${config.category}/"
+        if (config.art != "") s += "${config.art}/"
+        if (config.plz != "") s += "${config.plz}/"
+        s += "seite:${page}/"
+        s += config.searchTerm
+        config.radius?.let { s += "$it+" }
+        if ((config.category != "") && (config.art != "")) s += "${config.category}.art_s:" + config.art
 
+//        s = "https://www.kleinanzeigen.de/s-fahrraeder/herren/12309/seite:1/rennrad/k0c217l3411r10+fahrraeder.art_s:herren" // geht
+//        s = "https://www.kleinanzeigen.de/s-fahrraeder/seite:1/tern-verge-s8i/k00+fahrraeder.art_s" // geht nicht
+//        s = "https://www.kleinanzeigen.de/s-fahrraeder/seite:1/tern-verge-s8i/k0" // geht
+//        s = "https://www.kleinanzeigen.de/s-fahrraeder/seite:1/tern-verge-s8i/k00+" // geht
+        return s
 
-        return "https://www.kleinanzeigen.de/s-" +
-                "${config.category}/" +
-                "${config.art}/" +
-                "${config.plz}/" +
-                "seite:${page}/" +
-                config.searchTerm +
-                "${config.radius}+" +
-                "${config.category}.art_s:" +
-                config.art
     }
 
+//        return "https://www.kleinanzeigen.de/s-" +
+//                "${config.category}/" +
+//                "${config.art}/" +
+//                "${config.plz}/" +
+//                "seite:${page}/" +
+//                config.searchTerm +
+//                "${config.radius}+" +
+//                "${config.category}.art_s:" +
+//                config.art
+//    }
 }
 
 //https://www.kleinanzeigen.de/s-fahrraeder/s-tern-verge-s8i/k0

@@ -12,6 +12,6 @@ interface SearchConfigRepository : JpaRepository<SearchConfig, Int> {
         art: String,
         plz: String,
         searchTerm: String,
-        radius: Int
+        radius: Int?
     ): SearchConfig?
 }
