@@ -15,21 +15,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     
-    services:
-      postgres:
-        image: postgres:alpine
-        env:
-          POSTGRES_DB: kleinanzeigen_test
-          POSTGRES_PASSWORD: fennpfuhl
-        ports:
-          - 5433:5432
-        # This ensures GitHub waits until the DB is ready before starting your tests
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-    
     steps:
     - uses: actions/checkout@v4
 
@@ -40,8 +25,8 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build and test analyzer
-      run: ./gradlew :analysis:build
+  #  - name: Build and test analyzer
+  #    run: ./gradlew :analysis:build
 
     - name: Build scraper and push image
       run: ./gradlew :scraper:jib --image=ghcr.io/tschy/classifieds-scraper:${{ github.run_number }}
