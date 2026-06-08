@@ -70,8 +70,7 @@ Railway is then updated manually to pull the new image. This gives explicit cont
 The scraping interval is fixed at once per hour in the current version.
 
 ### Search Configurations
-
-Search configurations are defined as JSON files in `shared/src/main/resources/search-configs/`. The filename must match the `name` field in the JSON.
+Search configurations are defined as JSON files. Storing them in the GitHub repository allows search parameters to be managed dynamically without rebuilding or redeploying the application. The filename must always match the `name` field in the JSON.
 
 Example — `rennraeder-berlin.json`:
 ```json
@@ -85,21 +84,20 @@ Example — `rennraeder-berlin.json`:
 }
 ```
 
-The `name` field is the **unique identifier** of a configuration. It represents the intention of the search and must be chosen carefully — any change to the search parameters requires a new name. Configurations in the database are **immutable**: the scraper never overwrites an existing configuration. If a new JSON file is added with a name that doesn't yet exist in the database, a new entry is created. This ensures that every historical scrape can be traced back to the exact parameters that produced it.
+The `name` field is the **unique identifier** of a configuration. Because configurations in the database are **immutable**, any change to search parameters requires a new name. If a configuration name is new, an entry is created permanently on the next run; otherwise, the historical record is reused. This ensures every historical scrape can be traced back to the exact parameters that produced it.
 
-
-
+To control execution, a central manifest file holds an array of active configuration names:
 ```json
 ["config-name-one", "config-name-two"]
 ```
+To activate a config, add its `name` to this list. To deactivate it, remove it. If no configs should run, keep the file as an empty array (`[]`), do not leave it blank.
 
-To activate a config, add its `name` field to this list. To deactivate it, remove it. The config file itself is never deleted.
+### Configuration Fetching
+The application reads the active manifest list and resolves the corresponding JSON parameter files based on the environment:
 
-If no configs should run, keep the file as an empty array, do not leave it blank:
-
-```json
-[]
-```
+* **Local Development:** When running with the `test` profile, the scraper reads the JSON files directly from the local `shared/src/main/resources/search-configs/` directory.
+* **Production:** The scraper uses an authenticated HTTP client to fetch the JSON files dynamically from the GitHub repository via the GitHub API.
+* 
 ### URL Construction
 
 The Kleinanzeigen search URL contains a location/category segment (e.g. `k0c217l3411r10`) that must be determined manually by performing the search in a browser and copying the resulting URL. This is intentional — it allows you to verify that the search results match your expectations before committing to a configuration. It has to be added to the search term in the JSON file, like in this example: "searchTerm": "rennrad/k0c217l3411r"

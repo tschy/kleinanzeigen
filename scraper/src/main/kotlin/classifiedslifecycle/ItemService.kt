@@ -34,8 +34,10 @@ class ItemService(
                 if (itemSaved.matches(scrapeItem)) {
 
 //                    logger.info { "updateScrapeCount: "  }
-                    logger.debug { "Item already exists" +
-                            itemSaved.toDebugString() }
+                    logger.debug {
+                        "Item already exists" +
+                                itemSaved.toDebugString()
+                    }
 
                     listingRepository
                         .updateScrapeCount(
