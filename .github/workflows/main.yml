@@ -25,8 +25,8 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-  #  - name: Build and test analyzer
-  #    run: ./gradlew :analysis:build
+    - name: Build and test analyzer
+     run: ./gradlew :analysis:compileKotlin
 
     - name: Build scraper and push image
       run: ./gradlew :scraper:jib --image=ghcr.io/tschy/classifieds-scraper:${{ github.run_number }}
