@@ -26,6 +26,8 @@ class FetcherService(
     fun fetchSearchConfigsFromGitHub(url: String): String {
 
         val logging = HttpLoggingInterceptor { message -> println(message) }
+        logging.redactHeader("Authorization")
+
         logging.level = HttpLoggingInterceptor.Level.BODY
         val client = OkHttpClient.Builder()
             .addInterceptor(logging)
