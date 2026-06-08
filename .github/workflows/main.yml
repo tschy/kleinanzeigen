@@ -11,25 +11,25 @@ permissions:
   contents: read
   packages: write
   
-services:
-  postgres:
-    image: postgres:alpine
-    env:
-      POSTGRES_DB: kleinanzeigen_test
-      POSTGRES_PASSWORD: fennpfuhl
-    ports:
-      - 5433:5432
-    # This ensures GitHub waits until the DB is ready before starting your tests
-    options: >-
-      --health-cmd pg_isready
-      --health-interval 10s
-      --health-timeout 5s
-      --health-retries 5
-
-      
 jobs:
   build:
     runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:alpine
+        env:
+          POSTGRES_DB: kleinanzeigen_test
+          POSTGRES_PASSWORD: fennpfuhl
+        ports:
+          - 5433:5432
+        # This ensures GitHub waits until the DB is ready before starting your tests
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
     steps:
     - uses: actions/checkout@v4
 
@@ -46,12 +46,5 @@ jobs:
     - name: Build scraper and push image
       run: ./gradlew :scraper:jib --image=ghcr.io/tschy/classifieds-scraper:${{ github.run_number }}
 
-    # - name: Install Railway CLI
-    #   run: npm install -g @railway/cli
-      
-    # - name: Update Railway Image
-    #   run: railway variables set --service a4ddda22-f288-4219-8124-87c47c015ed1 DOCKER_IMAGE_TAG=${{ github.run_number }}
-    #   env:
-    #     RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
         
