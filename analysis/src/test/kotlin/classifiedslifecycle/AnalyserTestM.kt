@@ -26,6 +26,9 @@ class AnalyserTestM {
     @Autowired
     lateinit var listingRepository: ListingRepository
 
+   @Autowired
+    lateinit var scrapeRepository: ScrapeRepository
+
     @OptIn(ExperimentalTime::class)
     val exampleInstant = parse("2020-01-01T00:00:00.00Z").toJavaInstant()
     val itemId = "123"
@@ -84,7 +87,7 @@ class AnalyserTestM {
 
         listingRepository.saveAll(listOf(item1, item2, item3, item4))
 
-        val analyser = Analyser(listingRepository)
+        val analyser = Analyser(listingRepository, scrapeRepository)
         analyser.printTableDiscountsOnlineAndOffline()
     }
 }

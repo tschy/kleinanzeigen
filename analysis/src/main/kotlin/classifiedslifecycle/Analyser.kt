@@ -32,7 +32,22 @@ class Analyser(
     fun printStats() {
 
         val numberOfScrapedDays = scrapeRepository.countDistinctDays()
-        val numberOfMinimumScrapes = scrapeRepository.findDayWithMinScrapes()[0][1]
+
+        val minScrapesResult = scrapeRepository.findDayWithMinScrapes()
+
+        val numberOfMinimumScrapes = if (minScrapesResult.isNotEmpty()) {
+            minScrapesResult[0][1]
+        } else {
+            1
+        }
+
+        // 2. Safe check for total days to prevent division by zero
+        val averageScrapes = if (numberOfScrapedDays > 0) {
+            scrapeRepository.countExcludingToday() / numberOfScrapedDays
+        } else {
+            0
+        }
+
 
         println()
         println(
@@ -40,7 +55,7 @@ class Analyser(
                     "last scrape              $lastGlobalScrape \n" +
                     "scarping interval of     $numberOfScrapedDays days \n" +
                     "total number of scrapes: ${scrapeRepository.count()} \n" +
-                    "average scrapes per day: ${scrapeRepository.countExcludingToday() / numberOfScrapedDays}\n" +
+                    "average scrapes per day:  + $averageScrapes \n" +
                     "minimum scrapes per day: $numberOfMinimumScrapes"
         )
     }
